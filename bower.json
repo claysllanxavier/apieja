@@ -1,0 +1,28 @@
+{
+  "name": "apieja",
+  "description": "Api para um aplicativo que ajuda o ensino da matemática no eja",
+  "main": "server.js",
+  "authors": [
+    "Claysllan Xavier"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "eja",
+    "matematica"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.5",
+    "angular-route": "^1.6.5",
+    "angular-resource": "^1.6.5",
+    "adminbsb-materialdesign": "^1.0.5"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "apieja",
+  "version": "1.0.0",
+  "description": "Api para um aplicativo que ajuda o ensino da matemática no eja",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claysllanxavier/apieja.git"
+  },
+  "keywords": [
+    "eja",
+    "matematica"
+  ],
+  "author": "Claysllan Xavier",
+  "license": "ISC",
+  "homepage": "https://github.com/claysllanxavier/apieja#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+    "compression": "^1.7.0",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.6",
+    "express": "^4.11.1",
+    "express-load": "^1.1.16",
+    "express-session": "^1.15.4",
+    "helmet": "^3.8.0",
+    "method-override": "^2.3.9",
+    "mongodb": "^2.2.30",
+    "mongoose": "^4.11.5",
+    "morgan": "^1.8.2",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
+}
