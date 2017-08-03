@@ -1,4 +1,5 @@
+var authenticated = require('../../config/auth');
 module.exports = function(app) {
   var controller = app.controllers.home;
-  app.get('/', controller.index);
+  app.get('/' , authenticated , controller.index);
 };
