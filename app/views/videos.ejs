@@ -1,0 +1,50 @@
+<% include partials/head %>
+
+<% include partials/header %>
+
+<% include partials/menu %>
+
+<section class="content">
+  <div class="container-fluid"  ng-controller="VideoController" layout-margin>
+    <md-card style="margin:0px">
+      <md-input-container style="margin:15px;">
+        <label>Filtrar</label>
+        <input type="text" ng-model="filterName">
+      </md-input-container>
+
+      <div ng-hide="true">
+        {{(filteredItems = (videos | filter: filterName))}}
+      </div>
+    </md-card>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-8"></div>
+      <div class="col-xs-12 col-md-4 align-right">
+        <md-button class="md-fab md-raised" ng-click="showAdvanced($event)">
+          <i class="material-icons">add</i>
+          <md-tooltip
+             md-direction="left">
+            Adicionar Vídeo
+           </md-tooltip>
+
+        </md-button>
+      </div>
+
+    </div>
+    <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}"
+    table-card="{title: 'Vídeos'}"
+    animate-sort-icon="true"
+    mdt-row="{
+      'data': filteredItems,
+      'table-row-id-key': 'id',
+      'column-keys': ['conteudo', 'videos[0].nome', 'videos[0].url']
+    }">
+    <mdt-header-row>
+      <mdt-column align-rule="left" column-sort="true"><span>Conteúdo</span></mdt-column>
+      <mdt-column align-rule="left" column-sort="true"><span>Nome Vídeo</span></mdt-column>
+      <mdt-column align-rule="left" column-sort="true"><span>Url Vídeo</span></mdt-column>
+    </mdt-header-row>
+  </mdt-table>
+</div>
+</section>
+
+<% include partials/footer %>
