@@ -24,6 +24,11 @@ module.exports = function() {
       required: true,
       trim: true
     },
+    informacao: {
+      type: String,
+      required: true,
+      trim: true
+    },
     videos  : [Videos],
     atualizado: {
       type: Date,

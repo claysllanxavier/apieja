@@ -22,37 +22,14 @@ function($scope, $resource, $mdToast, $mdDialog) {
       }
     );
   }
-
-  $scope.init();
-
-  $scope.showAdvanced = function(ev) {
-    $mdDialog.show({
-      controller: DialogController,
-      templateUrl: 'modalVideo.html',
-      parent: angular.element(document.body),
-      targetEvent: ev,
-      clickOutsideToClose:true,
-      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-    })
-    .then(function(answer) {
-      $scope.status = 'You said the information was "' + answer + '".';
-    }, function() {
-      $scope.status = 'You cancelled the dialog.';
-    });
+  $scope.saveRowCallback = function(row){
+    $mdToast.show(
+      $mdToast.simple()
+      .content('Row changed to: '+row)
+      .hideDelay(3000)
+    );
   };
 
-  function DialogController($scope, $mdDialog) {
-    $scope.hide = function() {
-      $mdDialog.hide();
-    };
-
-    $scope.cancel = function() {
-      $mdDialog.cancel();
-    };
-
-    $scope.answer = function(answer) {
-      $mdDialog.hide(answer);
-    };
-  }
+  $scope.init();
 
 });
