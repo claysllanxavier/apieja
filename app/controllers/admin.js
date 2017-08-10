@@ -9,5 +9,10 @@ module.exports = function() {
     res.redirect('/login');
   };
 
+
+  controller.exibeEsqueci = function(req, res) {
+    res.render("forgot-password");
+  };
+
   return controller;
 }

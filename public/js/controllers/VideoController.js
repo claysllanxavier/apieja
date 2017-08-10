@@ -1,17 +1,19 @@
 angular.module('apieja').controller('VideoController',
-function($scope, $resource, $mdToast) {
+function($scope, $resource, $mdToast, $location) {
   $scope.init = function() {
     buscaVideos();
-
   };
-  $scope.videos = [];
+  $scope.videos = "";
 
   $scope.filtro = '';
 
-  var urlVideos = $resource('/api/videos');
+
+  var partUrl = window.location.pathname.split( '/' );
+
+  var urlVideos = $resource('/api/videos/'+partUrl[2]);
 
   function buscaVideos() {
-    urlVideos.query(
+    urlVideos.get(
       function(videos) {
         $scope.videos = videos;
       },
@@ -32,10 +34,6 @@ function($scope, $resource, $mdToast) {
   $scope.add = function() {
     console.log("add");
   };
-
-  $scope.getClass = function (path) {
-    return ($location.path().substr(0, path.length) === path) ? 'active' : '';
-  }
 
   $scope.init();
 

@@ -11,5 +11,7 @@ module.exports = function(app) {
     }));
 
     app.get('/logout', controller.fazLogout);
+    app.route('/esqueciminhasenha')
+    .get(controller.exibeEsqueci);
 
   };

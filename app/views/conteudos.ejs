@@ -5,7 +5,7 @@
 <% include partials/menu %>
 
 <section class="content">
-  <div class="container-fluid"  ng-controller="VideoController" layout-margin>
+  <div class="container-fluid"  ng-controller="ConteudosController" layout-margin>
     <md-card style="margin:0px">
       <md-input-container style="margin:15px;">
         <label>Filtrar</label>
@@ -28,7 +28,7 @@
     >
     <mdt-header-row>
       <mdt-column align-rule="left" column-sort="true" column-definition="Conteúdo de matemática"><span>Conteúdo</span></mdt-column>
-      <mdt-column align-rule="left" column-sort="true" column-definition="Breve informação sobre o conteúdo"><span>Informação</span></mdt-column>
+      <mdt-column align-rule="left" column-sort="true" column-definition="Breve informação sobre o conteúdo"><span>Descrição</span></mdt-column>
       <mdt-column align-rule="left"><span>Ação</span></mdt-column>
     </mdt-header-row>
     <mdt-custom-cell column-key="acao">
@@ -48,7 +48,7 @@
           </a>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-          <button ng-click="clientScope.delete(rowId)" type="button" class="btn btn-block btn-lg btn-danger waves-effect">
+          <button ng-click="clientScope.add($event)" type="button" class="btn btn-block btn-lg btn-danger waves-effect">
             <i class="material-icons">delete</i>
             <span>Excluir</span>
           </button>

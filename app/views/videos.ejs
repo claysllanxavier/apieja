@@ -13,7 +13,7 @@
       </md-input-container>
 
       <div ng-hide="true">
-        {{(filteredItems = (videos | filter: filterName))}}
+        {{(filteredItems = (videos.videos | filter: filterName))}}
       </div>
     </md-card>
     <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}"
@@ -22,18 +22,16 @@
     mdt-translations="{rowsPerPage : 'itens por página', largeEditDialog : { saveButtonLabel : 'Salvar', cancelButtonLabel	: 'Cancelar'}}"
     mdt-row="{
       'data': filteredItems,
-      'table-row-id-key': 'id',
-      'column-keys': ['conteudo', 'conteudo', 'videos[0].nome', 'videos[0].url', 'buttons']
+      'table-row-id-key': '_id',
+      'column-keys': ['nome', 'url', 'acao']
     }"
     >
     <mdt-header-row>
-      <mdt-column align-rule="left" column-sort="true" column-definition="Conteúdo de matemática"><span>Conteúdo</span></mdt-column>
-      <mdt-column align-rule="left" column-sort="true" column-definition="Breve informação sobre o conteúdo"><span>Informação</span></mdt-column>
-      <mdt-column align-rule="left" column-sort="true" column-definition="Nome do vídeo que está nesse conteúdo"><span>Nome Vídeo</span></mdt-column>
-      <mdt-column align-rule="left" column-sort="true" column-definition="Url do vídeo que está nesse conteúdo"><span>Url Vídeo</span></mdt-column>
-      <mdt-column align-rule="left" column-sort="true" ><span>Ação</span></mdt-column>
+      <mdt-column align-rule="left" column-sort="true" column-definition="Título do vídeo"><span>Nome</span></mdt-column>
+      <mdt-column align-rule="left" column-sort="true" column-definition="URL do iframe do vídeo"><span>Url</span></mdt-column>
+      <mdt-column align-rule="left"><span>Ação</span></mdt-column>
     </mdt-header-row>
-    <mdt-custom-cell column-key="buttons">
+    <mdt-custom-cell column-key="acao">
       <div class ="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <button ng-click="clientScope.edit()" type="button" class="btn btn-block btn-lg btn-warning waves-effect">

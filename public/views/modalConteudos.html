@@ -1,0 +1,45 @@
+<md-dialog aria-label="Adicionar Novos conteudos">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Adicionar Novo conteudos</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <i class="material-icons">close</i>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-content layout-padding>
+          <div>
+            <form name="conteudosForm">
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Conteúdo</label>
+                  <input required name="conteudo" ng-model="conteudos.conteudo">
+                </md-input-container>
+              </div>
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Descrição</label>
+                  <textarea ng-model="conteudos.descricao" required=" "md-maxlength="100" rows="3" md-select-on-focus></textarea>
+                </md-input-container>
+              </div>
+            </form>
+          </div>
+        </md-content>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="btn" ng-click="cancel()">
+        Cancelar
+      </md-button>
+      <md-button class="btn btn-primary"ng-click="add(conteudos)">
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

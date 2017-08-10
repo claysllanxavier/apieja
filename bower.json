@@ -26,6 +26,8 @@
     "adminbsb-materialdesign": "^1.0.5",
     "angular-material": "^1.1.4",
     "angular-material-data-table": "^0.10.10",
-    "angular-animate": "^1.6.5"
+    "angular-animate": "^1.6.5",
+    "ngSweetAlert": "angular-sweetalert#^1.1.2",
+    "underscore": "^1.8.3"
   }
 }
