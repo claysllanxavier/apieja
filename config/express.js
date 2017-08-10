@@ -8,6 +8,8 @@ var compression = require('compression');
 var port     = process.env.PORT || 8000;
 var passport = require('passport');
 var morgan       = require('morgan');
+var flash    = require('connect-flash');
+
 
 module.exports = function() {
   var app = express();
@@ -39,6 +41,7 @@ module.exports = function() {
     })); // session secret
     app.use(passport.initialize());
     app.use(passport.session()); // persistent login sessions
+    app.use(flash());
 
     load('models', {cwd: 'app'})
     .then('controllers')

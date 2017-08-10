@@ -10,4 +10,6 @@ module.exports = function(app) {
         failureFlash : true // allow flash messages
     }));
 
+    app.get('/logout', controller.fazLogout);
+
   };

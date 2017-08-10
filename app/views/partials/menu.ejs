@@ -14,7 +14,7 @@
           <ul class="dropdown-menu pull-right">
             <li><a href="javascript:void(0);"><i class="material-icons">person</i>Perfil</a></li>
             <li role="seperator" class="divider"></li>
-            <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sair</a></li>
+            <li><a href="/logout"><i class="material-icons">input</i>Sair</a></li>
           </ul>
         </div>
       </div>
@@ -23,38 +23,38 @@
     <div class="menu">
       <ul class="list">
         <li class="header">NAVEGAÇÃO PRINCIPAL</li>
-        <li class="active">
+        <li <% if (page_name === 'home') { %>class="active" <% } %> >
           <a href="/">
             <i class="material-icons">home</i>
             <span>Inicio</span>
           </a>
         </li>
-        <li>
-          <a href="/videos">
+        <li <% if (page_name === 'conteudos' || page_name === 'videos') { %>class="active" <% } %> >
+          <a href="/conteudos">
             <i class="material-icons">videocam</i>
-            <span>Vídeos</span>
+            <span>Vídeo-aulas</span>
           </a>
         </li>
-        <li>
+        <li <% if (page_name === 'usuarios') { %>class="active" <% } %> >
           <a href="/usuarios">
             <i class="material-icons">group</i>
             <span>Usuários</span>
           </a>
         </li>
-        <li>
+        <li <% if (page_name === 'quiz') { %>class="active" <% } %> >
           <a href="/quiz">
             <i class="material-icons">games</i>
             <span>Quiz</span>
           </a>
         </li>
-        <li>
+        <li <% if (page_name === 'admin') { %>class="active" <% } %> >
           <a href="/admin">
             <i class="material-icons">person</i>
             <span>Administradores</span>
           </a>
         </li>
-        <li>
-          <a href="/admin">
+        <li <% if (page_name === 'minhaconta') { %>class="active" <% } %> >
+          <a href="/minhaconta">
             <i class="material-icons">account_box</i>
             <span>Minha Conta</span>
           </a>

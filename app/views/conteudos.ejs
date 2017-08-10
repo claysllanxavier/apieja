@@ -13,36 +13,42 @@
       </md-input-container>
 
       <div ng-hide="true">
-        {{(filteredItems = (videos | filter: filterName))}}
+        {{(filteredItems = (conteudos | filter: filterName))}}
       </div>
     </md-card>
     <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}"
-    table-card="{title: 'Vídeos', actionIcons: true}"
+    table-card="{title: 'Conteúdos', actionIcons: true}"
     animate-sort-icon="true"
-    mdt-translations="{rowsPerPage : 'itens por página', largeEditDialog : { saveButtonLabel : 'Salvar', cancelButtonLabel	: 'Cancelar'}}"
+    mdt-translations="{rowsPerPage : 'Itens por página', largeEditDialog : { saveButtonLabel : 'Salvar', cancelButtonLabel	: 'Cancelar'}}"
     mdt-row="{
       'data': filteredItems,
-      'table-row-id-key': 'id',
-      'column-keys': ['conteudo', 'conteudo', 'videos[0].nome', 'videos[0].url', 'buttons']
+      'table-row-id-key': '_id',
+      'column-keys': ['conteudo', 'informacao', 'acao']
     }"
     >
     <mdt-header-row>
       <mdt-column align-rule="left" column-sort="true" column-definition="Conteúdo de matemática"><span>Conteúdo</span></mdt-column>
       <mdt-column align-rule="left" column-sort="true" column-definition="Breve informação sobre o conteúdo"><span>Informação</span></mdt-column>
-      <mdt-column align-rule="left" column-sort="true" column-definition="Nome do vídeo que está nesse conteúdo"><span>Nome Vídeo</span></mdt-column>
-      <mdt-column align-rule="left" column-sort="true" column-definition="Url do vídeo que está nesse conteúdo"><span>Url Vídeo</span></mdt-column>
-      <mdt-column align-rule="left" column-sort="true" ><span>Ação</span></mdt-column>
+      <mdt-column align-rule="left"><span>Ação</span></mdt-column>
     </mdt-header-row>
-    <mdt-custom-cell column-key="buttons">
+    <mdt-custom-cell column-key="acao">
       <div class ="row">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-          <button ng-click="clientScope.edit()" type="button" class="btn btn-block btn-lg btn-warning waves-effect">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <button ng-click="clientScope.edit(rowId)" type="button" class="btn btn-block btn-lg btn-warning waves-effect">
             <i class="material-icons">edit</i>
             <span>Editar</span>
           </button>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-          <button ng-click="clientScope.delete()" type="button" class="btn btn-block btn-lg btn-danger waves-effect">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <a href="/videos/{{rowId}}">
+          <button type="button" class="btn btn-block btn-lg btn-info waves-effect">
+              <i class="material-icons">videocam</i>
+              <span>Vídeos</span>
+          </button>
+          </a>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <button ng-click="clientScope.delete(rowId)" type="button" class="btn btn-block btn-lg btn-danger waves-effect">
             <i class="material-icons">delete</i>
             <span>Excluir</span>
           </button>
@@ -57,7 +63,7 @@
     <i class="material-icons">add</i>
   </button>
   <div class="label-container">
-    <div class="label-text">Adicionar mais vídeos</div>
+    <div class="label-text">Adicionar mais conteúdos</div>
     <i class="fa fa-play label-arrow"></i>
   </div>
 </div>

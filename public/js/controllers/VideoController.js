@@ -1,6 +1,5 @@
 angular.module('apieja').controller('VideoController',
-function($scope, $resource, $mdToast, $mdDialog) {
-
+function($scope, $resource, $mdToast) {
   $scope.init = function() {
     buscaVideos();
 
@@ -22,13 +21,21 @@ function($scope, $resource, $mdToast, $mdDialog) {
       }
     );
   }
-  $scope.saveRowCallback = function(row){
-    $mdToast.show(
-      $mdToast.simple()
-      .content('Row changed to: '+row)
-      .hideDelay(3000)
-    );
+  $scope.delete = function(){
+    console.log("delete");
   };
+
+  $scope.edit = function(){
+    console.log("edit");
+  };
+
+  $scope.add = function() {
+    console.log("add");
+  };
+
+  $scope.getClass = function (path) {
+    return ($location.path().substr(0, path.length) === path) ? 'active' : '';
+  }
 
   $scope.init();
 
