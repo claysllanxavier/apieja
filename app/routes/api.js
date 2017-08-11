@@ -4,11 +4,18 @@ module.exports = function(app) {
 
   //Vídeos
   app.route('/api/videos')
-  .get(controller.listaVideos);
+  .get(controller.listaTodosVideos);
 
   app.route('/api/videos/:id')
-  .get(controller.listaVideosPorID);
+  .get(controller.obtemVideo);
+
   //Conteúdos
   app.route('/api/conteudos')
-  .get(controller.listaConteudos);
+  .get(controller.listaTodosConteudos)
+  .post(controller.salvaConteudo);
+
+  app.route('/api/conteudo/:id')
+  .delete(controller.removeConteudo)
+  .post(controller.salvaConteudo);
+
 };

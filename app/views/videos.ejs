@@ -16,6 +16,9 @@
         {{(filteredItems = (videos.videos | filter: filterName))}}
       </div>
     </md-card>
+    <div class="alert alert-info" ng-hide="videos.videos.length">
+      <strong>Informação!</strong> Não há vídeos cadastrados nesse conteúdo
+    </div>
     <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}"
     table-card="{title: 'Vídeos', actionIcons: true}"
     animate-sort-icon="true"

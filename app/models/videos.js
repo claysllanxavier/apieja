@@ -11,10 +11,7 @@ module.exports = function() {
       type: String,
       required: true,
       lowercase: true,
-      trim: true,
-      index: {
-        unique: true
-      }
+      trim: true
     }
   });
 

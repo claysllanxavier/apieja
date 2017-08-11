@@ -2,7 +2,7 @@
   <form ng-cloak>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Adicionar Novo conteudos</h2>
+        <h2>{{title}}  Conteudo</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
           <i class="material-icons">close</i>
@@ -18,13 +18,13 @@
               <div layout-gt-sm="row">
                 <md-input-container class="md-block" flex-gt-sm>
                   <label>Conteúdo</label>
-                  <input required name="conteudo" ng-model="conteudos.conteudo">
+                  <input required name="conteudo" ng-model="data.conteudo">
                 </md-input-container>
               </div>
               <div layout-gt-sm="row">
                 <md-input-container class="md-block" flex-gt-sm>
                   <label>Descrição</label>
-                  <textarea ng-model="conteudos.descricao" required=" "md-maxlength="100" rows="3" md-select-on-focus></textarea>
+                  <textarea ng-model="data.informacao" required=" "md-maxlength="100" rows="3" md-select-on-focus></textarea>
                 </md-input-container>
               </div>
             </form>
@@ -37,7 +37,7 @@
       <md-button class="btn" ng-click="cancel()">
         Cancelar
       </md-button>
-      <md-button class="btn btn-primary"ng-click="add(conteudos)">
+      <md-button class="btn btn-primary"ng-click="add(data)">
         Salvar
       </md-button>
     </md-dialog-actions>
