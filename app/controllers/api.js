@@ -18,7 +18,7 @@ module.exports = function(app) {
     );
   };
 
-  controller.obtemVideo = function(req, res) {
+  controller.obtemVideobyConteudo = function(req, res) {
     var id = req.params.id;
     Conteudo.findById(id)
     .exec()
@@ -33,8 +33,24 @@ module.exports = function(app) {
       }
     );
   };
+  controller.obtemVideo = function(req, res) {};
   controller.removeContato = function(req, res) {};
-  controller.salvaContato = function(req, res) {};
+
+
+  controller.salvaVideo = function(req, res) {
+    var url = req.body.data.url;
+
+    //conveter url em um iframe para o app
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    if (match && match[2].length == 11) {
+      url =  "https://www.youtube.com/embed/" + match[2];
+    } else {
+      res.status(500).json(erro);
+    }
+
+    console.log("Dados: nome: " + req.body.data.nome + " url: " + url);
+  };
 
   //Conteudo
   controller.listaTodosConteudos = function(req, res) {

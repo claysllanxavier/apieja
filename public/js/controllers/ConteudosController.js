@@ -8,11 +8,7 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
     buscaConteudos();
   };
   $scope.conteudos = [];
-
-  $scope.filtro = '';
-
-
-
+  
   $scope.delete = function(id){
     sweetAlert({
       title: "Você deseja realmente deletar esse item?",

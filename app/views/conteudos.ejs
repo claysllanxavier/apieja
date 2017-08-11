@@ -16,7 +16,7 @@
         {{(filteredItems = (conteudos | filter: filterName))}}
       </div>
     </md-card>
-    <div class="alert alert-info" ng-hide="videos.videos.length">
+    <div class="alert alert-info" ng-hide="conteudos.length">
       <strong>Informação!</strong> Não há conteúdos cadastrados
     </div>
     <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}"

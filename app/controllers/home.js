@@ -8,14 +8,22 @@ module.exports = function() {
 
   controller.listarVideos = function(req, res) {
     res.render('videos',{
-      page_name: 'videos'
+      page_name: 'videos',
+      idconteudo : req.session.idconteudo
     });
   };
 
   controller.listarConteudos = function(req, res) {
     res.render('conteudos',{
-      page_name: 'conteudos'
+      page_name: 'conteudos',
     });
   };
+
+  controller.redictVideos = function(req, res) {
+    var id = req.params.id;
+    req.session.idconteudo = id;
+    res.redirect('/videos');
+  };
+
   return controller;
 }

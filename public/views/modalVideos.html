@@ -1,0 +1,45 @@
+<md-dialog aria-label="Adicionar Novos vídeos">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{title}}  Vídeo</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <i class="material-icons">close</i>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-content layout-padding>
+          <div>
+            <form name="conteudosForm">
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Nome</label>
+                  <input required name="nome" ng-model="data.nome">
+                </md-input-container>
+              </div>
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>URL</label>
+                  <input type="url" required name="url" ng-model="data.url">
+                </md-input-container>
+              </div>
+            </form>
+          </div>
+        </md-content>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="btn" ng-click="cancel()">
+        Cancelar
+      </md-button>
+      <md-button class="btn btn-primary"ng-click="add(data)">
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
