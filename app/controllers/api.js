@@ -34,11 +34,17 @@ module.exports = function(app) {
     );
   };
   controller.obtemVideo = function(req, res) {};
-  controller.removeContato = function(req, res) {};
+
+  controller.removeVideo = function(req, res) {
+    var idvideo = req.params.idvideo;
+    console.log(req.params.idconteudo);
+  };
 
 
   controller.salvaVideo = function(req, res) {
     var url = req.body.data.url;
+    var idconteudo = req.params.id;
+    var idvideo = req.body.data._id;
 
     //conveter url em um iframe para o app
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -46,70 +52,101 @@ module.exports = function(app) {
     if (match && match[2].length == 11) {
       url =  "https://www.youtube.com/embed/" + match[2];
     } else {
-      res.status(500).json(erro);
+      res.status(500);
     }
-
-    console.log("Dados: nome: " + req.body.data.nome + " url: " + url);
-  };
-
-  //Conteudo
-  controller.listaTodosConteudos = function(req, res) {
-    Conteudo.find()
-    .select("conteudo informacao _id")
-    .exec()
-    .then(
-      function(conteudos) {
-        res.json(conteudos);
-      },
-      function(erro) {
-        console.error(erro)
-        res.status(500).json(erro);
+    if(typeof idconteudo !== 'undefined' && idconteudo) {
+      if(typeof idvideo !== 'undefined' && idvideo) {
+        Conteudo.findOneAndUdate(
+          { "_id": idconteudo, "videos._id": idvideo },
+          {
+            "$set": {
+              "nome": req.body.data.nome,
+              "url": url
+            }
+          })
+          .then(
+            function() {
+              res.end();
+            },
+            function(erro) {
+              res.status(500).json(erro);
+            }
+          );
+        } else{
+          Conteudo.update({"_id"  : idconteudo},{$push: {"videos": {nome: req.body.data.nome, url: url}}},{safe: true, upsert: true, new : true})
+          .then(
+            function() {
+              res.end();
+            },
+            function(erro) {
+              res.status(500).json(erro);
+            }
+          );
+        }
       }
-    );
-  };
-  controller.obtemConteudo = function(req, res) {};
-
-  controller.removeConteudo = function(req, res) {
-    var id = req.params.id;
-    Conteudo.remove({"_id" : id}).exec()
-    .then(
-      function() {
-        res.end();
-      },
-      function(erro) {
-        return console.error(erro);
+      else {
+        res.status(500);
       }
-    );
-  };
+    };
 
-  controller.salvaConteudo = function(req, res) {
-    var id = req.params.id;
-    if(typeof id !== 'undefined' && id) {
-      Conteudo.update({"_id"  : id},{$set : {"conteudo" : req.body.data.conteudo, "informacao" : req.body.data.informacao}})
+    //Conteudo
+    controller.listaTodosConteudos = function(req, res) {
+      Conteudo.find()
+      .select("conteudo informacao _id")
+      .exec()
+      .then(
+        function(conteudos) {
+          res.json(conteudos);
+        },
+        function(erro) {
+          console.error(erro)
+          res.status(500).json(erro);
+        }
+      );
+    };
+    controller.obtemConteudo = function(req, res) {};
+
+    controller.removeConteudo = function(req, res) {
+      var id = req.params.id;
+      Conteudo.remove({"_id" : id}).exec()
       .then(
         function() {
           res.end();
         },
         function(erro) {
-          console.log(erro);
-          res.status(500).json(erro);
+          return console.error(erro);
         }
       );
-    }
-    else {
-      Conteudo.create(req.body.data)
-      .then(
-        function(conteudo) {
-          res.end();
-        },
-        function(erro) {
-          console.log(erro);
-          res.status(500).json(erro);
-        }
-      );
-    }
-  };
+    };
+
+    controller.salvaConteudo = function(req, res) {
+      var id = req.params.id;
+      if(typeof id !== 'undefined' && id) {
+        Conteudo.update({"_id"  : id},{$set : {"conteudo" : req.body.data.conteudo, "informacao" : req.body.data.informacao}})
+        .then(
+          function() {
+            res.end();
+          },
+          function(erro) {
+            console.log(erro);
+            res.status(500).json(erro);
+          }
+        );
+      }
+      else {
+        Conteudo.create(req.body.data)
+        .then(
+          function(conteudo) {
+            res.end();
+          },
+          function(erro) {
+            console.log(erro);
+            res.status(500).json(erro);
+          }
+        );
+      }
+    };
 
 
-  return controller;
-}
+    return controller;
+  }
