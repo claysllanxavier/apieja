@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var bcrypt   = require('bcrypt-nodejs');
+
 module.exports = function() {
   var schema = mongoose.Schema({
     nome: {
@@ -20,18 +22,8 @@ module.exports = function() {
       trim: true,
       required: true
     },
-    tipoEscola: {
-      type: String,
-      trim: true,
-      required: true
-    },
     senha: {
       type: String,
-      required: true
-    },
-    sexo: {
-      type: String,
-      trim: true,
       required: true
     },
     atualizado: {
@@ -39,5 +31,14 @@ module.exports = function() {
       default: Date.now
     }
   });
+
+  schema.methods.generateHash = function(senha) {
+    return bcrypt.hashSync(senha, bcrypt.genSaltSync(8), null);
+  };
+
+  schema.methods.validPassword = function(senha, pass) {
+    return bcrypt.compareSync(senha, pass);
+  };
+
   return mongoose.model('User', schema);
 };

@@ -25,6 +25,14 @@ module.exports = function() {
     });
   };
 
+  controller.listarUsuarios = function(req, res) {
+    res.render('usuarios',{
+      page_name: 'usuarios',
+      usuarioLogado : req.user.nome,
+      usuarioEmail : req.user.email
+    });
+  };
+
   controller.redictVideos = function(req, res) {
     var id = req.params.id;
     req.session.idconteudo = id;

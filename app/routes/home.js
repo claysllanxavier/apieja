@@ -5,4 +5,5 @@ module.exports = function(app) {
   app.get('/videos/:id' , authenticated , controller.redictVideos);
   app.get('/videos' , authenticated , controller.listarVideos);
   app.get('/conteudos' , authenticated , controller.listarConteudos);
+  app.get('/usuarios' , authenticated , controller.listarUsuarios);
 };

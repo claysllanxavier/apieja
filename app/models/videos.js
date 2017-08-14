@@ -10,7 +10,6 @@ module.exports = function() {
     url: {
       type: String,
       required: true,
-      lowercase: true,
       trim: true
     }
   });

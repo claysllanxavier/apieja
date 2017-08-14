@@ -6,6 +6,7 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
   var urlVideosbyConteudo = $resource('/api/conteudo/videos/'+$scope.idconteudo);
   var urlVideo = $resource('/api/video/:id');
   var urlVideos = $resource('/api/videos/');
+  var urlDeleteVideo = $resource('/api/conteudo/:idconteudo/video/:idvideo');
 
   $scope.init = function() {
     buscaVideos();
@@ -25,7 +26,7 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
       closeOnCancel: false },
       function(isConfirm){
         if (isConfirm) {
-          urlVideo.delete({id: id, idconteudo: $scope.idconteudo},
+          urlDeleteVideo.delete({idconteudo: $scope.idconteudo, idvideo : id},
             buscaVideos,
             function(erro) {
               sweetAlert("Oops...", "Não foi possível remover o vídeo.", "error");
