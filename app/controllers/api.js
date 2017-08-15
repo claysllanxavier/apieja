@@ -53,7 +53,6 @@ module.exports = function(app) {
         res.status(500).json(erro);
       }
     );
-
   };
 
 
@@ -222,31 +221,98 @@ module.exports = function(app) {
     }
   };
 
-  //Informação
-  controller.listaQuantidade = function(req, res) {
-    Usuario.count({}, function(err, qtdUsuarios){
-      Conteudo.count({}, function(err, qtdConteudos){
-        Conteudo.aggregate({ $unwind : "$videos" },
-        { $group: {
-          _id: '',
-          count: { $sum: 1 }
+  //Quizz
+  controller.listaTodasPerguntas = function(req, res) {
+    Quiz.find()
+    .exec()
+    .then(
+      function(perguntas) {
+        res.json(perguntas);
+      },
+      function(erro) {
+        console.error(erro)
+        res.status(500).json(erro);
+      }
+    );
+  };
+  controller.obtemPergunta = function(req, res) {
+    Quiz.count().exec(function (err, count) {
+      // Get a random entry
+      var random = Math.floor(Math.random() * count)
+
+      // Again query all users but only fetch one offset by our random #
+      Quiz.findOne().skip(random).exec(
+        function (err, result) {
+          res.json(result);
+        })
+      })
+    };
+
+    controller.removePergunta = function(req, res) {
+      var id = req.params.id;
+      Conteudo.remove({"_id" : id}).exec()
+      .then(
+        function() {
+          res.end();
+        },
+        function(erro) {
+          return console.error(erro);
         }
-      }, function(err, qtdVideos) {
-        Quiz.count({}, function(err, qtdPerguntas){
-          res.json(
-            {
-              qtdConteudos : qtdConteudos,
-              qtdUsuarios : qtdUsuarios,
-              qtdVideos : qtdVideos[0].count,
-              qtdPerguntas: qtdPerguntas
-            }
-          );
+      );
+    };
+
+    controller.salvaPergunta = function(req, res) {
+      var id = req.params.id;
+      if(typeof id !== 'undefined' && id) {
+        Conteudo.update({"_id"  : id},{$set : {"conteudo" : req.body.data.conteudo, "informacao" : req.body.data.informacao}})
+        .then(
+          function() {
+            res.end();
+          },
+          function(erro) {
+            console.log(erro);
+            res.status(500).json(erro);
+          }
+        );
+      }
+      else {
+        Quiz.create(req.body)
+        .then(
+          function(quiz) {
+            res.end();
+          },
+          function(erro) {
+            console.log(erro);
+            res.status(500).json(erro);
+          }
+        );
+      }
+    };
+    //Informação
+    controller.listaQuantidade = function(req, res) {
+      Usuario.count({}, function(err, qtdUsuarios){
+        Conteudo.count({}, function(err, qtdConteudos){
+          Conteudo.aggregate({ $unwind : "$videos" },
+          { $group: {
+            _id: '',
+            count: { $sum: 1 }
+          }
+        }, function(err, qtdVideos) {
+          Quiz.count({}, function(err, qtdPerguntas){
+            res.json(
+              {
+                qtdConteudos : qtdConteudos,
+                qtdUsuarios : qtdUsuarios,
+                qtdVideos : qtdVideos[0].count,
+                qtdPerguntas: qtdPerguntas
+              }
+            );
+          });
         });
       });
     });
-  });
 
-};
+  };
 
-return controller;
+  return controller;
 }

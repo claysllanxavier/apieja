@@ -33,6 +33,14 @@ module.exports = function() {
     });
   };
 
+  controller.listaPerguntas = function(req, res) {
+    res.render('quiz',{
+      page_name: 'quiz',
+      usuarioLogado : req.user.nome,
+      usuarioEmail : req.user.email
+    });
+  };
+
   controller.redictVideos = function(req, res) {
     var id = req.params.id;
     req.session.idconteudo = id;

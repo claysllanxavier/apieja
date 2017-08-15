@@ -1,20 +1,12 @@
 var mongoose = require('mongoose');
 module.exports = function() {
-  var Respostas = mongoose.Schema({
-    alternativa: {
-      type: String,
-      required: true,
-      trim: true
-    }
-  });
-
   var Quiz = mongoose.Schema({
     pergunta: {
       type: String,
       required: true,
       trim: true
     },
-    respostas  : [Respostas],
+    respostas  : [String],
     atualizado: {
       type: Date,
       default: Date.now

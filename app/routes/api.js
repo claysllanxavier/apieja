@@ -24,6 +24,17 @@ module.exports = function(app) {
   .delete(controller.removeConteudo)
   .post(controller.salvaConteudo);
 
+  //Quiz
+  app.route('/api/perguntas')
+  .get(controller.listaTodasPerguntas)
+  .post(controller.salvaPergunta);
+
+  app.route('/api/pergunta/:id')
+  .delete(controller.removePergunta)
+  .post(controller.salvaPergunta);
+
+  app.get('/api/pergunta', controller.obtemPergunta);
+
 
   //Usuarios
   app.route('/api/usuarios')
