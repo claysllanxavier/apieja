@@ -186,19 +186,6 @@ module.exports = function(app) {
     );
   };
 
-  controller.removeUsuario = function(req, res) {
-    var id = req.params.id;
-    Conteudo.remove({"_id" : id}).exec()
-    .then(
-      function() {
-        res.end();
-      },
-      function(erro) {
-        return console.error(erro);
-      }
-    );
-  };
-
   controller.salvaUsuario = function(req, res) {
     var id = req.params.id;
     if(typeof id !== 'undefined' && id) {
@@ -250,7 +237,7 @@ module.exports = function(app) {
 
     controller.removePergunta = function(req, res) {
       var id = req.params.id;
-      Conteudo.remove({"_id" : id}).exec()
+      Quiz.remove({"_id" : id}).exec()
       .then(
         function() {
           res.end();
@@ -264,7 +251,7 @@ module.exports = function(app) {
     controller.salvaPergunta = function(req, res) {
       var id = req.params.id;
       if(typeof id !== 'undefined' && id) {
-        Conteudo.update({"_id"  : id},{$set : {"conteudo" : req.body.data.conteudo, "informacao" : req.body.data.informacao}})
+        Quiz.update({"_id"  : id},{$set : req.body.data})
         .then(
           function() {
             res.end();
@@ -276,7 +263,7 @@ module.exports = function(app) {
         );
       }
       else {
-        Quiz.create(req.body)
+        Quiz.create(req.body.data)
         .then(
           function(quiz) {
             res.end();
@@ -288,6 +275,7 @@ module.exports = function(app) {
         );
       }
     };
+
     //Informação
     controller.listaQuantidade = function(req, res) {
       Usuario.count({}, function(err, qtdUsuarios){

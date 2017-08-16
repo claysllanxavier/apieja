@@ -2,7 +2,7 @@ angular.module('apieja').controller('QuizController',
 function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
 
   var urlPerguntas = $resource('/api/perguntas');
-  var urlConteudo = $resource('/api/conteudo/:id');
+  var urlPergunta = $resource('/api/pergunta/:id');
 
   $scope.init = function() {
     buscaPerguntas();
@@ -12,7 +12,7 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
   $scope.delete = function(id){
     sweetAlert({
       title: "Você deseja realmente deletar esse item?",
-      text: "Você não poderá recupear esse conteúdo e seus vídeos posteriormente.",
+      text: "Você não poderá recupear essa pergunta posteriormente.",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",confirmButtonText: "Sim, eu quero deletar!",
@@ -21,8 +21,8 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
       closeOnCancel: false },
       function(isConfirm){
         if (isConfirm) {
-          urlConteudo.delete({id: id},
-            buscaConteudos,
+          urlPergunta.delete({id: id},
+            buscaPerguntas,
             function(erro) {
               sweetAlert("Oops...", "Não foi possível remover o conteúdo.", "error");
               console.log(erro);
@@ -36,28 +36,28 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
     };
 
     $scope.edit = function(id, ev){
-      var conteudo = $filter('filter')($scope.conteudos, { _id: id  }, true)[0];
+      var pergunta = $filter('filter')($scope.perguntas, { _id: id  }, true)[0];
       $mdDialog.show({
         controller: DialogController,
-        templateUrl: 'views/modalConteudos.html',
+        templateUrl: 'views/modalQuiz.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         locals : {
-          data : conteudo,
+          data : pergunta,
           title : "Editar"
         },
         clickOutsideToClose:true,
         fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
       })
       .then(function(answer) {
-        atualizaConteudo(answer);
+        atualizaPergunta(answer);
       });
     };
 
     $scope.add = function(ev) {
       $mdDialog.show({
         controller: DialogController,
-        templateUrl: 'views/modalConteudos.html',
+        templateUrl: 'views/modalQuiz.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         locals : {
@@ -68,7 +68,8 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
         fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
       })
       .then(function(answer) {
-        salvaConteudo(answer);
+        answer.respostas = _.values(answer.respostas)
+        salvaPergunta(answer);
       });
     };
 
@@ -102,14 +103,14 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
       };
     }
 
-    function salvaConteudo(conteudo){
-      if(angular.isObject(conteudo) && !angular.isUndefined(conteudo.conteudo) && !angular.isUndefined(conteudo.informacao)){
-        $scope.conteudo = new urlConteudos();
-        $scope.conteudo.data = conteudo;
-        $scope.conteudo.$save()
+    function salvaPergunta(pergunta){
+      if(angular.isObject(pergunta) && !angular.isUndefined(pergunta.pergunta) && !angular.isUndefined(pergunta.respostaCerta) &&  angular.isObject(pergunta.respostas)){
+        $scope.pergunta = new urlPerguntas();
+        $scope.pergunta.data = pergunta;
+        $scope.pergunta.$save()
         .then(function() {
-          sweetAlert("Sucesso!", "O conteúdo foi salvo com sucesso!", "success");
-          buscaConteudos();
+          sweetAlert("Sucesso!", "A pergunta foi salva com sucesso!", "success");
+          buscaPerguntas();
         })
         .catch(function(erro) {
           sweetAlert("Oops...", "Alguma coisa está errada. Refaça a operação!", "error");
@@ -120,14 +121,14 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
       }
     }
 
-    function atualizaConteudo(conteudo){
-      if(angular.isObject(conteudo) && !angular.isUndefined(conteudo.conteudo) && !angular.isUndefined(conteudo.informacao)){
-        $scope.conteudo = new urlConteudo();
-        $scope.conteudo.data = conteudo;
-        $scope.conteudo.$save({id: conteudo._id})
+    function atualizaPergunta(pergunta){
+      if(angular.isObject(pergunta) && !angular.isUndefined(pergunta.pergunta) && !angular.isUndefined(pergunta.respostaCerta) &&  angular.isObject(pergunta.respostas)){
+        $scope.pergunta = new urlPergunta();
+        $scope.pergunta.data = pergunta;
+        $scope.pergunta.$save({id: pergunta._id})
         .then(function() {
-          sweetAlert("Sucesso!", "O conteúdo foi atualizado com sucesso!", "success");
-          buscaConteudos();
+          sweetAlert("Sucesso!", "A pergunta foi atualizada com sucesso!", "success");
+          buscaPerguntas();
         })
         .catch(function(erro) {
           sweetAlert("Oops...", "Alguma coisa está errada. Refaça a operação!", "error");

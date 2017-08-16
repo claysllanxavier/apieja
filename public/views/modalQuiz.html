@@ -1,0 +1,69 @@
+<md-dialog aria-label="Adicionar Novas perguntas">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{title}}  Pergunta</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <i class="material-icons">close</i>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-content layout-padding>
+          <div>
+            <form name="conteudosForm">
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Pergunta</label>
+                  <input required name="pergunta" ng-model="data.pergunta">
+                </md-input-container>
+              </div>
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Resposta 1</label>
+                  <input type="text" required name="url" ng-model="data.respostas[0]">
+                </md-input-container>
+              </div>
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Resposta 2</label>
+                  <input type="text" required name="url" ng-model="data.respostas[1]">
+                </md-input-container>
+              </div>
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Resposta 3</label>
+                  <input type="text" required name="url" ng-model="data.respostas[2]">
+                </md-input-container>
+              </div>
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Resposta 4</label>
+                  <input type="text" required name="url" ng-model="data.respostas[3]">
+                </md-input-container>
+              </div>
+              <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>Resposta Certa</label>
+                  <input type="text" required name="url" ng-model="data.respostaCerta">
+                </md-input-container>
+              </div>
+            </form>
+          </div>
+        </md-content>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="btn" ng-click="cancel()">
+        Cancelar
+      </md-button>
+      <md-button class="btn btn-primary"ng-click="add(data)">
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
