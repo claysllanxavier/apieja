@@ -33,6 +33,14 @@ module.exports = function() {
     });
   };
 
+  controller.listarAdmins = function(req, res) {
+    res.render('admins',{
+      page_name: 'admins',
+      usuarioLogado : req.user.nome,
+      usuarioEmail : req.user.email
+    });
+  };
+
   controller.listaPerguntas = function(req, res) {
     res.render('quiz',{
       page_name: 'quiz',

@@ -4,6 +4,7 @@ module.exports = function(app) {
   var controller = {};
   var Conteudo = app.models.videos;
   var Usuario = app.models.user;
+  var Admin = app.models.admin;
   var Quiz = app.models.quiz;
 
   //Vídeos
@@ -299,7 +300,38 @@ module.exports = function(app) {
         });
       });
     });
+  };
 
+  //Administradores
+  controller.listaTodosAdmins = function(req, res) {
+    Admin.find()
+    .exec()
+    .then(
+      function(admins) {
+        res.json(admins);
+      },
+      function(erro) {
+        console.error(erro)
+        res.status(500).json(erro);
+      }
+    );
+  };
+
+  controller.salvaAdmin = function(req, res) {
+    //cria objeto para usar metodos do model
+    var newAdmin = new Usuario();
+    //criptografa a senha
+    req.body.data.senha = newAdmin.generateHash(req.body.data.senha);
+    Admin.create(req.body.data)
+    .then(
+      function(usuario) {
+        res.end();
+      },
+      function(erro) {
+        console.log(erro);
+        res.status(500).json(erro);
+      }
+    );
   };
 
   return controller;

@@ -6,5 +6,6 @@ module.exports = function(app) {
   app.get('/videos' , authenticated , controller.listarVideos);
   app.get('/conteudos' , authenticated , controller.listarConteudos);
   app.get('/usuarios' , authenticated , controller.listarUsuarios);
+  app.get('/admin' , authenticated , controller.listarAdmins);
   app.get('/quiz' , authenticated , controller.listaPerguntas);
 };

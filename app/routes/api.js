@@ -44,6 +44,11 @@ module.exports = function(app) {
   app.route('/api/usuario')
   .post(controller.obtemUsuario);
 
+  //Administrador
+  app.route('/api/admin')
+  .get(controller.listaTodosAdmins)
+  .post(controller.salvaAdmin);
+
   //Informação
   app.route('/api/quantidade')
   .get(controller.listaQuantidade)
