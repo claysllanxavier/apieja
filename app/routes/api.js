@@ -46,6 +46,8 @@ module.exports = function(app) {
   app.route('/api/usuario')
   .post(controller.obtemUsuario);
 
+  app.get('/api/usuario/:id',controller.mostraRespostas);
+
   //Administrador
   app.route('/api/admin')
   .get(controller.listaTodosAdmins)

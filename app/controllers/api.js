@@ -209,6 +209,32 @@ module.exports = function(app) {
     }
   };
 
+  controller.mostraRespostas = function(req, res) {
+    var id = req.params.id;
+    Usuario.findById(id)
+    .select('respostas')
+    .exec()
+    .then(
+      function(dados) {
+        var data = {};
+        var count = 0;
+        var array = dados.respostas;
+        for (var i = 0, len = array.length; i < len; i++) {
+          if(array[i].acertou){
+            count++;
+          }
+        }
+        data.qtdrespotas = count;
+        data.qtdperguntas = array.length;
+        res.json(data);
+      },
+      function(erro) {
+        console.error(erro)
+        res.status(500).json(erro);
+      }
+    );
+  };
+
   //Quizz
   controller.listaTodasPerguntas = function(req, res) {
     Quiz.find()
