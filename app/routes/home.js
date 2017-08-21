@@ -8,4 +8,5 @@ module.exports = function(app) {
   app.get('/usuarios' , authenticated , controller.listarUsuarios);
   app.get('/admin' , authenticated , controller.listarAdmins);
   app.get('/quiz' , authenticated , controller.listaPerguntas);
+  app.get('/minhaconta' , authenticated , controller.minhaConta);
 };

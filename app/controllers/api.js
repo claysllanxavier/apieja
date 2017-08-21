@@ -348,5 +348,42 @@ module.exports = function(app) {
     );
   };
 
+  //Minha Conta
+  controller.getUsuario = function(req, res) {
+    res.json(req.user);
+  };
+
+  controller.editUsuario = function(req, res) {
+    var id = req.body.data._id;
+    Admin.update({"_id"  : id},{$set : {"nome" : req.body.data.nome, "email" : req.body.data.email}})
+    .then(
+      function() {
+        res.end();
+      },
+      function(erro) {
+        console.log(erro);
+        res.status(500).json(erro);
+      }
+    );
+  };
+
+  controller.mudaSenha = function(req, res) {
+    var id = req.body.data._id;
+    //cria objeto para usar metodos do model
+    var newUsuario = new Usuario();
+    //criptografa a senha
+    req.body.data.senha = newUsuario.generateHash(req.body.data.senha);
+    Admin.update({"_id"  : id},{$set : {"senha" : req.body.data.senha}})
+    .then(
+      function() {
+        res.end();
+      },
+      function(erro) {
+        console.log(erro);
+        res.status(500).json(erro);
+      }
+    );
+  };
+
   return controller;
 }

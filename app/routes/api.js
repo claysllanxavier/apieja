@@ -51,6 +51,12 @@ module.exports = function(app) {
   .get(controller.listaTodosAdmins)
   .post(controller.salvaAdmin);
 
+  app.route('/api/minhaconta')
+  .get(controller.getUsuario)
+  .post(controller.editUsuario);
+
+  app.post('/api/minhaconta/senha', controller.mudaSenha);
+
   //Informação
   app.route('/api/quantidade')
   .get(controller.listaQuantidade)

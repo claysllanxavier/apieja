@@ -49,6 +49,14 @@ module.exports = function() {
     });
   };
 
+  controller.minhaConta = function(req, res) {
+    res.render('minhaconta',{
+      page_name: 'minhaconta',
+      usuarioLogado : req.user.nome,
+      usuarioEmail : req.user.email
+    });
+  };
+
   controller.redictVideos = function(req, res) {
     var id = req.params.id;
     req.session.idconteudo = id;

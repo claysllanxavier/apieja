@@ -30,6 +30,7 @@
     "ngSweetAlert": "angular-sweetalert#^1.1.2",
     "underscore": "^1.8.3",
     "md-data-table": "^2.2.0",
-    "angular-count-to": "*"
+    "angular-count-to": "*",
+    "angular-messages": "^1.6.6"
   }
 }

@@ -1,0 +1,124 @@
+<% include partials/head %>
+
+<% include partials/header %>
+
+<% include partials/menu %>
+
+<section class="content" ng-controller="ContaController">
+  <div class="container-fluid">
+    <div class="block-header">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="header">
+              <h2>
+                INFORMAÇÕES
+              </h2>
+              <ul class="header-dropdown m-r--5">
+                <li class="dropdown">
+                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons">more_vert</i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="body">
+              <form name="addform" ng-submit="edit()">
+                <div class="form-group">
+                  <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                      <md-input-container class="md-block" flex-gt-sm>
+                        <label>Nome</label>
+                        <input type="text" name="nome" ng-model="admin.nome" required>
+                        <div ng-messages="addform.nome.$error">
+                          <div ng-message="required">Preencha esse campo.</div>
+                        </div>
+                      </md-input-container>
+                    </div>
+                  </div>
+                  <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                      <md-input-container class="md-block" flex-gt-sm>
+                        <label>Email</label>
+                        <input ng-model="admin.email" name="email" type="email" required>
+                        <div ng-messages="addform.email.$error">
+                          <div ng-message="required">Preencha esse campo.</div>
+                          <div ng-message="email">Email Inválido.</div>
+                        </div>
+                      </md-input-container>
+                    </div>
+                  </div>
+                  <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                      <button type="submit" class="btn btn-primary m-t-15 waves-effect pull-right" ng-disabled="addform.$invalid">
+                        <span>Salvar</span>
+                        <i class="material-icons">done</i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="header">
+              <h2>
+                SEGURANÇA
+              </h2>
+              <ul class="header-dropdown m-r--5">
+                <li class="dropdown">
+                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons">more_vert</i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="body">
+              <form name="resetPass" ng-submit="changePass()">
+                <div class="form-group">
+                  <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                      <md-input-container class="md-block" flex-gt-sm>
+                        <label>Senha</label>
+                        <input type="password" name="senha" ng-model="admin.senha" required>
+                        <div ng-messages="resetPass.senha.$error">
+                          <div ng-message="required">Preencha esse campo.</div>
+                        </div>
+                      </md-input-container>
+                    </div>
+                  </div>
+                  <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                      <md-input-container class="md-block" flex-gt-sm>
+                        <label>Confirmar Senha</label>
+                        <input ng-model="admin.confSenha" name="confSenha" type="password" required data-password-verify="admin.senha">
+                        <div ng-messages="resetPass.confSenha.$error">
+                          <div ng-message="required">Preencha esse campo.</div>
+                          <div ng-message="passwordVerify">Senhas não são iguais.</div>
+                        </div>
+                      </md-input-container>
+                    </div>
+                  </div>
+                  <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                      <button type="submit" class="btn btn-primary m-t-15 waves-effect pull-right" ng-disabled="resetPass.$invalid">
+                        <span>Mudar</span>
+                        <i class="material-icons">done</i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% include partials/footer %>
