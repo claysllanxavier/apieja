@@ -33,7 +33,9 @@ module.exports = function(app) {
   .delete(controller.removePergunta)
   .post(controller.salvaPergunta);
 
-  app.get('/api/pergunta', controller.obtemPergunta);
+  app.route('/api/pergunta')
+  .get(controller.obtemPergunta)
+  .post(controller.salvaResposta);
 
 
   //Usuarios

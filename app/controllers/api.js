@@ -277,6 +277,20 @@ module.exports = function(app) {
       }
     };
 
+    controller.salvaResposta = function(req, res) {
+      var idusuario = req.body.data.idusuario;
+      delete req.body.data.idusuario;
+      Usuario.update({"_id"  : idusuario},{$push: {"respostas": req.body.data}},{safe: true, upsert: true, new : true})
+      .then(
+        function() {
+          res.end();
+        },
+        function(erro) {
+          res.status(500).json(erro);
+        }
+      );
+    };
+
     //Informação
     controller.listaQuantidade = function(req, res) {
       Usuario.count({}, function(err, qtdUsuarios){
