@@ -1,7 +1,7 @@
 module.exports = {
   env: 'test',
-  db: 'mongodb://localhost/api_test',
-  port: 8000,
-  address: 'localhost',
+  db: process.env.OPENSHIFT_MONGODB_DB_URL + 'apieja',
+  port: process.env.OPENSHIFT_NODEJS_PORT,
+  address: process.env.OPENSHIFT_NODEJS_IP,
   domain: 'localhost'
 };

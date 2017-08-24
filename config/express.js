@@ -5,16 +5,17 @@ var cookieParser = require('cookie-parser');
 var session      = require('express-session');
 var helmet = require('helmet');
 var compression = require('compression');
-var port     = process.env.PORT || 8000;
 var passport = require('passport');
 var morgan       = require('morgan');
 var flash    = require('connect-flash');
 
-
-module.exports = function() {
+module.exports = function(config) {
+  var port     = config.port;
+  var address     = config.address;
   var app = express();
   // variável de ambiente
-  app.set('port', 8000);
+  app.set('port', port);
+  app.set('address', address);
   // middlewares
   app.use(morgan('dev'));
   app.use(express.static('./public'));
