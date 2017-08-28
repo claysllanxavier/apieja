@@ -7,6 +7,7 @@ module.exports = function(app) {
   app.get('/conteudos' , authenticated , controller.listarConteudos);
   app.get('/usuarios' , authenticated , controller.listarUsuarios);
   app.get('/admin' , authenticated , controller.listarAdmins);
+  app.get('/quiz/:id' , authenticated , controller.redictPerguntas);
   app.get('/quiz' , authenticated , controller.listaPerguntas);
   app.get('/minhaconta' , authenticated , controller.minhaConta);
 };

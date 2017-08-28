@@ -31,9 +31,9 @@ module.exports = function(config) {
 
   app.options("*",function(req,res,next){
     res.header("Access-Control-Allow-Origin", req.get("Origin")||"*");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-     //other headers here
-      res.status(200).end();
+    res.status(200).end();
   });
 
   // required for passport

@@ -3,14 +3,12 @@ module.exports = function(app) {
 
 
   //Vídeos
-  app.route('/api/videos')
-  .get(controller.listaTodosVideos);
-
   app.route('/api/video/:id')
   .get(controller.obtemVideo)
   .post(controller.salvaVideo);
 
   app.delete('/api/conteudo/:idconteudo/video/:idvideo',controller.removeVideo);
+  app.delete('/api/conteudo/:idconteudo/pergunta/:idpergunta',controller.removePergunta);
 
   app.route('/api/conteudo/videos/:id')
   .get(controller.obtemVideobyConteudo);
@@ -21,22 +19,21 @@ module.exports = function(app) {
   .post(controller.salvaConteudo);
 
   app.route('/api/conteudo/:id')
+  .get(controller.obtemConteudoQuiz)
   .delete(controller.removeConteudo)
   .post(controller.salvaConteudo);
 
   //Quiz
-  app.route('/api/perguntas')
-  .get(controller.listaTodasPerguntas)
-  .post(controller.salvaPergunta);
-
   app.route('/api/pergunta/:id')
-  .delete(controller.removePergunta)
   .post(controller.salvaPergunta);
 
   app.route('/api/pergunta')
-  .get(controller.obtemPergunta)
   .post(controller.salvaResposta);
 
+  app.get('/api/conteudo/:idconteudo/pergunta/:idusuario', controller.obtemPergunta);
+
+  app.route('/api/conteudo/perguntas/:id')
+  .get(controller.obtemPerguntabyConteudo);
 
   //Usuarios
   app.route('/api/usuarios')
@@ -46,7 +43,9 @@ module.exports = function(app) {
   app.route('/api/usuario')
   .post(controller.obtemUsuario);
 
-  app.get('/api/usuario/:id',controller.mostraRespostas);
+  app.route('/api/usuario/:idusuario/conteudo/:idconteudo')
+  .delete(controller.limparQuiz);
+
 
   //Administrador
   app.route('/api/admin')

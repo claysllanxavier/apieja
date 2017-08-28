@@ -13,10 +13,10 @@
       </md-input-container>
 
       <div ng-hide="true">
-        {{(filteredItems = (perguntas | filter: filterName))}}
+        {{(filteredItems = (perguntas.perguntas | filter: filterName))}}
       </div>
     </md-card>
-    <div class="alert alert-info" ng-hide="perguntas.length">
+    <div class="alert alert-info" ng-hide="perguntas.perguntas.length">
       <strong>Informação!</strong> Não há perguntas cadastradas
     </div>
     <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}"
@@ -62,5 +62,5 @@
   </div>
 </div>
 </section>
-
+<script>idconteudo="<%=idconteudo%>";</script>
 <% include partials/footer %>

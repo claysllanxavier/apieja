@@ -44,6 +44,7 @@ module.exports = function() {
   controller.listaPerguntas = function(req, res) {
     res.render('quiz',{
       page_name: 'quiz',
+      idconteudo : req.session.idconteudo,
       usuarioLogado : req.user.nome,
       usuarioEmail : req.user.email
     });
@@ -61,6 +62,12 @@ module.exports = function() {
     var id = req.params.id;
     req.session.idconteudo = id;
     res.redirect('/videos');
+  };
+
+  controller.redictPerguntas = function(req, res) {
+    var id = req.params.id;
+    req.session.idconteudo = id;
+    res.redirect('/quiz');
   };
 
   return controller;

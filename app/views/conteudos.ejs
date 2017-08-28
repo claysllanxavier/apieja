@@ -36,24 +36,28 @@
     </mdt-header-row>
     <mdt-custom-cell column-key="acao">
       <div class ="row">
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
           <button ng-click="clientScope.edit(rowId, $event)" type="button" class="btn btn-block btn-lg btn-warning waves-effect">
             <i class="material-icons">edit</i>
-            <span>Editar</span>
           </button>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
           <a href="/videos/{{rowId}}">
           <button type="button" class="btn btn-block btn-lg btn-info waves-effect">
               <i class="material-icons">videocam</i>
-              <span>Vídeos</span>
           </button>
           </a>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+          <a href="/quiz/{{rowId}}">
+          <button type="button" class="btn btn-block btn-lg btn-success waves-effect">
+              <i class="material-icons">games</i>
+          </button>
+          </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
           <button ng-click="clientScope.delete(rowId)" type="button" class="btn btn-block btn-lg btn-danger waves-effect">
             <i class="material-icons">delete</i>
-            <span>Excluir</span>
           </button>
         </div>
       </div>

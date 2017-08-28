@@ -1,7 +1,7 @@
 module.exports = {
   env: 'development',
-  db: 'mongodb://172.18.0.3/apieja',
+  db: 'mongodb://172.19.0.4/apieja',
   port: 8000,
-  address: 'localhost',
+  address: '172.19.0.3',
   domain: 'localhost'
 };

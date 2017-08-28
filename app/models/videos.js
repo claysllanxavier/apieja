@@ -14,6 +14,25 @@ module.exports = function() {
     }
   });
 
+  var Quiz = mongoose.Schema({
+    id: mongoose.Schema.Types.ObjectId,
+    pergunta: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    respostas  : [String],
+    atualizado: {
+      type: Date,
+      default: Date.now
+    },
+    respostaCerta: {
+      type: String,
+      required: true,
+      trim: true
+    }
+  });
+
   var Conteudo = mongoose.Schema({
     conteudo: {
       type: String,
@@ -26,6 +45,7 @@ module.exports = function() {
       trim: true
     },
     videos  : [Videos],
+    perguntas  : [Quiz],
     atualizado: {
       type: Date,
       default: Date.now

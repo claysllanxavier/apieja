@@ -29,22 +29,16 @@
             <span>Inicio</span>
           </a>
         </li>
-        <li <% if (page_name === 'conteudos' || page_name === 'videos') { %>class="active" <% } %> >
+        <li <% if (page_name === 'conteudos' || page_name === 'videos' || page_name === 'quiz') { %>class="active" <% } %> >
           <a href="/conteudos">
-            <i class="material-icons">videocam</i>
-            <span>Vídeo-aulas</span>
+            <i class="material-icons">book</i>
+            <span>Conteúdos</span>
           </a>
         </li>
         <li <% if (page_name === 'usuarios') { %>class="active" <% } %> >
           <a href="/usuarios">
             <i class="material-icons">group</i>
             <span>Usuários</span>
-          </a>
-        </li>
-        <li <% if (page_name === 'quiz') { %>class="active" <% } %> >
-          <a href="/quiz">
-            <i class="material-icons">games</i>
-            <span>Quiz</span>
           </a>
         </li>
         <li <% if (page_name === 'admins') { %>class="active" <% } %> >
@@ -84,7 +78,7 @@
     <!-- Footer -->
     <div class="legal">
       <div class="copyright">
-        &copy; 2017 <a href="javascript:void(0);">Claysllan Xavier</a>.
+        &copy; 2017 <a href="javascript:void(0);">Pós Graduação em Telemática - IFTO</a>.
       </div>
       <div class="version">
         <b>Versão: </b> 1.0

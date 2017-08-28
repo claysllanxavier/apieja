@@ -1,8 +1,11 @@
 angular.module('apieja').controller('QuizController',
 function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
 
-  var urlPerguntas = $resource('/api/perguntas');
-  var urlPergunta = $resource('/api/pergunta/:id');
+  $scope.idconteudo = window.idconteudo;
+
+  var urlPerguntasbyConteudo = $resource('/api/conteudo/perguntas/'+$scope.idconteudo);
+  var urlPergunta = $resource('/api/pergunta/'+$scope.idconteudo);
+  var urlDelete = $resource('/api/conteudo/:idconteudo/pergunta/:idpergunta');
 
   $scope.init = function() {
     buscaPerguntas();
@@ -21,10 +24,10 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
       closeOnCancel: false },
       function(isConfirm){
         if (isConfirm) {
-          urlPergunta.delete({id: id},
+          urlDelete.delete({idconteudo: $scope.idconteudo, idpergunta : id},
             buscaPerguntas,
             function(erro) {
-              sweetAlert("Oops...", "Não foi possível remover o conteúdo.", "error");
+              sweetAlert("Oops...", "Não foi possível remover o vídeo.", "error");
               console.log(erro);
             }
           );
@@ -74,8 +77,11 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
     };
 
     function buscaPerguntas() {
-      urlPerguntas.query(
+      urlPerguntasbyConteudo.get(
         function(perguntas) {
+          for (i = 0; i < perguntas.perguntas.length; i++) {
+            perguntas.perguntas[i].respostas = perguntas.perguntas[i].respostas.join(" ");
+          }
           $scope.perguntas = perguntas;
         },
         function(erro) {
@@ -105,7 +111,7 @@ function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
 
     function salvaPergunta(pergunta){
       if(angular.isObject(pergunta) && !angular.isUndefined(pergunta.pergunta) && !angular.isUndefined(pergunta.respostaCerta) &&  angular.isObject(pergunta.respostas)){
-        $scope.pergunta = new urlPerguntas();
+        $scope.pergunta = new urlPergunta();
         $scope.pergunta.data = pergunta;
         $scope.pergunta.$save()
         .then(function() {
