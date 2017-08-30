@@ -52,7 +52,7 @@ module.exports = function(app) {
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     var match = url.match(regExp);
     if (match && match[2].length == 11) {
-      url =  "//www.youtube.com/embed/" + match[2];
+      url =  "https://www.youtube.com/embed/" + match[2];
     } else {
       res.status(500);
     }
