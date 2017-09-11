@@ -4,7 +4,7 @@
   "description": "Api para um aplicativo que ajuda o ensino da matemática no eja",
   "main": "server.js",
   "scripts": {
-    "postinstall": "node_modules/bower/bin/bower install --force-latest",
+    "postinstall": "bower/bin/bower install --force-latest",
     "start": "node server.js"
   },
   "repository": {
