@@ -311,42 +311,146 @@ module.exports = function(app) {
   };
   controller.obtemUsuario = function(req, res) {
     var email = req.body.data.email;
-    Usuario.find()
-    .where("email").equals(email)
-    .exec()
-    .then(
-      function(usuario) {
-        if(!usuario){
-          res.status(500).json(err);
-        }
-        else{
-          bcrypt.compare(req.body.data.senha, usuario[0].senha, function(err, response) {
-            if(response){
-              res.json(usuario);
-            }
-            else{
-              res.status(500).json(err)
-            }
-          });
-        }
-      },
-      function(erro) {
+    User.findOne({ email: email })
+    .exec(function (erro, user) {
+      if (erro) {
         console.error(erro)
         res.status(500).json(erro);
       }
-    );
-  };
+      else if (!user) {
+        var erro = new Error('User not found.');
+        res.status(500).json(erro);
+      }
+      else{
+        bcrypt.compare(req.body.data.senha, user.senha, function(err, response) {
+          if(response){
+            res.json(user);
+          }
+          else{
+            res.status(500).json(err)
+          }
+        });
+      }
+    });
+};
 
-  controller.salvaUsuario = function(req, res) {
-    var id = req.params.id;
-    if(typeof id !== 'undefined' && id) {
+controller.salvaUsuario = function(req, res) {
+  var id = req.params.id;
+  if(typeof id !== 'undefined' && id) {
+  }
+  else {
+    //cria objeto para usar metodos do model
+    var newUsuario = new Usuario();
+    //criptografa a senha
+    req.body.data.senha = newUsuario.generateHash(req.body.data.senha);
+    Usuario.create(req.body.data)
+    .then(
+      function(usuario) {
+        res.end();
+      },
+      function(erro) {
+        console.log(erro);
+        res.status(500).json(erro);
+      }
+    );
+  }
+};
+
+controller.limparQuiz = function(req, res) {
+  var idusuario = req.params.idusuario;
+  var idconteudo = req.params.idconteudo;
+  Usuario.findByIdAndUpdate(idusuario,{$pull : {respostas : {idconteudo : idconteudo}}})
+  .exec()
+  .then(
+    function() {
+      res.end();
+    },
+    function(erro) {
+      console.error(erro)
+      res.status(500).json(erro);
     }
-    else {
+  );
+};
+
+//Informação
+controller.listaQuantidade = function(req, res) {
+  Usuario.count({}, function(err, qtdUsuarios){
+    Conteudo.count({}, function(err, qtdConteudos){
+      Conteudo.aggregate({ $unwind : "$videos" },
+      { $group: {
+        _id: '',
+        count: { $sum: 1 }
+      }
+    }, function(err, qtdVideos) {
+      Conteudo.aggregate({ $unwind : "$perguntas" },
+      { $group: {
+        _id: '',
+        count: { $sum: 1 }
+      }
+    }, function(err, qtdPerguntas) {
+      if (typeof qtdPerguntas[0] == 'undefined' && typeof qtdVideos[0] == 'undefined'){
+        res.json(
+          {
+            qtdConteudos : qtdConteudos,
+            qtdUsuarios : qtdUsuarios,
+            qtdVideos :  0,
+            qtdPerguntas: 0
+          })
+        }
+        else if(typeof qtdPerguntas[0] == 'undefined'){
+          res.json(
+            {
+              qtdConteudos : qtdConteudos,
+              qtdUsuarios : qtdUsuarios,
+              qtdVideos :  qtdVideos[0].count,
+              qtdPerguntas: 0
+            })
+          }
+          else if(typeof qtdVideos[0] == 'undefined'){
+            res.json(
+              {
+                qtdConteudos : qtdConteudos,
+                qtdUsuarios : qtdUsuarios,
+                qtdVideos :  0,
+                qtdPerguntas: qtdPerguntas[0].count
+              })
+            }
+            else{
+              res.json(
+                {
+                  qtdConteudos : qtdConteudos,
+                  qtdUsuarios : qtdUsuarios,
+                  qtdVideos :  qtdVideos[0].count,
+                  qtdPerguntas: qtdPerguntas[0].count
+                })
+              }
+            });
+          });
+        });
+      });
+    };
+
+    //Administradores
+    controller.listaTodosAdmins = function(req, res) {
+      Admin.find()
+      .exec()
+      .then(
+        function(admins) {
+          res.json(admins);
+        },
+        function(erro) {
+          console.error(erro)
+          res.status(500).json(erro);
+        }
+      );
+    };
+
+    controller.salvaAdmin = function(req, res) {
       //cria objeto para usar metodos do model
-      var newUsuario = new Usuario();
+      var newAdmin = new Usuario();
       //criptografa a senha
-      req.body.data.senha = newUsuario.generateHash(req.body.data.senha);
-      Usuario.create(req.body.data)
+      req.body.data.senha = newAdmin.generateHash(req.body.data.senha);
+      Admin.create(req.body.data)
       .then(
         function(usuario) {
           res.end();
@@ -356,151 +460,44 @@ module.exports = function(app) {
           res.status(500).json(erro);
         }
       );
-    }
-  };
+    };
 
-  controller.limparQuiz = function(req, res) {
-    var idusuario = req.params.idusuario;
-    var idconteudo = req.params.idconteudo;
-    Usuario.findByIdAndUpdate(idusuario,{$pull : {respostas : {idconteudo : idconteudo}}})
-    .exec()
-    .then(
-      function() {
-        res.end();
-      },
-      function(erro) {
-        console.error(erro)
-        res.status(500).json(erro);
-      }
-    );
-  };
+    //Minha Conta
+    controller.getUsuario = function(req, res) {
+      res.json(req.user);
+    };
 
-  //Informação
-  controller.listaQuantidade = function(req, res) {
-    Usuario.count({}, function(err, qtdUsuarios){
-      Conteudo.count({}, function(err, qtdConteudos){
-        Conteudo.aggregate({ $unwind : "$videos" },
-        { $group: {
-          _id: '',
-          count: { $sum: 1 }
+    controller.editUsuario = function(req, res) {
+      var id = req.body.data._id;
+      Admin.update({"_id"  : id},{$set : {"nome" : req.body.data.nome, "email" : req.body.data.email}})
+      .then(
+        function() {
+          res.end();
+        },
+        function(erro) {
+          console.log(erro);
+          res.status(500).json(erro);
         }
-      }, function(err, qtdVideos) {
-        Conteudo.aggregate({ $unwind : "$perguntas" },
-        { $group: {
-          _id: '',
-          count: { $sum: 1 }
+      );
+    };
+
+    controller.mudaSenha = function(req, res) {
+      var id = req.body.data._id;
+      //cria objeto para usar metodos do model
+      var newUsuario = new Usuario();
+      //criptografa a senha
+      req.body.data.senha = newUsuario.generateHash(req.body.data.senha);
+      Admin.update({"_id"  : id},{$set : {"senha" : req.body.data.senha}})
+      .then(
+        function() {
+          res.end();
+        },
+        function(erro) {
+          console.log(erro);
+          res.status(500).json(erro);
         }
-      }, function(err, qtdPerguntas) {
-        if (typeof qtdPerguntas[0] == 'undefined' && typeof qtdVideos[0] == 'undefined'){
-          res.json(
-            {
-              qtdConteudos : qtdConteudos,
-              qtdUsuarios : qtdUsuarios,
-              qtdVideos :  0,
-              qtdPerguntas: 0
-            })
-          }
-          else if(typeof qtdPerguntas[0] == 'undefined'){
-            res.json(
-              {
-                qtdConteudos : qtdConteudos,
-                qtdUsuarios : qtdUsuarios,
-                qtdVideos :  qtdVideos[0].count,
-                qtdPerguntas: 0
-              })
-            }
-            else if(typeof qtdVideos[0] == 'undefined'){
-              res.json(
-                {
-                  qtdConteudos : qtdConteudos,
-                  qtdUsuarios : qtdUsuarios,
-                  qtdVideos :  0,
-                  qtdPerguntas: qtdPerguntas[0].count
-                })
-              }
-              else{
-                res.json(
-                  {
-                    qtdConteudos : qtdConteudos,
-                    qtdUsuarios : qtdUsuarios,
-                    qtdVideos :  qtdVideos[0].count,
-                    qtdPerguntas: qtdPerguntas[0].count
-                  })
-                }
-              });
-            });
-          });
-        });
-      };
+      );
+    };
 
-      //Administradores
-      controller.listaTodosAdmins = function(req, res) {
-        Admin.find()
-        .exec()
-        .then(
-          function(admins) {
-            res.json(admins);
-          },
-          function(erro) {
-            console.error(erro)
-            res.status(500).json(erro);
-          }
-        );
-      };
-
-      controller.salvaAdmin = function(req, res) {
-        //cria objeto para usar metodos do model
-        var newAdmin = new Usuario();
-        //criptografa a senha
-        req.body.data.senha = newAdmin.generateHash(req.body.data.senha);
-        Admin.create(req.body.data)
-        .then(
-          function(usuario) {
-            res.end();
-          },
-          function(erro) {
-            console.log(erro);
-            res.status(500).json(erro);
-          }
-        );
-      };
-
-      //Minha Conta
-      controller.getUsuario = function(req, res) {
-        res.json(req.user);
-      };
-
-      controller.editUsuario = function(req, res) {
-        var id = req.body.data._id;
-        Admin.update({"_id"  : id},{$set : {"nome" : req.body.data.nome, "email" : req.body.data.email}})
-        .then(
-          function() {
-            res.end();
-          },
-          function(erro) {
-            console.log(erro);
-            res.status(500).json(erro);
-          }
-        );
-      };
-
-      controller.mudaSenha = function(req, res) {
-        var id = req.body.data._id;
-        //cria objeto para usar metodos do model
-        var newUsuario = new Usuario();
-        //criptografa a senha
-        req.body.data.senha = newUsuario.generateHash(req.body.data.senha);
-        Admin.update({"_id"  : id},{$set : {"senha" : req.body.data.senha}})
-        .then(
-          function() {
-            res.end();
-          },
-          function(erro) {
-            console.log(erro);
-            res.status(500).json(erro);
-          }
-        );
-      };
-
-      return controller;
-    }
+    return controller;
+  }
