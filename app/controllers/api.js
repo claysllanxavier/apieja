@@ -316,14 +316,19 @@ module.exports = function(app) {
     .exec()
     .then(
       function(usuario) {
-        bcrypt.compare(req.body.data.senha, usuario[0].senha, function(err, response) {
-          if(response){
-            res.json(usuario);
-          }
-          else{
-            res.status(500).json(err)
-          }
-        });
+        if(!usuario){
+          res.status(500).json(err);
+        }
+        else{
+          bcrypt.compare(req.body.data.senha, usuario[0].senha, function(err, response) {
+            if(response){
+              res.json(usuario);
+            }
+            else{
+              res.status(500).json(err)
+            }
+          });
+        }
       },
       function(erro) {
         console.error(erro)
