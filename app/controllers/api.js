@@ -311,7 +311,7 @@ module.exports = function(app) {
   };
   controller.obtemUsuario = function(req, res) {
     var email = req.body.data.email;
-    User.findOne({ email: email })
+    Usuario.findOne({ email: email })
     .exec(function (erro, user) {
       if (erro) {
         console.error(erro)
