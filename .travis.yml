@@ -1,6 +1,14 @@
+before_script:
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 language: node_js
+services:
+  - mongodb
 node_js:
-  - "stable"
+  - "6.11"
 before_script:
   - npm install -g bower
-  - bower install
+  - bower install --force-latest
+deploy:
+  provider: azure_web_apps
+  verbose: true
+  skip_cleanup: true
