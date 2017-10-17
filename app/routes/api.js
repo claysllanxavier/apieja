@@ -13,16 +13,6 @@ module.exports = function(app) {
   app.route('/api/conteudo/videos/:id')
   .get(controller.obtemVideobyConteudo);
 
-  //Conteúdos
-  app.route('/api/conteudos')
-  .get(controller.listaTodosConteudos)
-  .post(controller.salvaConteudo);
-
-  app.route('/api/conteudo/:id')
-  .get(controller.obtemConteudoQuiz)
-  .delete(controller.removeConteudo)
-  .post(controller.salvaConteudo);
-
   //Quiz
   app.route('/api/pergunta/:id')
   .post(controller.salvaPergunta);

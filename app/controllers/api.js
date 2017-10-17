@@ -201,21 +201,6 @@ module.exports = function(app) {
   };
 
   //Conteudo
-  controller.listaTodosConteudos = function(req, res) {
-    Conteudo.find()
-    .select("conteudo informacao _id")
-    .exec()
-    .then(
-      function(conteudos) {
-        res.json(conteudos);
-      },
-      function(erro) {
-        console.error(erro)
-        res.status(500).json(erro);
-      }
-    );
-  };
-
   controller.obtemConteudoQuiz = function(req, res) {
     var idusuario = req.params.id;
     Conteudo.find()
@@ -249,50 +234,6 @@ module.exports = function(app) {
       }
     );
   };
-
-  controller.obtemConteudo = function(req, res) {};
-
-  controller.removeConteudo = function(req, res) {
-    var id = req.params.id;
-    Conteudo.remove({"_id" : id}).exec()
-    .then(
-      function() {
-        res.end();
-      },
-      function(erro) {
-        return console.error(erro);
-      }
-    );
-  };
-
-  controller.salvaConteudo = function(req, res) {
-    var id = req.params.id;
-    if(typeof id !== 'undefined' && id) {
-      Conteudo.update({"_id"  : id},{$set : {"conteudo" : req.body.data.conteudo, "informacao" : req.body.data.informacao}})
-      .then(
-        function() {
-          res.end();
-        },
-        function(erro) {
-          console.log(erro);
-          res.status(500).json(erro);
-        }
-      );
-    }
-    else {
-      Conteudo.create(req.body.data)
-      .then(
-        function(conteudo) {
-          res.end();
-        },
-        function(erro) {
-          console.log(erro);
-          res.status(500).json(erro);
-        }
-      );
-    }
-  };
-
 
 
   //Usuarios

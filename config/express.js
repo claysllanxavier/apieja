@@ -10,16 +10,15 @@ var morgan       = require('morgan');
 var flash    = require('connect-flash');
 
 module.exports = function(config) {
-  var port     = config.port;
-  var address     = config.address;
   var app = express();
   // variável de ambiente
-  app.set('port', port);
-  app.set('address', address);
+  app.set('port', process.env.PORT);
+
   // middlewares
-  app.use(morgan('dev'));
+  if(process.env.NODE_ENV == 'development'){
+    app.use(morgan('dev'));
+  }
   app.use(express.static('./public'));
-  app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
