@@ -1,14 +1,14 @@
-var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
+var mongoose = require('mongoose')
+var bcrypt = require('bcrypt-nodejs')
 
-module.exports = function() {
+module.exports = function () {
   var Respostas = mongoose.Schema({
     id: mongoose.Schema.Types.ObjectId,
-    idconteudo:mongoose.Schema.Types.ObjectId,
-    idpergunta:mongoose.Schema.Types.ObjectId,
+    idconteudo: mongoose.Schema.Types.ObjectId,
+    idpergunta: mongoose.Schema.Types.ObjectId,
     acertou: {type: Boolean},
     atualizado: { type: Date, default: Date.now}
-  });
+  })
 
   var schema = mongoose.Schema({
     nome: {
@@ -34,20 +34,20 @@ module.exports = function() {
       type: String,
       required: true
     },
-    respostas  : [Respostas],
+    respostas: [Respostas],
     atualizado: {
       type: Date,
       default: Date.now
     }
-  });
+  })
 
-  schema.methods.generateHash = function(senha) {
-    return bcrypt.hashSync(senha, bcrypt.genSaltSync(8), null);
-  };
+  schema.methods.generateHash = function (senha) {
+    return bcrypt.hashSync(senha, bcrypt.genSaltSync(8), null)
+  }
 
-  schema.methods.validPassword = function(senha, pass) {
-    return bcrypt.compareSync(senha, pass);
-  };
+  schema.methods.validPassword = function (senha, pass) {
+    return bcrypt.compareSync(senha, pass)
+  }
 
-  return mongoose.model('User', schema);
-};
+  return mongoose.model('User', schema)
+}

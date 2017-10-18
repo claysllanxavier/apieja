@@ -1,61 +1,61 @@
-var express = require('express');
-var load = require('express-load');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var session      = require('express-session');
-var helmet = require('helmet');
-var compression = require('compression');
-var passport = require('passport');
-var morgan       = require('morgan');
-var flash    = require('connect-flash');
+var express = require('express')
+var load = require('express-load')
+var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
+var session = require('express-session')
+var helmet = require('helmet')
+var compression = require('compression')
+var passport = require('passport')
+var morgan = require('morgan')
+var flash = require('connect-flash')
 
-module.exports = function(config) {
-  var app = express();
+module.exports = function (config) {
+  var app = express()
   // variável de ambiente
-  app.set('port', process.env.PORT);
+  app.set('port', process.env.PORT)
 
   // middlewares
-  if(process.env.NODE_ENV == 'development'){
-    app.use(morgan('dev'));
+  if (process.env.NODE_ENV == 'development') {
+    app.use(morgan('dev'))
   }
-  app.use(express.static('./public'));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.static('./public'))
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({ extended: true }))
 
   app.use(require('method-override')())
-  app.set('view engine', 'ejs');
-  app.set('views','./app/views');
-  app.use(helmet());
-  app.use(compression());
+  app.set('view engine', 'ejs')
+  app.set('views', './app/views')
+  app.use(helmet())
+  app.use(compression())
 
-  app.options("*",function(req,res,next){
-    res.header("Access-Control-Allow-Origin", req.get("Origin")||"*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.status(200).end();
-  });
+  app.options('*', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', req.get('Origin') || '*')
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE')
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    res.status(200).end()
+  })
 
   // required for passport
-  app.use(cookieParser());
+  app.use(cookieParser())
   app.use(session(
     {
       secret: 'ilovescotchscotchyscotchscotch',
       proxy: true,
       resave: true,
       saveUninitialized: true
-    })); // session secret
-    app.use(passport.initialize());
-    app.use(passport.session()); // persistent login sessions
-    app.use(flash());
+    })) // session secret
+  app.use(passport.initialize())
+  app.use(passport.session()) // persistent login sessions
+  app.use(flash())
 
-    load('models', {cwd: 'app'})
+  load('models', {cwd: 'app'})
     .then('controllers')
     .then('routes')
-    .into(app);
+    .into(app)
 
-    app.get('*', function(req, res) {
-      res.status(404).render('404');
-    });
+  app.get('*', function (req, res) {
+    res.status(404).render('404')
+  })
 
-    return app;
-  };
+  return app
+}

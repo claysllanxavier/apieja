@@ -1,93 +1,91 @@
 angular.module('apieja').controller('ContaController',
-function($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
+  var url = $resource('/api/minhaconta')
+  var pass = $resource('/api/minhaconta/senha')
 
-  var url = $resource('/api/minhaconta');
-  var pass = $resource('/api/minhaconta/senha');
+  $scope.init = function () {
+    buscar()
+  }
+  $scope.admin = ''
 
-  $scope.init = function() {
-    buscar();
-  };
-  $scope.admin = "";
-
-  $scope.edit = function() {
-    salva($scope.admin);
+  $scope.edit = function () {
+    salva($scope.admin)
   }
 
-  $scope.changePass = function() {
-    delete $scope.admin.confSenha;
-    $scope.send = new pass();
-    $scope.send.data = $scope.admin;
+  $scope.changePass = function () {
+    delete $scope.admin.confSenha
+    $scope.send = new pass()
+    $scope.send.data = $scope.admin
     $scope.send.$save()
-    .then(function() {
-      sweetAlert("Sucesso!", "Senha alterada!", "success");
-      buscar();
+    .then(function () {
+      sweetAlert('Sucesso!', 'Senha alterada!', 'success')
+      buscar()
     })
-    .catch(function(erro) {
-      sweetAlert("Oops...", "Alguma coisa está errada. Refaça a operação!", "error");
-    });
+    .catch(function (erro) {
+      sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+    })
   }
 
-  function salva(data){
-    if(angular.isObject(data) && !angular.isUndefined(data.nome) && !angular.isUndefined(data.email)){
-      $scope.send = new url();
-      $scope.send.data = data;
+  function salva (data) {
+    if (angular.isObject(data) && !angular.isUndefined(data.nome) && !angular.isUndefined(data.email)) {
+      $scope.send = new url()
+      $scope.send.data = data
       $scope.send.$save()
-      .then(function() {
-        sweetAlert("Sucesso!", "Informações editadas com sucesso!", "success");
-        buscar();
+      .then(function () {
+        sweetAlert('Sucesso!', 'Informações editadas com sucesso!', 'success')
+        buscar()
       })
-      .catch(function(erro) {
-        sweetAlert("Oops...", "Alguma coisa está errada. Refaça a operação!", "error");
-      });
-    }
-    else{
-      sweetAlert("Oops...", "Alguma coisa está errada. Refaça a operação!", "error");
+      .catch(function (erro) {
+        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+      })
+    } else {
+      sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
     }
   }
 
-  function buscar() {
+  function buscar () {
     url.get(
-      function(data) {
-        $scope.admin = data;
+      function (data) {
+        $scope.admin = data
       },
-      function(erro) {
-        sweetAlert("Oops...", "Não foi possível obter sua informação!", "error");
-        console.log(erro);
+      function (erro) {
+        sweetAlert('Oops...', 'Não foi possível obter sua informação!', 'error')
+        console.log(erro)
       }
-    );
+    )
   }
 
-  $scope.init();
+  $scope.init()
 })
 
-.directive("passwordVerify", function() {
+.directive('passwordVerify', function () {
   return {
-    require: "ngModel",
+    require: 'ngModel',
     scope: {
       passwordVerify: '='
     },
-    link: function(scope, element, attrs, ctrl) {
-      scope.$watch(function() {
-        var combined;
+    link: function (scope, element, attrs, ctrl) {
+      scope.$watch(function () {
+        var combined
 
         if (scope.passwordVerify || ctrl.$viewValue) {
-          combined = scope.passwordVerify + '_' + ctrl.$viewValue;
+          combined = scope.passwordVerify + '_' + ctrl.$viewValue
         }
-        return combined;
-      }, function(value) {
+        return combined
+      }, function (value) {
         if (value) {
-          ctrl.$parsers.unshift(function(viewValue) {
-            var origin = scope.passwordVerify;
+          ctrl.$parsers.unshift(function (viewValue) {
+            var origin = scope.passwordVerify
             if (origin !== viewValue) {
-              ctrl.$setValidity("passwordVerify", false);
-              return undefined;
+              ctrl.$setValidity('passwordVerify', false)
+              return undefined
             } else {
-              ctrl.$setValidity("passwordVerify", true);
-              return viewValue;
+              ctrl.$setValidity('passwordVerify', true)
+              return viewValue
             }
-          });
+          })
         }
-      });
+      })
     }
-  };
-});
+  }
+})

@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-module.exports = function() {
+var mongoose = require('mongoose')
+module.exports = function () {
   var Videos = mongoose.Schema({
     id: mongoose.Schema.Types.ObjectId,
     nome: {
@@ -12,7 +12,7 @@ module.exports = function() {
       required: true,
       trim: true
     }
-  });
+  })
 
   var Quiz = mongoose.Schema({
     id: mongoose.Schema.Types.ObjectId,
@@ -21,7 +21,7 @@ module.exports = function() {
       required: true,
       trim: true
     },
-    respostas  : [String],
+    respostas: [String],
     atualizado: {
       type: Date,
       default: Date.now
@@ -31,7 +31,7 @@ module.exports = function() {
       required: true,
       trim: true
     }
-  });
+  })
 
   var Conteudo = mongoose.Schema({
     conteudo: {
@@ -44,13 +44,13 @@ module.exports = function() {
       required: true,
       trim: true
     },
-    videos  : [Videos],
-    perguntas  : [Quiz],
+    videos: [Videos],
+    perguntas: [Quiz],
     atualizado: {
       type: Date,
       default: Date.now
     }
-  });
+  })
 
-  return mongoose.model('Conteudo', Conteudo);
-};
+  return mongoose.model('Conteudo', Conteudo)
+}

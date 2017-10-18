@@ -1,1 +1,1 @@
-angular.module('apieja', ['ngRoute', 'ngResource', 'ngMaterial', 'mdDataTable', 'oitozero.ngSweetAlert','countTo', 'ngMessages']);
+angular.module('apieja', ['ngRoute', 'ngResource', 'ngMaterial', 'mdDataTable', 'oitozero.ngSweetAlert', 'countTo', 'ngMessages'])

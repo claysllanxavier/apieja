@@ -13,7 +13,7 @@
       </md-input-container>
 
       <div ng-hide="true">
-        {{(filteredItems = (conteudos | filter: filterName))}}
+        {{(filteredItems = (data | filter: filterName))}}
       </div>
     </md-card>
     <div class="alert alert-info" ng-hide="conteudos.length">

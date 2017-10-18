@@ -1,14 +1,13 @@
-module.exports = function(app) {
-  var controller = app.controllers.conteudo;
+module.exports = function (app) {
+  var controller = app.controllers.conteudo
 
-  //Conteúdos
+  // Conteúdos
   app.route('/api/conteudo')
   .get(controller.getAll)
-  .post(controller.insert);
+  .post(controller.insert)
 
   app.route('/api/conteudo/:id')
   .get(controller.getById)
   .delete(controller.delete)
-  .put(controller.update);
-
-};
+  .put(controller.update)
+}
