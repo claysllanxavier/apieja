@@ -1,5 +1,5 @@
 angular.module('apieja').controller('AdminController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Url) {
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
   $scope.init = function () {
     getAll()
   }
@@ -72,7 +72,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Url) {
 
   $scope.init()
 })
-.factory('Url', function ($resource) {
+.factory('Admin', function ($resource) {
   return $resource('/api/admin/:id', { id: '@_id' }, {
     update: {
       method: 'PUT' // this method issues a PUT request
