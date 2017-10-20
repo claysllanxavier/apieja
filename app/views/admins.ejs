@@ -16,7 +16,7 @@
         {{(filteredItems = (admins | filter: filterName))}}
       </div>
     </md-card>
-    <div class="alert alert-info" ng-hide="admins.length">
+    <div class="alert alert-info" ng-hide="data.length">
       <strong>Informação!</strong> Não há administradores cadastrados
     </div>
     <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}"

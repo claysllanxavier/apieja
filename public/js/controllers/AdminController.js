@@ -1,11 +1,9 @@
 angular.module('apieja').controller('AdminController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
-  var urlAdmins = $resource('/api/admin')
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Url) {
 
   $scope.init = function () {
-    buscaAdmins()
+    getAll()
   }
-  $scope.admins = []
 
   $scope.add = function (ev) {
     $mdDialog.show({
@@ -26,24 +24,20 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
   }
 
   function salva (data) {
-    if (angular.isObject(data) && !angular.isUndefined(data.nome) && !angular.isUndefined(data.email) && !angular.isUndefined(data.senha) && !angular.isUndefined(data.confirmarSenha)) {
-      if (data.senha === data.confirmarSenha) {
-        delete data.confirmarSenha
-        $scope.send = new urlAdmins()
-        $scope.send.data = data
-        $scope.send.$save()
-        .then(function () {
-          sweetAlert('Sucesso!', 'O administrador foi salvo com sucesso!', 'success')
-          buscaAdmins()
-        })
-        .catch(function (erro) {
-          sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
-        })
-      } else {
-        sweetAlert('Oops...', 'Senhas não conferem. Refaça a operação!', 'error')
-      }
+    if (data.senha === data.confirmarSenha) {
+      delete data.confirmarSenha
+      $scope.send = new Url()
+      $scope.send.data = data
+      $scope.send.$save()
+      .then(function () {
+        sweetAlert('Sucesso!', 'O administrador foi salvo com sucesso!', 'success')
+        buscaAdmins()
+      })
+      .catch(function (erro) {
+        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+      })
     } else {
-      sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+      sweetAlert('Oops...', 'Senhas não conferem. Refaça a operação!', 'error')
     }
   }
 
@@ -65,10 +59,10 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
     }
   }
 
-  function buscaAdmins () {
-    urlAdmins.query(
+  function getAll () {
+    Url.query(
       function (data) {
-        $scope.admins = data
+        $scope.data = data
       },
       function (erro) {
         sweetAlert('Oops...', 'Não foi possível obter a lista de Administradores!', 'error')
@@ -78,4 +72,11 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
   }
 
   $scope.init()
+})
+.factory('Url', function($resource) {
+  return $resource('/api/admin/:id', { id: '@_id' }, {
+    update: {
+      method: 'PUT' // this method issues a PUT request
+    }
+  });
 })
