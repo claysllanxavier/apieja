@@ -37,8 +37,8 @@ describe('Administrador', () => {
   */
   describe('/POST', () => {
     it('it should not POST a administrador without senha field', (done) => {
-      let item ={};
-       item["data"] = {
+      let item = {}
+      item['data'] = {
         nome: 'The Lord of the Rings'
       }
       chai.request(server)
@@ -50,8 +50,8 @@ describe('Administrador', () => {
       })
     })
     it('it should POST a administrador ', (done) => {
-      let item ={};
-       item["data"] = {
+      let item = {}
+      item['data'] = {
         nome: 'Claysllan Xavier',
         email: 'claysllan@gmail.com',
         senha: '123'

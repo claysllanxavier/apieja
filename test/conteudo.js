@@ -37,8 +37,8 @@ describe('Conteudo', () => {
   */
   describe('/POST', () => {
     it('it should not POST a conteudo without informacao field', (done) => {
-      let item ={};
-       item["data"] = {
+      let item = {}
+      item['data'] = {
         conteudo: 'The Lord of the Rings'
       }
       chai.request(server)
@@ -50,8 +50,8 @@ describe('Conteudo', () => {
       })
     })
     it('it should POST a conteudo ', (done) => {
-      let item ={};
-       item["data"] = {
+      let item = {}
+      item['data'] = {
         conteudo: 'The Lord of the Rings',
         informacao: 'J.R.R. Tolkien'
       }

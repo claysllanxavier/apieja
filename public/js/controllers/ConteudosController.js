@@ -1,6 +1,5 @@
 angular.module('apieja').controller('ConteudosController',
 function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Url) {
-
   $scope.init = function () {
     getAll()
   }
@@ -29,47 +28,47 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Url) {
           SweetAlert.swal('Cancelado', 'Esse item esta salvo :)', 'error')
         }
       })
-    }
+  }
 
-    $scope.edit = function (id, ev) {
-      var item = $filter('filter')($scope.data, { _id: id }, true)[0]
-      $mdDialog.show({
-        controller: DialogController,
-        templateUrl: 'views/modalConteudos.html',
-        parent: angular.element(document.body),
-        targetEvent: ev,
-        locals: {
-          data: item,
-          title: 'Editar'
-        },
-        clickOutsideToClose: true,
-        fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-      })
+  $scope.edit = function (id, ev) {
+    var item = $filter('filter')($scope.data, { _id: id }, true)[0]
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'views/modalConteudos.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      locals: {
+        data: item,
+        title: 'Editar'
+      },
+      clickOutsideToClose: true,
+      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+    })
       .then(function (answer) {
         update(answer)
       })
-    }
+  }
 
-    $scope.add = function (ev) {
-      $mdDialog.show({
-        controller: DialogController,
-        templateUrl: 'views/modalConteudos.html',
-        parent: angular.element(document.body),
-        targetEvent: ev,
-        locals: {
-          data: [],
-          title: 'Adicionar'
-        },
-        clickOutsideToClose: true,
-        fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-      })
+  $scope.add = function (ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'views/modalConteudos.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      locals: {
+        data: [],
+        title: 'Adicionar'
+      },
+      clickOutsideToClose: true,
+      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+    })
       .then(function (answer) {
         save(answer)
       })
-    }
+  }
 
-    function getAll () {
-      Url.query(
+  function getAll () {
+    Url.query(
         function (data) {
           $scope.data = data
         },
@@ -78,30 +77,30 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Url) {
           console.log(erro)
         }
       )
+  }
+
+  function DialogController ($scope, $mdDialog, title, data) {
+    $scope.title = title
+    if (data.length !== 0) {
+      $scope.data = data
+    }
+    $scope.hide = function () {
+      $mdDialog.hide()
     }
 
-    function DialogController ($scope, $mdDialog, title, data) {
-      $scope.title = title
-      if (data.length !== 0) {
-        $scope.data = data
-      }
-      $scope.hide = function () {
-        $mdDialog.hide()
-      }
-
-      $scope.cancel = function () {
-        $mdDialog.cancel()
-      }
-
-      $scope.add = function (answer) {
-        $mdDialog.hide(answer)
-      }
+    $scope.cancel = function () {
+      $mdDialog.cancel()
     }
 
-    function save (data) {
-      $scope.send = new Url()
-      $scope.send.data = data
-      $scope.send.$save()
+    $scope.add = function (answer) {
+      $mdDialog.hide(answer)
+    }
+  }
+
+  function save (data) {
+    $scope.send = new Url()
+    $scope.send.data = data
+    $scope.send.$save()
       .then(function () {
         sweetAlert('Sucesso!', 'O conteúdo foi salvo com sucesso!', 'success')
         getAll()
@@ -109,12 +108,12 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Url) {
       .catch(function (erro) {
         sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
       })
-    }
+  }
 
-    function update (data) {
-      $scope.send = new Url()
-      $scope.send.data = data
-      $scope.send.$update({id: data._id})
+  function update (data) {
+    $scope.send = new Url()
+    $scope.send.data = data
+    $scope.send.$update({id: data._id})
       .then(function () {
         sweetAlert('Sucesso!', 'O conteúdo foi atualizado com sucesso!', 'success')
         getAll()
@@ -122,14 +121,14 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Url) {
       .catch(function (erro) {
         sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
       })
-    }
+  }
 
-    $scope.init()
-  })
-  .factory('Url', function($resource) {
+  $scope.init()
+})
+  .factory('Url', function ($resource) {
     return $resource('/api/conteudo/:id', { id: '@_id' }, {
       update: {
         method: 'PUT' // this method issues a PUT request
       }
-    });
+    })
   })
