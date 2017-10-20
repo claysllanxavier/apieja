@@ -1,13 +1,9 @@
-// During the test the env variable is set to test
-process.env.NODE_ENV = 'test'
-
-let mongoose = require('mongoose')
-
 // Require the dev-dependencies
 let chai = require('chai')
 let chaiHttp = require('chai-http')
 let server = require('../server')
 let should = chai.should()
+let mongoose = require('mongoose')
 var Model = server.models.videos
 
 chai.use(chaiHttp)
@@ -41,7 +37,8 @@ describe('Conteudo', () => {
   */
   describe('/POST', () => {
     it('it should not POST a conteudo without informacao field', (done) => {
-      let item = {
+      let item ={};
+       item["data"] = {
         conteudo: 'The Lord of the Rings'
       }
       chai.request(server)
@@ -53,7 +50,8 @@ describe('Conteudo', () => {
       })
     })
     it('it should POST a conteudo ', (done) => {
-      let item = {
+      let item ={};
+       item["data"] = {
         conteudo: 'The Lord of the Rings',
         informacao: 'J.R.R. Tolkien'
       }
@@ -98,7 +96,7 @@ describe('Conteudo', () => {
       item.save((err, data) => {
         chai.request(server)
         .put('/api/conteudo/' + data._id)
-        .send({conteudo: 'The Chronicles of Narnia', informacao: 'C.S. Lewis'})
+        .send({data: {conteudo: 'The Chronicles of Narnia', informacao: 'C.S. Lewis'}})
         .end((err, res) => {
           res.should.have.status(200)
           done()

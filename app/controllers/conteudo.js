@@ -10,7 +10,6 @@ module.exports = function (app) {
       res.json(data)
     },
     function (erro) {
-      console.error(erro)
       res.status(500).json(erro)
     })
   }
@@ -24,13 +23,13 @@ module.exports = function (app) {
       res.json(data)
     },
     function (erro) {
-      console.error(erro)
       res.status(500).json(erro)
     })
   }
 
   controller.insert = function (req, res) {
-    Model.create(req.body)
+    var data = req.body.data
+    Model.create(data)
     .then(function () {
       res.end()
     },
@@ -41,12 +40,12 @@ module.exports = function (app) {
 
   controller.update = function (req, res) {
     var id = req.params.id
-    Model.update({'_id': id}, {$set: req.body})
+    var data = req.body.data
+    Model.update({'_id': id}, {$set: data})
     .then(function () {
       res.end()
     },
     function (erro) {
-      console.error(erro)
       res.status(500).json(erro)
     })
   }
@@ -59,7 +58,6 @@ module.exports = function (app) {
       res.end()
     },
     function (erro) {
-      console.error(erro)
       res.status(500).json(erro)
     })
   }

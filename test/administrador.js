@@ -1,13 +1,9 @@
-// During the test the env variable is set to test
-process.env.NODE_ENV = 'test'
-
-let mongoose = require('mongoose')
-
 // Require the dev-dependencies
 let chai = require('chai')
 let chaiHttp = require('chai-http')
 let server = require('../server')
 let should = chai.should()
+let mongoose = require('mongoose')
 var Model = server.models.admin
 
 chai.use(chaiHttp)
@@ -41,7 +37,8 @@ describe('Administrador', () => {
   */
   describe('/POST', () => {
     it('it should not POST a administrador without senha field', (done) => {
-      let item = {
+      let item ={};
+       item["data"] = {
         nome: 'The Lord of the Rings'
       }
       chai.request(server)
@@ -53,7 +50,8 @@ describe('Administrador', () => {
       })
     })
     it('it should POST a administrador ', (done) => {
-      let item = 	{
+      let item ={};
+       item["data"] = {
         nome: 'Claysllan Xavier',
         email: 'claysllan@gmail.com',
         senha: '123'
@@ -100,7 +98,7 @@ describe('Administrador', () => {
       item.save((err, data) => {
         chai.request(server)
         .put('/api/admin/' + data._id)
-        .send({nome: 'The Chronicles of Narnia', email: 'C.S. Lewis'})
+        .send({data: {nome: 'The Chronicles of Narnia', email: 'C.S. Lewis'}})
         .end((err, res) => {
           res.should.have.status(200)
           done()
@@ -125,7 +123,6 @@ describe('Administrador', () => {
       })
     })
   })
-
   /*
   * Test the /PUT/:id route
   */
@@ -135,7 +132,7 @@ describe('Administrador', () => {
       item.save((err, data) => {
         chai.request(server)
         .post('/api/minhaconta/senha')
-        .send({'senha': '456', '_id': data._id})
+        .send({data: {'senha': '456', '_id': data._id}})
         .end((err, res) => {
           res.should.have.status(200)
           done()
