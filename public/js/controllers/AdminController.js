@@ -7,7 +7,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
   $scope.add = function (ev) {
     $mdDialog.show({
       controller: DialogController,
-      templateUrl: 'views/modalAdmins.html',
+      templateAdmin: 'views/modalAdmins.html',
       parent: angular.element(document.body),
       targetEvent: ev,
       locals: {
@@ -25,7 +25,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
   function salva (data) {
     if (data.senha === data.confirmarSenha) {
       delete data.confirmarSenha
-      $scope.send = new Url()
+      $scope.send = new Admin()
       $scope.send.data = data
       $scope.send.$save()
       .then(function () {
@@ -59,7 +59,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
   }
 
   function getAll () {
-    Url.query(
+    Admin.query(
       function (data) {
         $scope.data = data
       },
