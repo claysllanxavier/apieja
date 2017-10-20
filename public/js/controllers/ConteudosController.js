@@ -1,7 +1,5 @@
 angular.module('apieja').controller('ConteudosController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
-  var url = $resource('/api/conteudo')
-  var urlId = $resource('/api/conteudo/:id')
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Url) {
 
   $scope.init = function () {
     getAll()
@@ -10,7 +8,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
   $scope.delete = function (id) {
     sweetAlert({
       title: 'Você deseja realmente deletar esse item?',
-      text: 'Você não poderá recupear esse conteúdo e seus vídeos posteriormente.',
+      text: 'Você não poderá recupear esse conteúdo posteriormente.',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#DD6B55',
@@ -20,11 +18,10 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
       closeOnCancel: false },
       function (isConfirm) {
         if (isConfirm) {
-          urlConteudo.delete({id: id},
-            buscaConteudos,
+          Url.delete({id: id},
+            getAll,
             function (erro) {
               sweetAlert('Oops...', 'Não foi possível remover o conteúdo.', 'error')
-              console.log(erro)
             }
           )
           SweetAlert.swal('Delteado!', 'Esse item foi deletado.', 'success')
@@ -32,47 +29,47 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
           SweetAlert.swal('Cancelado', 'Esse item esta salvo :)', 'error')
         }
       })
-  }
+    }
 
-  $scope.edit = function (id, ev) {
-    var conteudo = $filter('filter')($scope.conteudos, { _id: id }, true)[0]
-    $mdDialog.show({
-      controller: DialogController,
-      templateUrl: 'views/modalConteudos.html',
-      parent: angular.element(document.body),
-      targetEvent: ev,
-      locals: {
-        data: conteudo,
-        title: 'Editar'
-      },
-      clickOutsideToClose: true,
-      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-    })
-      .then(function (answer) {
-        atualizaConteudo(answer)
+    $scope.edit = function (id, ev) {
+      var item = $filter('filter')($scope.data, { _id: id }, true)[0]
+      $mdDialog.show({
+        controller: DialogController,
+        templateUrl: 'views/modalConteudos.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        locals: {
+          data: item,
+          title: 'Editar'
+        },
+        clickOutsideToClose: true,
+        fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
       })
-  }
-
-  $scope.add = function (ev) {
-    $mdDialog.show({
-      controller: DialogController,
-      templateUrl: 'views/modalConteudos.html',
-      parent: angular.element(document.body),
-      targetEvent: ev,
-      locals: {
-        data: [],
-        title: 'Adicionar'
-      },
-      clickOutsideToClose: true,
-      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-    })
       .then(function (answer) {
-        salvaConteudo(answer)
+        update(answer)
       })
-  }
+    }
 
-  function getAll () {
-    url.query(
+    $scope.add = function (ev) {
+      $mdDialog.show({
+        controller: DialogController,
+        templateUrl: 'views/modalConteudos.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        locals: {
+          data: [],
+          title: 'Adicionar'
+        },
+        clickOutsideToClose: true,
+        fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+      })
+      .then(function (answer) {
+        save(answer)
+      })
+    }
+
+    function getAll () {
+      Url.query(
         function (data) {
           $scope.data = data
         },
@@ -81,59 +78,58 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
           console.log(erro)
         }
       )
-  }
-
-  function DialogController ($scope, $mdDialog, title, data) {
-    $scope.title = title
-    if (data.length !== 0) {
-      $scope.data = data
-    }
-    $scope.hide = function () {
-      $mdDialog.hide()
     }
 
-    $scope.cancel = function () {
-      $mdDialog.cancel()
+    function DialogController ($scope, $mdDialog, title, data) {
+      $scope.title = title
+      if (data.length !== 0) {
+        $scope.data = data
+      }
+      $scope.hide = function () {
+        $mdDialog.hide()
+      }
+
+      $scope.cancel = function () {
+        $mdDialog.cancel()
+      }
+
+      $scope.add = function (answer) {
+        $mdDialog.hide(answer)
+      }
     }
 
-    $scope.add = function (answer) {
-      $mdDialog.hide(answer)
+    function save (data) {
+      $scope.send = new Url()
+      $scope.send.data = data
+      $scope.send.$save()
+      .then(function () {
+        sweetAlert('Sucesso!', 'O conteúdo foi salvo com sucesso!', 'success')
+        getAll()
+      })
+      .catch(function (erro) {
+        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+      })
     }
-  }
 
-  function salvaConteudo (conteudo) {
-    if (angular.isObject(conteudo) && !angular.isUndefined(conteudo.conteudo) && !angular.isUndefined(conteudo.informacao)) {
-      $scope.conteudo = new urlConteudos()
-      $scope.conteudo.data = conteudo
-      $scope.conteudo.$save()
-        .then(function () {
-          sweetAlert('Sucesso!', 'O conteúdo foi salvo com sucesso!', 'success')
-          buscaConteudos()
-        })
-        .catch(function (erro) {
-          sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
-        })
-    } else {
-      sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+    function update (data) {
+      $scope.send = new Url()
+      $scope.send.data = data
+      $scope.send.$update({id: data._id})
+      .then(function () {
+        sweetAlert('Sucesso!', 'O conteúdo foi atualizado com sucesso!', 'success')
+        getAll()
+      })
+      .catch(function (erro) {
+        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+      })
     }
-  }
 
-  function atualizaConteudo (conteudo) {
-    if (angular.isObject(conteudo) && !angular.isUndefined(conteudo.conteudo) && !angular.isUndefined(conteudo.informacao)) {
-      $scope.conteudo = new urlConteudo()
-      $scope.conteudo.data = conteudo
-      $scope.conteudo.$save({id: conteudo._id})
-        .then(function () {
-          sweetAlert('Sucesso!', 'O conteúdo foi atualizado com sucesso!', 'success')
-          buscaConteudos()
-        })
-        .catch(function (erro) {
-          sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
-        })
-    } else {
-      sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
-    }
-  }
-
-  $scope.init()
-})
+    $scope.init()
+  })
+  .factory('Url', function($resource) {
+    return $resource('/api/conteudo/:id', { id: '@_id' }, {
+      update: {
+        method: 'PUT' // this method issues a PUT request
+      }
+    });
+  })
