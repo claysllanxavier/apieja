@@ -38,25 +38,29 @@
       <div class ="row">
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
           <button ng-click="clientScope.edit(rowId, $event)" type="button" class="btn btn-block btn-lg btn-warning waves-effect">
+            <md-tooltip md-direction="top">Editar Conteúdo</md-tooltip>
             <i class="material-icons">edit</i>
           </button>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
           <a href="/videos/{{rowId}}">
-          <button type="button" class="btn btn-block btn-lg btn-info waves-effect">
+            <button type="button" class="btn btn-block btn-lg btn-info waves-effect">
+              <md-tooltip md-direction="top">Vídeos deste Conteúdo</md-tooltip>
               <i class="material-icons">videocam</i>
-          </button>
+            </button>
           </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
           <a href="/quiz/{{rowId}}">
-          <button type="button" class="btn btn-block btn-lg btn-success waves-effect">
+            <button type="button" class="btn btn-block btn-lg btn-success waves-effect">
+              <md-tooltip md-direction="top">Quiz deste Conteúdo</md-tooltip>
               <i class="material-icons">games</i>
-          </button>
+            </button>
           </a>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
           <button ng-click="clientScope.delete(rowId)" type="button" class="btn btn-block btn-lg btn-danger waves-effect">
+            <md-tooltip md-direction="top">Excluir Conteúdo</md-tooltip>
             <i class="material-icons">delete</i>
           </button>
         </div>
