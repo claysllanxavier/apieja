@@ -1,5 +1,5 @@
 <md-dialog aria-label="Adicionar Novos vídeos">
-  <form ng-cloak>
+  <form ng-cloak form="myForm">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>{{title}}  Vídeo</h2>
@@ -37,7 +37,7 @@
       <md-button class="btn" ng-click="cancel()">
         Cancelar
       </md-button>
-      <md-button class="btn btn-primary"ng-click="add(data)">
+      <md-button class="btn btn-primary"ng-click="add(data)" ng-disabled="myForm.$invalid">
         Salvar
       </md-button>
     </md-dialog-actions>

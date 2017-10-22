@@ -12,7 +12,7 @@ module.exports = function (app) {
     .then(function (myDocument) {
       let data = {}
       data['_id'] = myDocument._id
-      data['video'] = myDocument.perguntas.id(idpergunta)
+      data['pergunta'] = myDocument.perguntas.id(idpergunta)
       res.json(data)
     },
     function (erro) {
@@ -23,7 +23,6 @@ module.exports = function (app) {
   controller.insert = function (req, res) {
     var idconteudo = req.params.id
     if (idconteudo == 1) idconteudo = req.session.idconteudo
-    var idpergunta = req.body.data._id
     Model.update({'_id': idconteudo}, {$push: {'perguntas': req.body.data}}, {safe: true, upsert: true, new: true})
     .then(
       function () {
@@ -45,7 +44,7 @@ module.exports = function (app) {
         let item =  myDocument.perguntas.id(idpergunta)
         item.pergunta = req.body.data.pergunta
         item.respostas = req.body.data.respostas
-        ite.respostaCerta = req.body.data.respostaCerta
+        item.respostaCerta = req.body.data.respostaCerta
         myDocument.save(function (err) {
           if (err) { res.status(500).json(err) }
           res.end()
@@ -73,6 +72,7 @@ module.exports = function (app) {
 
       controller.getByConteudo = function (req, res) {
         var id = req.params.id
+        if (id == 1) id = req.session.idconteudo
         Model.findById(id)
         .select('perguntas _id')
         .exec()

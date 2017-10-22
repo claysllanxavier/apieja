@@ -11,7 +11,6 @@ module.exports = function () {
   controller.listarVideos = function (req, res) {
     res.render('videos', {
       page_name: 'videos',
-      idconteudo: req.session.idconteudo,
       usuarioLogado: req.user.nome,
       usuarioEmail: req.user.email
     })
@@ -44,7 +43,6 @@ module.exports = function () {
   controller.listaPerguntas = function (req, res) {
     res.render('quiz', {
       page_name: 'quiz',
-      idconteudo: req.session.idconteudo,
       usuarioLogado: req.user.nome,
       usuarioEmail: req.user.email
     })

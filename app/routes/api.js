@@ -12,12 +12,11 @@ module.exports = function (app) {
   .post(controller.obtemUsuario)
 
   app.route('/api/usuario/:idusuario/conteudo/:idconteudo')
+  .get(controller.obtemPergunta)
   .delete(controller.limparQuiz)
 
   app.route('/api/pergunta')
   .post(controller.salvaResposta)
-
-  app.get('/api/conteudo/:idconteudo/pergunta/:idusuario', controller.obtemPergunta)
 
 
   // Informação
