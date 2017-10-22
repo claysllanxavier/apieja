@@ -95,6 +95,35 @@ describe('Video', () => {
     })
   })
   /*
+  * Test the /PUT/:id route
+  */
+  describe('/PUT/:id', () => {
+    it('it should not UPDATE', (done) => {
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien', videos: [{nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys'}]})
+      aux.save((err, data) => {
+        chai.request(server)
+        .put('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .send({data: {nome: 'The Chronicles of Narnia', url: 'C.S. Lewis'}})
+        .end((err, res) => {
+          res.should.have.status(500)
+          done()
+        })
+      })
+    })
+    it('it should UPDATE', (done) => {
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien', videos: [{nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys'}]})
+      aux.save((err, data) => {
+        chai.request(server)
+        .put('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .send({data: {nome: 'The Chronicles of Narnia', url: 'https://www.youtube.com/embed/EQp1NapFqts'}})
+        .end((err, res) => {
+          res.should.have.status(200)
+          done()
+        })
+      })
+    })
+  })
+  /*
   * Test the /DELETE/:id route
   */
   describe('/DELETE/:id', () => {

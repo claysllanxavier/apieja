@@ -14,18 +14,15 @@ module.exports = function () {
     User.findOne({ 'email': email }, function (err, user) {
       // if there are any errors, return the error before anything else
       if (err) {
-        console.log('Erro no login')
         return done(err)
       }
 
       // if no user is found, return the message
       if (!user) {
-        console.log('Usuário não econtrado!')
         return done(null, false, req.flash('loginMessage', 'Nenhum usuário encontrado!'))
       }
       // if the user is found but the password is wrong
       if (!user.validPassword(password)) {
-        console.log('Senha incorreta!')
         return done(null, false, req.flash('loginMessage', 'Oops! Senha incorreta.')) // create the loginMessage and save it to session as flashdata
       }
 

@@ -6,24 +6,6 @@ module.exports = function (app) {
   var Usuario = app.models.user
   var Admin = app.models.admin
 
-  // Quizz
-  controller.obtemPerguntabyConteudo = function (req, res) {
-    var id = req.params.id
-    Conteudo.findById(id)
-    .select('perguntas _id')
-    .exec()
-    .then(
-      function (videos) {
-        if (!videos) throw new Error('Vídeos não encontrado')
-        res.json(videos)
-      },
-      function (erro) {
-        console.error(erro)
-        res.status(404).json(erro)
-      }
-    )
-  }
-
   controller.obtemPergunta = function (req, res) {
     var idconteudo = req.params.idconteudo
     var idusuario = req.params.idusuario
@@ -77,41 +59,6 @@ module.exports = function (app) {
         res.status(404).json(erro)
       }
     )
-  }
-  controller.removePergunta = function (req, res) {
-    var idpergunta = req.params.idpergunta
-    var idconteudo = req.params.idconteudo
-    Conteudo.findByIdAndUpdate(idconteudo, {$pull: {perguntas: {_id: idpergunta}}})
-    .exec()
-    .then(
-      function () {
-        res.end()
-      },
-      function (erro) {
-        console.error(erro)
-        res.status(500).json(erro)
-      }
-    )
-  }
-
-  controller.salvaPergunta = function (req, res) {
-    var idconteudo = req.params.id
-    var idvideo = req.body.data._id
-    if (typeof idconteudo !== 'undefined' && idconteudo) {
-      if (typeof idvideo !== 'undefined' && idvideo) {
-
-      } else {
-        Conteudo.update({'_id': idconteudo}, {$push: {'perguntas': req.body.data}}, {safe: true, upsert: true, new: true})
-        .then(
-          function () {
-            res.end()
-          },
-          function (erro) {
-            res.status(500).json(erro)
-          }
-        )
-      }
-    }
   }
 
   controller.salvaResposta = function (req, res) {
