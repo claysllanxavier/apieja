@@ -78,6 +78,9 @@ module.exports = function (app) {
               res.status(500).json(erro)
             })
   }
+  controller.getUser = function (req, res) {
+    res.json(req.user)
+  }
 
   return controller
 }

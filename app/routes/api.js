@@ -1,17 +1,6 @@
 module.exports = function (app) {
   var controller = app.controllers.api
 
-  // Vídeos
-  app.route('/api/video/:id')
-  .get(controller.obtemVideo)
-  .post(controller.salvaVideo)
-
-  app.delete('/api/conteudo/:idconteudo/video/:idvideo', controller.removeVideo)
-  app.delete('/api/conteudo/:idconteudo/pergunta/:idpergunta', controller.removePergunta)
-
-  app.route('/api/conteudo/videos/:id')
-  .get(controller.obtemVideobyConteudo)
-
   // Quiz
   app.route('/api/pergunta/:id')
   .post(controller.salvaPergunta)
@@ -20,6 +9,7 @@ module.exports = function (app) {
   .post(controller.salvaResposta)
 
   app.get('/api/conteudo/:idconteudo/pergunta/:idusuario', controller.obtemPergunta)
+  app.delete('/api/conteudo/:idconteudo/pergunta/:idpergunta', controller.removePergunta)
 
   app.route('/api/conteudo/perguntas/:id')
   .get(controller.obtemPerguntabyConteudo)

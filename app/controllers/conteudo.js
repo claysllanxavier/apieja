@@ -1,6 +1,6 @@
 module.exports = function (app) {
   var controller = {}
-  var Model = app.models.videos
+  var Model = app.models.conteudo
 
   controller.getAll = function (req, res) {
     Model.find()

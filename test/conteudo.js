@@ -4,7 +4,7 @@ let chaiHttp = require('chai-http')
 let server = require('../server')
 let should = chai.should()
 let mongoose = require('mongoose')
-var Model = server.models.videos
+var Model = server.models.conteudo
 
 chai.use(chaiHttp)
 // Our parent block

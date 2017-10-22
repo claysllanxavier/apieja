@@ -1,20 +1,16 @@
 angular.module('apieja').controller('ContaController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
-  var url = $resource('/api/minhaconta')
-  var pass = $resource('/api/minhaconta/senha')
-
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Admin) {
   $scope.init = function () {
     buscar()
   }
-  $scope.admin = ''
 
   $scope.edit = function () {
-    salva($scope.admin)
+    update($scope.admin)
   }
 
   $scope.changePass = function () {
     delete $scope.admin.confSenha
-    $scope.send = new pass()
+    $scope.send = new Conta()
     $scope.send.data = $scope.admin
     $scope.send.$save()
     .then(function () {
@@ -26,25 +22,21 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
     })
   }
 
-  function salva (data) {
-    if (angular.isObject(data) && !angular.isUndefined(data.nome) && !angular.isUndefined(data.email)) {
-      $scope.send = new url()
-      $scope.send.data = data
-      $scope.send.$save()
-      .then(function () {
-        sweetAlert('Sucesso!', 'Informações editadas com sucesso!', 'success')
-        buscar()
-      })
-      .catch(function (erro) {
-        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
-      })
-    } else {
+  function update (data) {
+    $scope.send = new Admin()
+    $scope.send.data = data
+    $scope.send.$update({id: data._id})
+    .then(function () {
+      sweetAlert('Sucesso!', 'Informações editadas com sucesso!', 'success')
+      buscar()
+    })
+    .catch(function (erro) {
       sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
-    }
+    })
   }
 
   function buscar () {
-    url.get(
+    Conta.get(
       function (data) {
         $scope.admin = data
       },
@@ -88,4 +80,11 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
       })
     }
   }
+})
+.factory('Conta', function ($resource) {
+  return $resource('/api/minhaconta/:id', { id: '@_id' }, {
+    update: {
+      method: 'PUT' // this method issues a PUT request
+    }
+  })
 })

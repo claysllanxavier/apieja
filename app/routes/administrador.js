@@ -11,5 +11,7 @@ module.exports = function (app) {
   .put(controller.update)
   .delete(controller.delete)
 
-  app.post('/api/minhaconta/senha', controller.changePass)
+  app.route('/api/minhaconta')
+  .get(controller.getUser)
+  .put(controller.changePass)
 }

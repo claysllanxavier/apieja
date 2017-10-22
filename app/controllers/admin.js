@@ -6,6 +6,7 @@ module.exports = function () {
 
   controller.fazLogout = function (req, res) {
     req.logout()
+    req.session.destroy()
     res.redirect('/login')
   }
 

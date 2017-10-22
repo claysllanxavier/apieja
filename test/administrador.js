@@ -131,7 +131,7 @@ describe('Administrador', () => {
       let item = new Model({ nome: 'The Lord of the Rings', email: 'J.R.R. Tolkien', senha: '123'})
       item.save((err, data) => {
         chai.request(server)
-        .post('/api/minhaconta/senha')
+        .put('/api/minhaconta')
         .send({data: {'senha': '456', '_id': data._id}})
         .end((err, res) => {
           res.should.have.status(200)
