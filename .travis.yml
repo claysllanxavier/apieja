@@ -7,6 +7,8 @@ before_script:
   - npm install -g bower
   - bower install --force-latest
   - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
+notifications:
+  email: false
 deploy:
   provider: azure_web_apps
   verbose: true
