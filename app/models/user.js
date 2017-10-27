@@ -35,6 +35,9 @@ module.exports = function () {
       required: true
     },
     respostas: [Respostas],
+    pontos: Number,
+    qtdperguntas: Number,
+    qtdacertos: Number,
     atualizado: {
       type: Date,
       default: Date.now

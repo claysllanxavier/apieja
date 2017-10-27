@@ -1,10 +1,10 @@
 angular.module('apieja').controller('VideoController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video) {
-  var urlVideosbyConteudo = $resource('/api/conteudo/videos/' + 1)
-  var urlVideo = $resource('/api/video/:idconteudo')
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video, $routeParams) {
+
+  $scope.idconteudo = $routeParams.id;
 
   $scope.init = function () {
-    buscaVideos()
+    getAll()
   }
 
   $scope.delete = function (id) {
@@ -20,11 +20,10 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video) {
       closeOnCancel: false },
       function (isConfirm) {
         if (isConfirm) {
-          Video.delete({idconteudo: 1, idvideo: id},
-            buscaVideos,
+          Video.delete({idconteudo: $scope.idconteudo, idvideo: id},
+            getAll,
             function (erro) {
               sweetAlert('Oops...', 'Não foi possível remover o vídeo.', 'error')
-              console.log(erro)
             }
           )
           SweetAlert.swal('Delteado!', 'Esse item foi deletado.', 'success')
@@ -38,7 +37,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video) {
       var video = $filter('filter')($scope.videos.videos, { _id: id }, true)[0]
       $mdDialog.show({
         controller: DialogController,
-        templateUrl: 'views/modalVideos.html',
+        templateUrl: 'views/modals/modalVideos.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         locals: {
@@ -56,7 +55,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video) {
     $scope.add = function (ev) {
       $mdDialog.show({
         controller: DialogController,
-        templateUrl: '/views/modalVideos.html',
+        templateUrl: '/views/modals/modalVideos.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         locals: {
@@ -71,14 +70,13 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video) {
       })
     }
 
-    function buscaVideos () {
-      urlVideosbyConteudo.get(
+    function getAll () {
+      Video.get({idconteudo: $scope.idconteudo},
         function (videos) {
           $scope.videos = videos
         },
         function (erro) {
-          console.log('Não foi possível obter a lista dos videos')
-          console.log(erro)
+          sweetAlert('Oops...', 'Não foi possível obter esse item.', 'error')
         }
       )
     }
@@ -102,12 +100,12 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video) {
     }
 
     function salvaVideo (video) {
-      $scope.video = new urlVideo()
+      $scope.video = new Video()
       $scope.video.data = video
-      $scope.video.$save({idconteudo: 1})
+      $scope.video.$save({idconteudo: $scope.idconteudo})
       .then(function () {
         sweetAlert('Sucesso!', 'O vídeo foi salvo com sucesso!', 'success')
-        buscaVideos()
+        getAll()
       })
       .catch(function (erro) {
         sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
@@ -117,10 +115,10 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video) {
     function atualizaVideo (video) {
       $scope.video = new Video()
       $scope.video.data = video
-      $scope.video.$update({idconteudo: 1, idvideo: video._id})
+      $scope.video.$update({idconteudo: $scope.idconteudo, idvideo: video._id})
       .then(function () {
         sweetAlert('Sucesso!', 'O vídeo foi atualizado com sucesso!', 'success')
-        buscaVideos()
+        getAll()
       })
       .catch(function (erro) {
         sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')

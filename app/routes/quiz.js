@@ -2,14 +2,13 @@ module.exports = function (app) {
   var controller = app.controllers.quiz
 
   // Quiz
-  app.route('/api/pergunta/:id')
+  app.route('/api/conteudo/:idconteudo/pergunta')
   .post(controller.insert)
+  .get(controller.getByConteudo)
 
   app.route('/api/conteudo/:idconteudo/pergunta/:idpergunta')
   .delete(controller.delete)
   .put(controller.update)
   .get(controller.getById)
 
-  app.route('/api/conteudo/perguntas/:id')
-  .get(controller.getByConteudo)
 }

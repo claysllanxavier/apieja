@@ -1,23 +1,26 @@
 angular.module('apieja').controller('UsuariosController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter) {
-  var urlUsuarios = $resource('/api/usuarios')
-
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Usuario) {
   $scope.init = function () {
-    buscaUsuarios()
+    getAll()
   }
-  $scope.usuarios = []
 
-  function buscaUsuarios () {
-    urlUsuarios.query(
+  function getAll () {
+    Usuario.query(
       function (usuarios) {
         $scope.usuarios = usuarios
       },
       function (erro) {
         sweetAlert('Oops...', 'Não foi possível obter a lista de Usuários!', 'error')
-        console.log(erro)
       }
     )
   }
 
   $scope.init()
+})
+.factory('Usuario', function ($resource) {
+  return $resource('/api/usuario/:id', { id: '@_id' }, {
+    update: {
+      method: 'PUT' // this method issues a PUT request
+    }
+  })
 })

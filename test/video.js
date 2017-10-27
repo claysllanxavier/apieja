@@ -1,5 +1,6 @@
 // Require the dev-dependencies
 let chai = require('chai')
+let jwt = require('jsonwebtoken')
 let chaiHttp = require('chai-http')
 let server = require('../server')
 let should = chai.should()
@@ -9,11 +10,28 @@ var Model = server.models.conteudo
 chai.use(chaiHttp)
 // Our parent block
 
+let token = jwt.sign({ id: 1 }, process.env.SECRET, {
+  expiresIn: 3 // expires in 24 hours
+})
+
 // Our parent block
 describe('Video', () => {
   beforeEach((done) => { // Before each test we empty the database
     Model.remove({}, (err) => {
       done()
+    })
+  })
+  /*
+  * Test the TOKEN route
+  */
+  describe('TOKEN', () => {
+    it('it should not access', (done) => {
+      chai.request(server)
+      .get('/api/conteudo/1/video')
+      .end((err, res) => {
+        res.should.have.status(401)
+        done()
+      })
     })
   })
   /*
@@ -28,8 +46,10 @@ describe('Video', () => {
           nome: 'The Lord of the Rings'
         }
         chai.request(server)
-        .post('/api/video/' + data._id)
+        .post('/api/conteudo/'+ data._id + '/video')
+        .set('x-access-token', token)
         .send(item)
+        .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(500)
           done()
@@ -45,7 +65,8 @@ describe('Video', () => {
           url: 'The Lord of the Rings'
         }
         chai.request(server)
-        .post('/api/video/' + data._id)
+        .post('/api/conteudo/'+ data._id + '/video')
+        .set('x-access-token', token)
         .send(item)
         .end((err, res) => {
           res.should.have.status(500)
@@ -62,7 +83,8 @@ describe('Video', () => {
           url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys'
         }
         chai.request(server)
-        .post('/api/video/' + data._id)
+        .post('/api/conteudo/'+ data._id + '/video')
+        .set('x-access-token', token)
         .send(item)
         .end((err, res) => {
           res.should.have.status(200)
@@ -81,6 +103,7 @@ describe('Video', () => {
       aux.save((err, data) => {
         chai.request(server)
         .get('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .set('x-access-token', token)
         .send(data)
         .end((err, res) => {
           res.should.have.status(200)
@@ -103,6 +126,7 @@ describe('Video', () => {
       aux.save((err, data) => {
         chai.request(server)
         .put('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .set('x-access-token', token)
         .send({data: {nome: 'The Chronicles of Narnia', url: 'C.S. Lewis'}})
         .end((err, res) => {
           res.should.have.status(500)
@@ -115,6 +139,7 @@ describe('Video', () => {
       aux.save((err, data) => {
         chai.request(server)
         .put('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .set('x-access-token', token)
         .send({data: {nome: 'The Chronicles of Narnia', url: 'https://www.youtube.com/embed/EQp1NapFqts'}})
         .end((err, res) => {
           res.should.have.status(200)
@@ -132,6 +157,7 @@ describe('Video', () => {
       aux.save((err, data) => {
         chai.request(server)
         .delete('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200)
           done()

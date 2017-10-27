@@ -7,7 +7,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
   $scope.add = function (ev) {
     $mdDialog.show({
       controller: DialogController,
-      templateAdmin: 'views/modalAdmins.html',
+      templateAdmin: 'views/modals/modalAdmins.html',
       parent: angular.element(document.body),
       targetEvent: ev,
       locals: {
@@ -65,7 +65,6 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
       },
       function (erro) {
         sweetAlert('Oops...', 'Não foi possível obter a lista de Administradores!', 'error')
-        console.log(erro)
       }
     )
   }

@@ -1,5 +1,6 @@
 // Require the dev-dependencies
 let chai = require('chai')
+let jwt = require('jsonwebtoken')
 let chaiHttp = require('chai-http')
 let server = require('../server')
 let should = chai.should()
@@ -8,12 +9,27 @@ var Model = server.models.conteudo
 
 chai.use(chaiHttp)
 // Our parent block
-
+let token = jwt.sign({ id: 1 }, process.env.SECRET, {
+  expiresIn: 3 // expires in 24 hours
+})
 // Our parent block
 describe('Conteudo', () => {
   beforeEach((done) => { // Before each test we empty the database
     Model.remove({}, (err) => {
       done()
+    })
+  })
+  /*
+  * Test the TOKEN route
+  */
+  describe('TOKEN', () => {
+    it('it should not access', (done) => {
+      chai.request(server)
+      .get('/api/conteudo')
+      .end((err, res) => {
+        res.should.have.status(401)
+        done()
+      })
     })
   })
   /*
@@ -23,6 +39,7 @@ describe('Conteudo', () => {
     it('it should GET all the conteudos', (done) => {
       chai.request(server)
       .get('/api/conteudo')
+      .set('x-access-token', token)
       .end((err, res) => {
         res.should.have.status(200)
         res.body.should.be.a('array')
@@ -43,6 +60,7 @@ describe('Conteudo', () => {
       }
       chai.request(server)
       .post('/api/conteudo')
+      .set('x-access-token', token)
       .send(item)
       .end((err, res) => {
         res.should.have.status(500)
@@ -57,6 +75,7 @@ describe('Conteudo', () => {
       }
       chai.request(server)
       .post('/api/conteudo')
+      .set('x-access-token', token)
       .send(item)
       .end((err, res) => {
         res.should.have.status(200)
@@ -74,6 +93,7 @@ describe('Conteudo', () => {
       item.save((err, data) => {
         chai.request(server)
         .get('/api/conteudo/' + data._id)
+        .set('x-access-token', token)
         .send(data)
         .end((err, res) => {
           res.should.have.status(200)
@@ -96,6 +116,7 @@ describe('Conteudo', () => {
       item.save((err, data) => {
         chai.request(server)
         .put('/api/conteudo/' + data._id)
+        .set('x-access-token', token)
         .send({data: {conteudo: 'The Chronicles of Narnia', informacao: 'C.S. Lewis'}})
         .end((err, res) => {
           res.should.have.status(200)
@@ -114,6 +135,7 @@ describe('Conteudo', () => {
       item.save((err, data) => {
         chai.request(server)
         .delete('/api/conteudo/' + data._id)
+        .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200)
           done()

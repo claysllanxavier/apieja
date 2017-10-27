@@ -1,5 +1,6 @@
 // Require the dev-dependencies
 let chai = require('chai')
+let jwt = require('jsonwebtoken')
 let chaiHttp = require('chai-http')
 let server = require('../server')
 let should = chai.should()
@@ -8,12 +9,27 @@ var Model = server.models.conteudo
 
 chai.use(chaiHttp)
 // Our parent block
-
+let token = jwt.sign({ id: 1 }, process.env.SECRET, {
+  expiresIn: 3 // expires in 24 hours
+})
 // Our parent block
 describe('Quiz', () => {
   beforeEach((done) => { // Before each test we empty the database
     Model.remove({}, (err) => {
       done()
+    })
+  })
+  /*
+  * Test the TOKEN route
+  */
+  describe('TOKEN', () => {
+    it('it should not access', (done) => {
+      chai.request(server)
+      .get('/api/conteudo/1/pergunta')
+      .end((err, res) => {
+        res.should.have.status(401)
+        done()
+      })
     })
   })
   /*
@@ -30,8 +46,9 @@ describe('Quiz', () => {
           respostas: ["1", "2", "3", "4"]
         }
         chai.request(server)
-        .post('/api/pergunta/' + data._id)
+        .post('/api/conteudo/'+data._id+'/pergunta')
         .send(item)
+        .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200)
           done()
@@ -50,6 +67,7 @@ describe('Quiz', () => {
         chai.request(server)
         .get('/api/conteudo/' + data._id + '/pergunta/' + data.perguntas[0]._id)
         .send(data)
+        .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.a('object')
@@ -72,6 +90,7 @@ describe('Quiz', () => {
       aux.save((err, data) => {
         chai.request(server)
         .put('/api/conteudo/' + data._id + '/pergunta/' + data.perguntas[0]._id)
+        .set('x-access-token', token)
         .send({data: {pergunta: 'The Chronicles of Narnia', respostaCerta: 'C.S. Lewis'}})
         .end((err, res) => {
           res.should.have.status(200)
@@ -89,6 +108,7 @@ describe('Quiz', () => {
       aux.save((err, data) => {
         chai.request(server)
         .delete('/api/conteudo/' + data._id + '/pergunta/' + data.perguntas[0]._id)
+        .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200)
           done()

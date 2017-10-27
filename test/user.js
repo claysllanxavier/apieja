@@ -5,7 +5,7 @@ let chaiHttp = require('chai-http')
 let server = require('../server')
 let should = chai.should()
 let mongoose = require('mongoose')
-var Model = server.models.admin
+var Model = server.models.user
 
 chai.use(chaiHttp)
 // Our parent block
@@ -13,7 +13,7 @@ let token = jwt.sign({ id: 1 }, process.env.SECRET, {
   expiresIn: 3 // expires in 24 hours
 })
 // Our parent block
-describe('Administrador', () => {
+describe('Usuario', () => {
   beforeEach((done) => { // Before each test we empty the database
     Model.remove({}, (err) => {
       done()
@@ -25,7 +25,7 @@ describe('Administrador', () => {
   describe('TOKEN', () => {
     it('it should not access', (done) => {
       chai.request(server)
-      .get('/api/admin')
+      .get('/api/usuario')
       .end((err, res) => {
         res.should.have.status(401)
         done()
@@ -36,9 +36,9 @@ describe('Administrador', () => {
   * Test the /GET route
   */
   describe('/GET', () => {
-    it('it should GET all the administradores', (done) => {
+    it('it should GET', (done) => {
       chai.request(server)
-      .get('/api/admin')
+      .get('/api/usuario')
       .set('x-access-token', token)
       .end((err, res) => {
         res.should.have.status(200)
@@ -53,29 +53,29 @@ describe('Administrador', () => {
   * Test the /POST route
   */
   describe('/POST', () => {
-    it('it should not POST a administrador without senha field', (done) => {
+    it('it should not POST one without informacao field', (done) => {
       let item = {}
       item['data'] = {
         nome: 'The Lord of the Rings'
       }
       chai.request(server)
-      .post('/api/admin')
+      .post('/api/usuario')
       .send(item)
-      .set('x-access-token', token)
       .end((err, res) => {
         res.should.have.status(500)
         done()
       })
     })
-    it('it should POST a administrador ', (done) => {
+    it('it should POST', (done) => {
       let item = {}
       item['data'] = {
-        nome: 'Claysllan Xavier',
-        email: 'claysllan@gmail.com',
+        nome:'Nome',
+        email: 'nome@nome',
+        escola: 'IFTO',
         senha: '123'
       }
       chai.request(server)
-      .post('/api/admin')
+      .post('/api/usuario')
       .send(item)
       .set('x-access-token', token)
       .end((err, res) => {
@@ -89,11 +89,11 @@ describe('Administrador', () => {
   * Test the /GET/:id route
   */
   describe('/GET/:id', () => {
-    it('it should GET a administrador by the given id', (done) => {
-      let item = new Model({ nome: 'The Lord of the Rings', email: 'J.R.R. Tolkien', senha: '123'})
+    it('it should GET by the given id', (done) => {
+      let item = new Model({nome:'Nome',email: 'nome@nome',escola: 'IFTO',senha: '123'})
       item.save((err, data) => {
         chai.request(server)
-        .get('/api/admin/' + data._id)
+        .get('/api/usuario/' + data._id)
         .send(data)
         .set('x-access-token', token)
         .end((err, res) => {
@@ -102,7 +102,6 @@ describe('Administrador', () => {
           res.body.should.have.property('nome')
           res.body.should.have.property('email')
           res.body.should.have.property('senha')
-          res.body.should.have.property('_id')
           done()
         })
       })
@@ -113,11 +112,11 @@ describe('Administrador', () => {
   * Test the /PUT/:id route
   */
   describe('/PUT/:id', () => {
-    it('it should UPDATE a administrador given the id', (done) => {
-      let item = new Model({ nome: 'The Lord of the Rings', email: 'J.R.R. Tolkien', senha: '123'})
+    it('it should UPDATE given the id', (done) => {
+      let item = new Model({nome:'Nome',email: 'nome@nome',escola: 'IFTO',senha: '123'})
       item.save((err, data) => {
         chai.request(server)
-        .put('/api/admin/' + data._id)
+        .put('/api/usuario/' + data._id)
         .set('x-access-token', token)
         .send({data: {nome: 'The Chronicles of Narnia', email: 'C.S. Lewis'}})
         .end((err, res) => {
@@ -127,16 +126,15 @@ describe('Administrador', () => {
       })
     })
   })
-
   /*
   * Test the /DELETE/:id route
   */
   describe('/DELETE/:id', () => {
-    it('it should DELETE a administrador given the id', (done) => {
-      let item = new Model({ nome: 'The Lord of the Rings', email: 'J.R.R. Tolkien', senha: '123'})
+    it('it should DELETE one given the id', (done) => {
+      let item = new Model({nome:'Nome',email: 'nome@nome',escola: 'IFTO',senha: '123'})
       item.save((err, data) => {
         chai.request(server)
-        .delete('/api/admin/' + data._id)
+        .delete('/api/usuario/' + data._id)
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200)
@@ -146,18 +144,21 @@ describe('Administrador', () => {
     })
   })
   /*
-  * Test the /PUT/:id route
+  * Test the Login route
   */
-  describe('/CHANGEPASS', () => {
-    it('it should UPDATE a administrador given the senha', (done) => {
-      let item = new Model({ nome: 'The Lord of the Rings', email: 'J.R.R. Tolkien', senha: '123'})
+  describe('/LOGIN/', () => {
+    it('it should Login', (done) => {
+      let item = new Model({nome:'Nome',email: 'nome@nome',escola: 'IFTO',senha: '$2a$08$doAoQK7pAH54wH.Lqjq8m.IzaZjw5ebukpYXvHUX59j57oxgZnOoe'})
       item.save((err, data) => {
         chai.request(server)
-        .put('/api/minhaconta')
-        .set('x-access-token', token)
-        .send({data: {'senha': '456', '_id': data._id}})
+        .post('/api/login/')
+        .send({data:{email: 'nome@nome', senha: '123'}})
         .end((err, res) => {
           res.should.have.status(200)
+          res.body.should.be.a('object')
+          res.body.should.have.property('nome')
+          res.body.should.have.property('email')
+          res.body.should.have.property('senha')
           done()
         })
       })

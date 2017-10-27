@@ -1,12 +1,10 @@
 angular.module('apieja').controller('QuizController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz) {
-  $scope.idconteudo = 1
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz, $routeParams) {
 
-  var urlPerguntasbyConteudo = $resource('/api/conteudo/perguntas/' + $scope.idconteudo)
-  var urlPergunta = $resource('/api/pergunta/' + $scope.idconteudo)
+  $scope.idconteudo = $routeParams.id;
 
   $scope.init = function () {
-    buscaPerguntas()
+    getAll()
   }
 
   $scope.delete = function (id) {
@@ -23,7 +21,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz) {
       function (isConfirm) {
         if (isConfirm) {
           Quiz.delete({idconteudo: $scope.idconteudo, idpergunta: id},
-            buscaPerguntas,
+            getAll,
             function (erro) {
               sweetAlert('Oops...', 'Não foi possível remover o vídeo.', 'error')
               console.log(erro)
@@ -40,7 +38,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz) {
       var pergunta = $filter('filter')($scope.perguntas.perguntas, { _id: id }, true)[0]
       $mdDialog.show({
         controller: DialogController,
-        templateUrl: 'views/modalQuiz.html',
+        templateUrl: 'views/modals/modalQuiz.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         locals: {
@@ -58,7 +56,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz) {
     $scope.add = function (ev) {
       $mdDialog.show({
         controller: DialogController,
-        templateUrl: 'views/modalQuiz.html',
+        templateUrl: 'views/modals/modalQuiz.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         locals: {
@@ -74,18 +72,13 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz) {
       })
     }
 
-    function buscaPerguntas () {
-      urlPerguntasbyConteudo.get(
+    function getAll () {
+      Quiz.get({idconteudo: $scope.idconteudo},
         function (perguntas) {
-          for (i = 0; i < perguntas.perguntas.length; i++) {
-            perguntas.perguntas[i].respostas_bkp = perguntas.perguntas[i].respostas;
-            perguntas.perguntas[i].respostas = perguntas.perguntas[i].respostas.join(' ')
-          }
           $scope.perguntas = perguntas
         },
         function (erro) {
           sweetAlert('Oops...', 'Não foi possível obter a lista de Perguntas!', 'error')
-          console.log(erro)
         }
       )
     }
@@ -93,9 +86,6 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz) {
     function DialogController ($scope, $mdDialog, title, data) {
       $scope.title = title
       if (data.length !== 0) {
-        data.respostas = data.respostas_bkp.map(function(e, index) {
-          return e;
-        });
         $scope.data = data
       }
       $scope.hide = function () {
@@ -112,12 +102,12 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz) {
     }
 
     function salvaPergunta (pergunta) {
-      $scope.pergunta = new urlPergunta()
+      $scope.pergunta = new Quiz()
       $scope.pergunta.data = pergunta
-      $scope.pergunta.$save()
+      $scope.pergunta.$save({idconteudo: $scope.idconteudo})
       .then(function () {
         sweetAlert('Sucesso!', 'A pergunta foi salva com sucesso!', 'success')
-        buscaPerguntas()
+        getAll()
       })
       .catch(function (erro) {
         sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
@@ -130,7 +120,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz) {
       $scope.pergunta.$update({idconteudo: $scope.idconteudo, idpergunta: pergunta._id})
       .then(function () {
         sweetAlert('Sucesso!', 'A pergunta foi atualizada com sucesso!', 'success')
-        buscaPerguntas()
+        getAll()
       })
       .catch(function (erro) {
         sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')

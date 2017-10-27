@@ -1,4 +1,5 @@
-angular.module('apieja').controller('ConteudosController', function ($scope, $mdToast, $mdDialog, SweetAlert, $filter, Conteudo) {
+angular.module('apieja').controller('ConteudosController',
+function ($scope, $mdToast, $mdDialog, SweetAlert, $filter, Conteudo) {
   $scope.init = function () {
     getAll()
   }
@@ -32,7 +33,7 @@ angular.module('apieja').controller('ConteudosController', function ($scope, $md
         var item = $filter('filter')($scope.data, { _id: id }, true)[0]
         $mdDialog.show({
           controller: DialogController,
-          templateUrl: 'views/modalConteudos.html',
+          templateUrl: 'views/modals/modalConteudos.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           locals: {
@@ -50,7 +51,7 @@ angular.module('apieja').controller('ConteudosController', function ($scope, $md
       $scope.add = function (ev) {
         $mdDialog.show({
           controller: DialogController,
-          templateUrl: 'views/modalConteudos.html',
+          templateUrl: 'views/modals/modalConteudos.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           locals: {
@@ -69,6 +70,7 @@ angular.module('apieja').controller('ConteudosController', function ($scope, $md
         Conteudo.query(
           function (data) {
             $scope.data = data
+            console.log(data)
           },
           function (erro) {
             sweetAlert('Oops...', 'Não foi possível obter a lista de Conteúdos!', 'error')
