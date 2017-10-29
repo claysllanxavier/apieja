@@ -11,5 +11,7 @@ notifications:
   email: false
 deploy:
   provider: azure_web_apps
+  on:
+    all_branches: true
   verbose: true
   skip_cleanup: true
