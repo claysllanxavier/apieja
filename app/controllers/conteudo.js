@@ -2,6 +2,7 @@ module.exports = function (app) {
   var controller = {}
   var jwt = require('jsonwebtoken')
   var Model = app.models.conteudo
+  var Usuario = app.models.user
 
   controller.getAll = function (req, res) {
     var token = req.headers['x-access-token']
@@ -83,5 +84,41 @@ module.exports = function (app) {
     })
   }
 
-  return controller
-}
+  controller.getByUsuario = function (req, res) {
+    var idusuario = req.params.idusuario
+    var token = req.headers['x-access-token']
+    if (!token) return res.status(401).render('401')
+    jwt.verify(token, process.env.SECRET, function (err, decoded) {
+      Model.find()
+      .select('conteudo informacao perguntas _id')
+      .exec()
+      .then(
+        function (conteudos) {
+          var array = []
+          var object = {}
+          Usuario.findById(idusuario)
+          .select('respostas')
+          .exec()
+          .then(function (usuario) {
+            var count = 0
+            for (var i = 0; i < conteudos.length; i++) {
+              for (var j = 0; j < usuario.respostas.length; j++) {
+                if (conteudos[i]._id.toString() == usuario.respostas[j].idconteudo.toString()) {
+                  count++
+                }
+              }
+              object = {_id: conteudos[i]._id, conteudo: conteudos[i].conteudo, informacao: conteudos[i].informacao, qtdperguntas: conteudos[i].perguntas.length, qtdrespostas: count }
+              array.push(object)
+              count = 0
+            }
+            res.json(array)
+          })
+        },
+        function (erro) {
+          res.status(500).json(erro)
+        })
+      })
+    }
+
+    return controller
+  }

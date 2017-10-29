@@ -1,8 +1,8 @@
 angular.module('apieja').controller('HomeController',
 function ($scope, $resource, Quantidade, AuthService) {
   $scope.init = function () {
-    getAll()
     getToken()
+    getAll()
   }
 
   function getAll () {

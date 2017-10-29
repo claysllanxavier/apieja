@@ -10,4 +10,7 @@ module.exports = function (app) {
   .get(controller.getById)
   .delete(controller.delete)
   .put(controller.update)
+
+  app.route('/api/conteudo-usuario/:idusuario')
+  .get(controller.getByUsuario)
 }

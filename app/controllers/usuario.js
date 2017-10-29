@@ -164,6 +164,9 @@ module.exports = function (app) {
           } else {
             bcrypt.compare(req.body.data.senha, user.senha, function (err, response) {
               if (response) {
+                user.token = jwt.sign({ id: user._id }, process.env.SECRET, {
+                  expiresIn: 86400
+                })
                 res.json(user)
               } else {
                 res.status(500).json(err)
@@ -179,7 +182,7 @@ module.exports = function (app) {
         var token = req.headers['x-access-token']
         if (!token) return res.status(401).render('401')
         jwt.verify(token, process.env.SECRET, function (err, decoded) {
-          Usuario.findByIdAndUpdate(idusuario, {$pull: {respostas: {idconteudo: idconteudo}}})
+          Model.findByIdAndUpdate(idusuario, {$pull: {respostas: {idconteudo: idconteudo}}})
           .exec()
           .then(
             function () {
