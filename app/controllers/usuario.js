@@ -182,7 +182,7 @@ module.exports = function (app) {
         var token = req.headers['x-access-token']
         if (!token) return res.status(401).render('401')
         jwt.verify(token, process.env.SECRET, function (err, decoded) {
-          Model.findByIdAndUpdate(idusuario, {$pull: {respostas: {idconteudo: idconteudo}}})
+          Model.findByIdAndUpdate(idusuario, {$pull: {respostas: {idconteudo: idconteudo}}}, {safe : true})
           .exec()
           .then(
             function () {

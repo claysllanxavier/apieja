@@ -2,7 +2,6 @@ angular.module('apieja').controller('HomeController',
 function ($scope, $resource, Quantidade, AuthService) {
   $scope.init = function () {
     getToken()
-    getAll()
   }
 
   function getAll () {
@@ -20,6 +19,7 @@ function ($scope, $resource, Quantidade, AuthService) {
       url.get(
         function (data) {
           AuthService.setToken(data.token)
+          getAll()
         },
         function (erro) {
           sweetAlert('Oops...', 'Não foi possível obter essas informações!', 'error')
