@@ -7,7 +7,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
   $scope.add = function (ev) {
     $mdDialog.show({
       controller: DialogController,
-      templateAdmin: 'views/modals/modalAdmins.html',
+      templateUrl: 'views/modals/modalAdmins.html',
       parent: angular.element(document.body),
       targetEvent: ev,
       locals: {
@@ -30,7 +30,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
       $scope.send.$save()
       .then(function () {
         sweetAlert('Sucesso!', 'O administrador foi salvo com sucesso!', 'success')
-        buscaAdmins()
+        getAll()
       })
       .catch(function (erro) {
         sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
