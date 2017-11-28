@@ -48,33 +48,13 @@ function ($scope, $mdToast, $mdDialog, SweetAlert, $filter, Conteudo) {
         })
       }
 
-      $scope.add = function (ev) {
-        $mdDialog.show({
-          controller: DialogController,
-          templateUrl: 'views/modals/modalConteudos.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          locals: {
-            data: [],
-            title: 'Adicionar'
-          },
-          clickOutsideToClose: true,
-          fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-        })
-        .then(function (answer) {
-          save(answer)
-        })
-      }
-
       function getAll () {
         Conteudo.query(
           function (data) {
             $scope.data = data
-            console.log(data)
           },
           function (erro) {
             sweetAlert('Oops...', 'Não foi possível obter a lista de Conteúdos!', 'error')
-            console.log(erro)
           })
         }
 
