@@ -42,9 +42,6 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
 
   function DialogController ($scope, $mdDialog, title, data) {
     $scope.title = title
-    if (data.length !== 0) {
-      $scope.data = data
-    }
     $scope.hide = function () {
       $mdDialog.hide()
     }
