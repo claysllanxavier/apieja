@@ -2,6 +2,7 @@ module.exports = function (app) {
   var controller = {}
   var bcrypt = require('bcrypt-nodejs')
   var jwt = require('jsonwebtoken')
+  var auditLog = require('audit-log');
   var Model = app.models.user
   var Conteudo = app.models.conteudo
 
@@ -12,6 +13,7 @@ module.exports = function (app) {
       Model.find()
       .exec()
       .then(function (data) {
+        auditLog.logEvent(req.user.nome, 'System', 'Visualizou os Usuários')
         res.json(data)
       },
       function (erro) {

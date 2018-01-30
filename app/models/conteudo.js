@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var timestamps = require('mongoose-timestamp');
 module.exports = function () {
   var Videos = mongoose.Schema({
     id: mongoose.Schema.Types.ObjectId,
@@ -11,8 +12,10 @@ module.exports = function () {
       type: String,
       required: true,
       trim: true
-    }
+    },
+    idadministrador:mongoose.Schema.Types.ObjectId
   })
+  Videos.plugin(timestamps);
 
   var Quiz = mongoose.Schema({
     id: mongoose.Schema.Types.ObjectId,
@@ -30,8 +33,11 @@ module.exports = function () {
       type: String,
       required: true,
       trim: true
-    }
+    },
+    idadministrador:mongoose.Schema.Types.ObjectId
   })
+
+  Quiz.plugin(timestamps);
 
   var Conteudo = mongoose.Schema({
     conteudo: {
@@ -51,6 +57,8 @@ module.exports = function () {
       default: Date.now
     }
   })
+
+  Conteudo.plugin(timestamps);
 
   return mongoose.model('Conteudo', Conteudo)
 }

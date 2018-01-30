@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var auditLog = require('audit-log');
 module.exports = function () {
   mongoose.connect(process.env.DB, {useMongoClient: true})
   // mongoose.set('debug',true);
@@ -18,4 +19,5 @@ module.exports = function () {
       process.exit(0)
     })
   })
+  auditLog.addTransport("mongoose", {connectionString: process.env.DB})
 }

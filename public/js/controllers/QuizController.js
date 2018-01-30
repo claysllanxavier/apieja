@@ -1,5 +1,5 @@
 angular.module('apieja').controller('QuizController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz, $routeParams) {
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz, $routeParams, Admin) {
 
   $scope.idconteudo = $routeParams.id;
 
@@ -70,6 +70,16 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz, $ro
         answer.respostas = _.values(answer.respostas)
         salvaPergunta(answer)
       })
+    }
+
+    $scope.loadPessoas = function () {
+      Admin.query(
+                  function (data) {
+                    $scope.admins = data
+                  },
+                  function (erro) {
+                    sweetAlert('Oops...', 'Não foi possível obter essas informações!', 'error')
+                  })
     }
 
     function getAll () {

@@ -1,5 +1,5 @@
 angular.module('apieja').controller('VideoController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video, $routeParams) {
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video, $routeParams, Admin) {
 
   $scope.idconteudo = $routeParams.id;
 
@@ -68,6 +68,16 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video, $r
       .then(function (answer) {
         salvaVideo(answer)
       })
+    }
+
+    $scope.loadPessoas = function () {
+      Admin.query(
+                  function (data) {
+                    $scope.admins = data
+                  },
+                  function (erro) {
+                    sweetAlert('Oops...', 'Não foi possível obter essas informações!', 'error')
+                  })
     }
 
     function getAll () {

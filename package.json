@@ -19,6 +19,7 @@
   "license": "ISC",
   "homepage": "https://github.com/claysllanxavier/apieja#readme",
   "dependencies": {
+    "audit-log": "^0.9.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "bower": "^1.8.0",
@@ -35,6 +36,7 @@
     "method-override": "^2.3.9",
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.5",
+    "mongoose-timestamp": "^0.6.0",
     "morgan": "^1.8.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0"

@@ -1,8 +1,10 @@
 module.exports = function () {
   var controller = {}
+  var auditLog = require('audit-log');
   var jwt = require('jsonwebtoken')
 
   controller.index = function (req, res) {
+    auditLog.logEvent(req.user.nome, 'System', 'Logou no Sistema')
     res.render('index', {
       usuarioLogado: req.user.nome,
       usuarioEmail: req.user.email

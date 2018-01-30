@@ -1,14 +1,27 @@
+<div class="card">
 <div class="container-fluid" layout-margin>
-  <md-card style="margin:0px">
-    <md-input-container style="margin:15px;">
-      <label>Filtrar</label>
-      <input type="text" ng-model="filterName">
-    </md-input-container>
-
-    <div ng-hide="true">
-      {{(filteredItems = (videos.videos | filter: filterName))}}
-    </div>
-  </md-card>
+    <div class="row clearfix">
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div layout="row" layout-align="start" flex>
+              <md-input-container flex="50">
+                <label>Vídeos por Pessoa</label>
+                <md-select  ng-model="opcao" md-on-open="loadPessoas()">
+                  <md-option value="{{undefined}}" selected>Todos</md-option>
+                  <md-option ng-value="admin._id" ng-repeat="admin in admins">{{admin.nome}}</md-option>
+                </md-select>
+              </md-input-container>
+              <md-input-container flex="50">
+                <label>Filtrar</label>
+                <input ng-model="filterName">
+              </md-input-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-hide="true">
+          {{(filteredItems = (videos.videos | filter:{idadministrador:opcao ||undefined} | filter:filterName))}}
+        </div>
   <div class="alert alert-info" ng-hide="videos.videos.length">
     <strong>Informação!</strong> Não há vídeos cadastrados nesse conteúdo
   </div>
@@ -53,5 +66,6 @@
 <div class="label-container">
   <div class="label-text">Adicionar mais vídeos</div>
   <i class="fa fa-play label-arrow"></i>
+</div>
 </div>
 </div>
