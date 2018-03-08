@@ -22,7 +22,6 @@
     "audit-log": "^0.9.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
-    "bower": "^1.8.0",
     "compression": "^1.7.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
@@ -38,7 +37,8 @@
     "mongoose": "^4.13.11",
     "morgan": "^1.8.2",
     "passport": "^0.3.2",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "yarn": "^1.5.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",

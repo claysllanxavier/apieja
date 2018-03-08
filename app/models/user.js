@@ -1,11 +1,12 @@
 var mongoose = require('mongoose')
+var bcrypt = require('bcrypt-nodejs')
 module.exports = function () {
   var Respostas = mongoose.Schema({
     id: mongoose.Schema.Types.ObjectId,
     idconteudo: mongoose.Schema.Types.ObjectId,
     idpergunta: mongoose.Schema.Types.ObjectId,
-    acertou: {type: Boolean},
-    atualizado: { type: Date, default: Date.now}
+    acertou: { type: Boolean },
+    atualizado: { type: Date, default: Date.now }
   })
 
   var schema = mongoose.Schema({
@@ -41,6 +42,14 @@ module.exports = function () {
       default: Date.now
     }
   })
+
+  schema.methods.generateHash = function (senha) {
+    return bcrypt.hashSync(senha, bcrypt.genSaltSync(8), null)
+  }
+
+  schema.methods.validPassword = function (senha) {
+    return bcrypt.compareSync(senha, this.senha)
+  }
 
   return mongoose.model('User', schema)
 }

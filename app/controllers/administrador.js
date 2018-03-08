@@ -34,6 +34,7 @@ module.exports = function (app) {
           res.end()
         },
         function (erro) {
+          console.log(erro)
           res.status(500).json(erro)
         })
       })
@@ -74,7 +75,7 @@ module.exports = function (app) {
       }
 
       controller.changePass = function (req, res) {
-        var id = req.body._id
+        var id = req.body.data._id
         var data = req.body.data
         data.senha = bcrypt.hashSync(data.senha, bcrypt.genSaltSync(8), null)
         var token = req.headers['x-access-token']
@@ -108,6 +109,7 @@ module.exports = function (app) {
             })
           })
         }
+        
         controller.getUser = function (req, res) {
           var token = req.headers['x-access-token']
           if (!token) return res.status(401).render('401')
