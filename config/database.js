@@ -19,5 +19,6 @@ module.exports = function () {
       process.exit(0)
     })
   })
+  
   auditLog.addTransport("mongoose", {connectionString: process.env.DB})
 }

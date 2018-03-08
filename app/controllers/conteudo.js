@@ -13,7 +13,7 @@ module.exports = function (app) {
       .select('conteudo informacao _id')
       .exec()
       .then(function (data) {
-        auditLog.logEvent(req.user.nome, 'System', 'Vizualizou os Conteudos')
+        if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Vizualizou os Conteudos')
         res.json(data)
       },
       function (erro) {
@@ -31,7 +31,7 @@ module.exports = function (app) {
       .select('conteudo informacao _id')
       .exec()
       .then(function (data) {
-        auditLog.logEvent(req.user.nome, 'System', 'Vizualizou um Conteudo')
+        if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Vizualizou um Conteudo')
         res.json(data)
       },
       function (erro) {
@@ -47,7 +47,7 @@ module.exports = function (app) {
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
       Model.create(data)
       .then(function () {
-        auditLog.logEvent(req.user.nome, 'System', 'Inseriu um  novo Conteudo')
+        if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Inseriu um  novo Conteudo')
         res.end()
       },
       function (erro) {
@@ -64,7 +64,7 @@ module.exports = function (app) {
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
       Model.update({'_id': id}, {$set: data})
       .then(function () {
-        auditLog.logEvent(req.user.nome, 'System', 'Atualizou um Conteudo')
+        if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Atualizou um Conteudo')
         res.end()
       },
       function (erro) {
@@ -81,7 +81,7 @@ module.exports = function (app) {
       Model.remove({'_id': id})
       .exec()
       .then(function () {
-        auditLog.logEvent(req.user.nome, 'System', 'Deletou um Conteudo')
+        if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Deletou um Conteudo')
         res.end()
       },
       function (erro) {

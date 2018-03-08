@@ -14,7 +14,7 @@ module.exports = function (app) {
       .select('videos _id')
       .exec()
       .then(function (myDocument) {
-        auditLog.logEvent(req.user.nome, 'System', 'Visualizou os Vídeos')
+        if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Visualizou os Vídeos')
         let data = {}
         data['_id'] = myDocument._id
         data['video'] = myDocument.videos.id(idvideo)
@@ -29,7 +29,7 @@ module.exports = function (app) {
   controller.insert = function (req, res) {
     var url = req.body.data.url
     var idconteudo = req.params.idconteudo
-    var idadministrador= req.user._id
+    var idadministrador= (req.user) ? req.user._id : '5aa14d7db8862e024b15941a'
     var token = req.headers['x-access-token']
     if (!token) return res.status(401).render('401')
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
@@ -44,10 +44,11 @@ module.exports = function (app) {
       Model.update({'_id': idconteudo}, {$push: {'videos': {nome: req.body.data.nome, url: url, idadministrador: idadministrador}}}, {safe: true, upsert: true, new: true})
       .then(
         function () {
-          auditLog.logEvent(req.user.nome, 'System', 'Inseriu um novo Vídeo')
+          if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Inseriu um novo Vídeo')
           res.end()
         },
         function (erro) {
+          console.log(erro)
           res.status(500).json(erro)
         })
       })
@@ -72,7 +73,7 @@ module.exports = function (app) {
         .select('videos _id')
         .exec()
         .then(function (myDocument) {
-          auditLog.logEvent(req.user.nome, 'System', 'Atualizou um  Vídeo')
+          if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Atualizou um  Vídeo')
           let item =  myDocument.videos.id(idvideo)
           item.nome = req.body.data.nome
           item.url = url
@@ -97,7 +98,7 @@ module.exports = function (app) {
         .exec()
         .then(
           function () {
-            auditLog.logEvent(req.user.nome, 'System', 'Deletou um Vídeo')
+            if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Deletou um Vídeo')
             res.end()
           },
           function (erro) {
@@ -116,7 +117,7 @@ module.exports = function (app) {
           .exec()
           .then(
             function (data) {
-              auditLog.logEvent(req.user.nome, 'System', 'Visualizou os Vídeos de um Conteúdo')
+              if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Visualizou os Vídeos de um Conteúdo')
               res.json(data)
             },
             function (erro) {
