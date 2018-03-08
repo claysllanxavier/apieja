@@ -4,8 +4,6 @@ services:
 node_js:
   - "6.11"
 before_script:
-  - npm install -g bower
-  - bower install --force-latest
   - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 notifications:
   email: false
