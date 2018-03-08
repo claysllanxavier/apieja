@@ -1,0 +1,21 @@
+{
+  "name": "fronted",
+  "version": "1.0.0",
+  "description": "Front-end do Projeto",
+  "main": "index.js",
+  "author": "Claysllan Xavier",
+  "license": "MIT",
+  "dependencies": {
+    "adminbsb-materialdesign": "^1.0.5",
+    "angular": "^1.6.9",
+    "angular-animate": "^1.6.9",
+    "angular-material": "^1.1.7",
+    "angular-messages": "^1.6.9",
+    "angular-resource": "^1.6.9",
+    "angular-route": "^1.6.9",
+    "angular-sweetalert": "^1.1.2",
+    "md-data-table": "^2.2.0",
+    "ngstorage": "^0.3.11",
+    "underscore": "^1.8.3"
+  }
+}
