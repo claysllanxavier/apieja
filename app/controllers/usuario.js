@@ -13,7 +13,7 @@ module.exports = function (app) {
       Model.find()
       .exec()
       .then(function (data) {
-        auditLog.logEvent(req.user.nome, 'System', 'Visualizou os Usuários')
+        if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Visualizou os Usuários')
         res.json(data)
       },
       function (erro) {
