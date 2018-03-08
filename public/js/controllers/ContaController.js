@@ -12,7 +12,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Ad
     delete $scope.admin.confSenha
     $scope.send = new Conta()
     $scope.send.data = $scope.admin
-    $scope.send.$save()
+    $scope.send.$update()
     .then(function () {
       sweetAlert('Sucesso!', 'Senha alterada!', 'success')
       buscar()
