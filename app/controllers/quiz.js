@@ -14,7 +14,7 @@ module.exports = function (app) {
         .select('perguntas _id')
         .exec()
         .then(function (myDocument) {
-          auditLog.logEvent(req.user.nome, 'System', 'Visualizou um Quiz')
+          if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Visualizou um Quiz')
           let data = {}
           data['_id'] = myDocument._id
           data['pergunta'] = myDocument.perguntas.id(idpergunta)
@@ -28,7 +28,7 @@ module.exports = function (app) {
 
   controller.insert = function (req, res) {
     var idconteudo = req.params.idconteudo
-    var idadministrador = req.user._id
+    var idadministrador = (req.user) ? req.user._id : '5aa14d7db8862e024b15941a'
     req.body.data.idadministrador = idadministrador
     var token = req.headers['x-access-token']
     if (!token) return res.status(401).render('401')
@@ -36,7 +36,7 @@ module.exports = function (app) {
       Model.update({ '_id': idconteudo }, { $push: { 'perguntas': req.body.data } }, { safe: true, upsert: true, new: true })
         .then(
         function () {
-          auditLog.logEvent(req.user.nome, 'System', 'Inseriu um novo Quiz')
+          if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Inseriu um novo Quiz')
           res.end()
         },
         function (erro) {
@@ -55,7 +55,7 @@ module.exports = function (app) {
         .select('perguntas _id')
         .exec()
         .then(function (myDocument) {
-          auditLog.logEvent(req.user.nome, 'System', 'Atualizou um  Quiz')
+          if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Atualizou um  Quiz')
           let item = myDocument.perguntas.id(idpergunta)
           item.pergunta = req.body.data.pergunta
           item.respostas = req.body.data.respostas
@@ -81,7 +81,7 @@ module.exports = function (app) {
         .exec()
         .then(
         function () {
-          auditLog.logEvent(req.user.nome, 'System', 'Deletou um  Quiz')
+          if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Deletou um  Quiz')
           res.end()
         },
         function (erro) {
@@ -100,7 +100,7 @@ module.exports = function (app) {
         .exec()
         .then(
         function (data) {
-          auditLog.logEvent(req.user.nome, 'System', 'Visualizou os Quiz de um Conteúdo')
+          if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Visualizou os Quiz de um Conteúdo')
           res.json(data)
         },
         function (erro) {

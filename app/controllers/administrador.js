@@ -12,7 +12,7 @@ module.exports = function (app) {
       Model.find()
       .exec()
       .then(function (data) {
-        auditLog.logEvent(req.user.nome, 'System', 'Vizualizou os Administradores')
+        if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Vizualizou os Administradores')
         res.json(data)
       },
       function (erro) {
@@ -30,7 +30,7 @@ module.exports = function (app) {
       Model.create(data)
       .then(
         function () {
-          auditLog.logEvent(req.user.nome, 'System', 'Inseriu um novo Administrador')
+          if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Inseriu um novo Administrador')
           res.end()
         },
         function (erro) {
@@ -46,7 +46,7 @@ module.exports = function (app) {
       jwt.verify(token, process.env.SECRET, function (err, decoded) {
         Model.findById(id).exec()
         .then(function (data) {
-          auditLog.logEvent(req.user.nome, 'System', 'Vizualizou um Administrador')
+          if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Vizualizou um Administrador')
           res.json(data)
         },
         function (erro) {
@@ -64,7 +64,7 @@ module.exports = function (app) {
         Model.update({'_id': id}, {$set: data})
         .then(
           function () {
-            auditLog.logEvent(req.user.nome, 'System', 'Atualizou um novo Administrador')
+            if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Atualizou um novo Administrador')
             res.end()
           },
           function (erro) {
@@ -83,7 +83,7 @@ module.exports = function (app) {
           Model.update({'_id': id}, {$set: {'senha': data.senha}})
           .then(
             function () {
-              auditLog.logEvent(req.user.nome, 'System', 'Mudou a senha')
+              if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Mudou a senha')
               res.end()
             },
             function (erro) {
@@ -100,7 +100,7 @@ module.exports = function (app) {
             Model.remove({'_id': id})
             .exec()
             .then(function () {
-              auditLog.logEvent(req.user.nome, 'System', 'Deletou um Administrador')
+              if(req.user)  auditLog.logEvent(req.user.nome, 'System', 'Deletou um Administrador')
               res.end()
             },
             function (erro) {
@@ -112,7 +112,7 @@ module.exports = function (app) {
           var token = req.headers['x-access-token']
           if (!token) return res.status(401).render('401')
           jwt.verify(token, process.env.SECRET, function (err, decoded) {
-            auditLog.logEvent(req.user.nome, 'System', 'Visualizou sua conta')
+            if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Visualizou sua conta')
             res.json(req.user)
           })
         }
