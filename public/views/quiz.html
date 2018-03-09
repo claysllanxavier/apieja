@@ -1,75 +1,77 @@
+<ol class="breadcrumb breadcrumb-bg-orange">
+  <li>
+    <a href="/">
+      <i class="material-icons">home</i> Inicio</a>
+  </li>
+  <li>
+    <a href="/conteudo">
+      <i class="material-icons">book</i> Conteúdos</a>
+  </li>
+  <li class="active">
+    <i class="material-icons">question_answer</i> Quiz do Conteúdo</li>
+</ol>
 <div class="card">
-<div class="container-fluid"   layout-margin>
+  <div class="container-fluid" layout-margin>
     <div class="row clearfix">
-        <div class="row clearfix">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div layout="row" layout-align="start" flex>
-              <md-input-container flex="50">
-                <label>Quiz por Pessoa</label>
-                <md-select  ng-model="opcao" md-on-open="loadPessoas()">
-                  <md-option value="{{undefined}}" selected>Todos</md-option>
-                  <md-option ng-value="admin._id" ng-repeat="admin in admins">{{admin.nome}}</md-option>
-                </md-select>
-              </md-input-container>
-              <md-input-container flex="50">
-                <label>Filtrar</label>
-                <input ng-model="filterName">
-              </md-input-container>
-            </div>
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div layout="row" layout-align="start" flex>
+            <md-input-container flex="50">
+              <label>Quiz por Pessoa</label>
+              <md-select ng-model="opcao" md-on-open="loadPessoas()">
+                <md-option value="{{undefined}}" selected>Todos</md-option>
+                <md-option ng-value="admin._id" ng-repeat="admin in admins">{{admin.nome}}</md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container flex="50">
+              <label>Filtrar</label>
+              <input ng-model="filterName">
+            </md-input-container>
           </div>
         </div>
       </div>
-      <div ng-hide="true">
-          {{(filteredItems = (perguntas.perguntas | filter:{idadministrador:opcao ||undefined} | filter:filterName))}}
-        </div>
-  <div class="alert alert-info" ng-hide="perguntas.perguntas.length">
-    <strong>Informação!</strong> Não há perguntas cadastradas
-  </div>
-  <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}"
-  table-card="{title: 'Perguntas', actionIcons: true}"
-  animate-sort-icon="true"
-  mdt-translations="{rowsPerPage : 'Itens por página', largeEditDialog : { saveButtonLabel : 'Salvar', cancelButtonLabel	: 'Cancelar'}}"
-  mdt-row="{
+    </div>
+    <div ng-hide="true">
+      {{(filteredItems = (perguntas.perguntas | filter:{idadministrador:opcao ||undefined} | filter:filterName))}}
+    </div>
+    <div class="alert alert-info" ng-hide="perguntas.perguntas.length">
+      <strong>Informação!</strong> Não há perguntas cadastradas
+    </div>
+    <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}" table-card="{title: 'Perguntas', actionIcons: true}"
+      animate-sort-icon="true" mdt-translations="{rowsPerPage : 'Itens por página', largeEditDialog : { saveButtonLabel : 'Salvar', cancelButtonLabel	: 'Cancelar'}}"
+      mdt-row="{
     'data': filteredItems,
     'table-row-id-key': '_id',
     'column-keys': ['pergunta', 'respostas[0]', 'respostas[1]', 'respostas[2]', 'respostas[3]', 'respostaCerta', 'acao']
-  }"
-  >
-  <mdt-header-row>
-    <mdt-column align-rule="left" column-sort="true" column-definition="Pergunta que será lançada"><span>Pergunta</span></mdt-column>
-    <mdt-column align-rule="left" column-sort="true" column-definition="Alternativa para responder"><span>Alternativa 1</span></mdt-column>
-    <mdt-column align-rule="left" column-sort="true" column-definition="Alternativa para responder"><span>Alternativa 2</span></mdt-column>
-    <mdt-column align-rule="left" column-sort="true" column-definition="Alternativa para responder"><span>Alternativa 3</span></mdt-column>
-    <mdt-column align-rule="left" column-sort="true" column-definition="Alternativa para responder"><span>Alternativa 4</span></mdt-column>
-    <mdt-column align-rule="left" column-sort="true" column-definition="Respota da pergunta"><span>Resposta Certa</span></mdt-column>
-    <mdt-column align-rule="left"><span>Ação</span></mdt-column>
-  </mdt-header-row>
-  <mdt-custom-cell column-key="acao">
-    <div class ="row">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <button ng-click="clientScope.edit(rowId, $event)" type="button" class="btn btn-block btn-lg btn-warning waves-effect">
-          <md-tooltip md-direction="top">Editar Pergunta</md-tooltip>
-          <i class="material-icons">edit</i>
-        </button>
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <button ng-click="clientScope.delete(rowId)" type="button" class="btn btn-block btn-lg btn-danger waves-effect">
-          <md-tooltip md-direction="top">Excluir Pergunta</md-tooltip>
-          <i class="material-icons">delete</i>
-        </button>
-      </div>
-    </div>
-  </mdt-custom-cell>
-</mdt-table>
-<style>
-*{padding:0;margin:0}body{font-family:Verdana,Geneva,sans-serif;background-color:#CCC;font-size:12px}.label-container{position:fixed;bottom:48px;right:105px;display:table;visibility:hidden}.label-text{color:#FFF;background:rgba(51,51,51,0.5);display:table-cell;vertical-align:middle;padding:10px;border-radius:3px}.label-arrow{display:table-cell;vertical-align:middle;color:#333;opacity:.5}.float{position:fixed;width:60px;height:60px;bottom:40px;right:40px;background-color:#F44336;color:#FFF;border-radius:50px;text-align:center;box-shadow:2px 2px 3px #999}.my-float{font-size:24px;margin-top:18px}button.float + div.label-container{visibility:hidden;opacity:0;transition:visibility 0s,opacity .5s ease}button.float:hover + div.label-container{visibility:visible;opacity:1}
-</style>
-<button ng-click="add()" type="button" class="btn btn-danger btn-circle-lg waves-effect waves-circle waves-float float">
-  <i class="material-icons">add</i>
-</button>
-<div class="label-container">
-  <div class="label-text">Adicionar mais perguntas</div>
-  <i class="fa fa-play label-arrow"></i>
-</div>
-</div>
-</div>
+  }">
+      <mdt-header-row>
+        <mdt-column align-rule="left" column-sort="true" column-definition="Pergunta que será lançada"><span>Pergunta</span></mdt-column>
+        <mdt-column align-rule="left" column-sort="true" column-definition="Alternativa para responder"><span>Alternativa 1</span></mdt-column>
+        <mdt-column align-rule="left" column-sort="true" column-definition="Alternativa para responder"><span>Alternativa 2</span></mdt-column>
+        <mdt-column align-rule="left" column-sort="true" column-definition="Alternativa para responder"><span>Alternativa 3</span></mdt-column>
+        <mdt-column align-rule="left" column-sort="true" column-definition="Alternativa para responder"><span>Alternativa 4</span></mdt-column>
+        <mdt-column align-rule="left" column-sort="true" column-definition="Respota da pergunta"><span>Resposta Certa</span></mdt-column>
+        <mdt-column align-rule="left"><span>Ação</span></mdt-column>
+      </mdt-header-row>
+      <mdt-custom-cell column-key="acao">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <button ng-click="clientScope.edit(rowId, $event)" type="button" class="btn btn-block btn-lg btn-warning waves-effect">
+              <md-tooltip md-direction="top">Editar Pergunta</md-tooltip>
+              <i class="material-icons">edit</i>
+            </button>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <button ng-click="clientScope.delete(rowId)" type="button" class="btn btn-block btn-lg btn-danger waves-effect">
+              <md-tooltip md-direction="top">Excluir Pergunta</md-tooltip>
+              <i class="material-icons">delete</i>
+            </button>
+          </div>
+        </div>
+      </mdt-custom-cell>
+    </mdt-table>
+    <button ng-click="add()" type="button" class="btn btn-danger btn-circle-lg waves-effect waves-circle waves-float float">
+      <md-tooltip md-direction="left">Adicionar mais perguntas</md-tooltip>
+      <i class="material-icons">add</i>
+    </button>
+  </div>

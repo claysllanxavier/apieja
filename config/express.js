@@ -46,30 +46,30 @@ module.exports = function (config) {
       resave: true,
       saveUninitialized: true
     })) // session secret
-    app.use(passport.initialize())
-    app.use(passport.session()) // persistent login sessions
-    app.use(flash())
+  app.use(passport.initialize())
+  app.use(passport.session()) // persistent login sessions
+  app.use(flash())
 
-    load('models', {cwd: 'app'})
+  load('models', { cwd: 'app' })
     .then('controllers')
     .then('routes')
     .into(app)
 
-    app.get('*', function (req, res) {
-      if(typeof req.user === 'undefined'){
-        res.status(404).render('404')
-      } else{
-        res.render('index',{
-          usuarioLogado: req.user.nome,
-          usuarioEmail: req.user.email
-        });
-      }
-    })
+  app.get('*', function (req, res) {
+    if (typeof req.user === 'undefined') {
+      res.status(404).render('404')
+    } else {
+      res.render('index', {
+        usuarioLogado: req.user.nome,
+        usuarioEmail: req.user.email
+      });
+    }
+  })
 
-    app.use(function (error, req, res, next) {
-      console.log(error)
-      res.status(500).render('500')
-    })
+  app.use(function (error, req, res, next) {
+    console.log(error)
+    res.status(500).render('500')
+  })
 
-    return app
-  }
+  return app
+}

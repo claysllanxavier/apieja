@@ -15,7 +15,7 @@ module.exports = function () {
     var token = jwt.sign({ id: req.user._id }, process.env.SECRET, {
       expiresIn: 86400 
     })
-    res.status(200).json({ auth: true, token: token })
+    res.status(200).json({ auth: true, token: token, user: req.user})
   }
 
   return controller
