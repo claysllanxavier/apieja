@@ -36,6 +36,8 @@
     "mongodb": "^2.2.35",
     "mongoose": "^4.13.11",
     "morgan": "^1.8.2",
+    "nodemailer": "^4.6.2",
+    "nodemailer-express-handlebars": "^3.0.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "yarn": "^1.5.1"
