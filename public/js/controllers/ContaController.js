@@ -1,5 +1,5 @@
 angular.module('apieja').controller('ContaController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Admin) {
+function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Admin, $window) {
   $scope.init = function () {
     buscar()
   }
@@ -28,7 +28,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Ad
     $scope.send.$update({id: data._id})
     .then(function () {
       sweetAlert('Sucesso!', 'Informações editadas com sucesso!', 'success')
-      buscar()
+      $window.location.reload();
     })
     .catch(function (erro) {
       sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
@@ -42,7 +42,6 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Ad
       },
       function (erro) {
         sweetAlert('Oops...', 'Não foi possível obter sua informação!', 'error')
-        console.log(erro)
       }
     )
   }

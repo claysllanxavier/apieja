@@ -1,5 +1,12 @@
-
-<div class="container-fluid"   layout-margin>
+<ol class="breadcrumb breadcrumb-bg-orange">
+  <li>
+    <a href="/">
+      <i class="material-icons">home</i> Inicio</a>
+  </li>
+  <li class="active">
+    <i class="material-icons">groups</i> Usuários</li>
+</ol>
+<div class="container-fluid" layout-margin>
   <md-card style="margin:0px">
     <md-input-container style="margin:15px;">
       <label>Filtrar</label>
@@ -13,20 +20,17 @@
   <div class="alert alert-info" ng-hide="usuarios.length">
     <strong>Informação!</strong> Não há usuarios cadastrados
   </div>
-  <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}"
-  table-card="{title: 'Usuários', actionIcons: true}"
-  animate-sort-icon="true"
-  mdt-translations="{rowsPerPage : 'Itens por página', largeEditDialog : { saveButtonLabel : 'Salvar', cancelButtonLabel	: 'Cancelar'}}"
-  mdt-row="{
+  <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}" table-card="{title: 'Usuários', actionIcons: true}"
+    animate-sort-icon="true" mdt-translations="{rowsPerPage : 'Itens por página', largeEditDialog : { saveButtonLabel : 'Salvar', cancelButtonLabel	: 'Cancelar'}}"
+    mdt-row="{
     'data': filteredItems,
     'table-row-id-key': '_id',
     'column-keys': ['nome', 'email', 'escola']
-  }"
-  >
-  <mdt-header-row>
-    <mdt-column align-rule="left" column-sort="true" column-definition="Nome do usuário"><span>Nome</span></mdt-column>
-    <mdt-column align-rule="left" column-sort="true" column-definition="Email que foi cadastrado"><span>Email</span></mdt-column>
-    <mdt-column align-rule="left" column-sort="true" column-definition="Escola que estuda"><span>Escola</span></mdt-column>
-  </mdt-header-row>
-</mdt-table>
+  }">
+    <mdt-header-row>
+      <mdt-column align-rule="left" column-sort="true" column-definition="Nome do usuário"><span>Nome</span></mdt-column>
+      <mdt-column align-rule="left" column-sort="true" column-definition="Email que foi cadastrado"><span>Email</span></mdt-column>
+      <mdt-column align-rule="left" column-sort="true" column-definition="Escola que estuda"><span>Escola</span></mdt-column>
+    </mdt-header-row>
+  </mdt-table>
 </div>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html  ng-app="apieja">
+<html>
 
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <title>API EJA</title>
+  <title ng-bind="'API Eja :: ' + $root.title">API Eja :: Bem-vindo</title>
   <!-- Favicon-->
   <link rel="icon" href="/vendor/adminbsb-materialdesign/favicon.ico" type="image/x-icon">
 
@@ -13,24 +13,25 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
   <!-- Bootstrap Core Css -->
-  <link href="/vendor/adminbsb-materialdesign//plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="/vendor/adminbsb-materialdesign/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Waves Effect Css -->
-  <link href="/vendor/adminbsb-materialdesign/plugins/node-waves/waves.css" rel="stylesheet" />
+  <link href="/vendor/adminbsb-materialdesign/plugins/node-waves/waves.min.css" rel="stylesheet" />
 
   <!-- Animation Css -->
-  <link href="/vendor/adminbsb-materialdesign/plugins/animate-css/animate.css" rel="stylesheet" />
+  <link href="/vendor/adminbsb-materialdesign/plugins/animate-css/animate.min.css" rel="stylesheet" />
 
   <!-- Custom Css -->
-  <link href="/vendor/adminbsb-materialdesign/css/style.css" rel="stylesheet">
+  <link href="/vendor/adminbsb-materialdesign/css/style.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
 
   <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-  <link href="/vendor/adminbsb-materialdesign/css/themes/all-themes.css" rel="stylesheet" />
+  <link href="/vendor/adminbsb-materialdesign/css/themes/all-themes.min.css" rel="stylesheet" />
 
   <!-- Angular libaries -->
-  <link rel="stylesheet" href="/vendor/angular-material/angular-material.css">
-  <link href="/vendor/md-data-table/dist/md-data-table-style.css" rel="stylesheet" type="text/css"/>
-  <link href="/vendor/adminbsb-materialdesign/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="/vendor/angular-material/angular-material.min.css">
+  <link href="/vendor/md-data-table/dist/md-data-table-style.css" rel="stylesheet" type="text/css" />
+  <link href="/vendor/adminbsb-materialdesign/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 
   <base href="/">
 
@@ -62,17 +63,27 @@
       <!-- User Info -->
       <div class="user-info">
         <div class="image">
-          <img src="http://home.iitk.ac.in/~kundua/male.png" width="50" height="50" alt="User" />
+          <img src="/images/user.png" width="50" height="50" alt="User" />
         </div>
         <div class="info-container">
-          <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%=usuarioLogado %></div>
-          <div class="email"><%=usuarioEmail %></div>
+          <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= usuarioLogado %>
+          </div>
+          <div class="email">
+            <%= usuarioEmail %>
+          </div>
           <div class="btn-group user-helper-dropdown">
             <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
             <ul class="dropdown-menu pull-right">
-              <li><a href="/minhaconta"><i class="material-icons">person</i>Perfil</a></li>
+              <li>
+                <a href="/minhaconta">
+                  <i class="material-icons">person</i>Perfil</a>
+              </li>
               <li role="seperator" class="divider"></li>
-              <li><a href="/logout"><i class="material-icons">input</i>Sair</a></li>
+              <li>
+                <a href="/logout">
+                  <i class="material-icons">input</i>Sair</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -83,13 +94,13 @@
           <li class="header">NAVEGAÇÃO PRINCIPAL</li>
           <li class="active"></li>
           <li ng-class="{'active': $route.current.activetab == 'home'}">
-            <a  href="/">
+            <a href="/">
               <i class="material-icons">home</i>
               <span>Inicio</span>
             </a>
           </li>
           <li ng-class="{'active': $route.current.activetab == 'conteudo'}">
-            <a  href="/conteudo">
+            <a href="/conteudo">
               <i class="material-icons">book</i>
               <span>Conteúdos</span>
             </a>
@@ -103,7 +114,7 @@
           <li ng-class="{'active': $route.current.activetab == 'admin'}">
             <a href="/admin">
               <i class="material-icons">person</i>
-              <span>Administradores</span>
+              <span>Professores</span>
             </a>
           </li>
           <li ng-class="{'active': $route.current.activetab == 'conta'}">
@@ -137,7 +148,8 @@
       <!-- Footer -->
       <div class="legal">
         <div class="copyright">
-          &copy; 2017 <a href="javascript:void(0);">Pós Graduação em Telemática - IFTO</a>.
+          &copy; 2017
+          <a href="javascript:void(0);">Pós Graduação em Telemática - IFTO</a>.
         </div>
         <div class="version">
           <b>Versão: </b> 1.0
@@ -149,7 +161,9 @@
     <!-- Right Sidebar -->
     <aside id="rightsidebar" class="right-sidebar">
       <ul class="nav nav-tabs tab-nav-right" role="tablist">
-        <li role="presentation" class="active"><a href="#skins" data-toggle="tab">Cores</a></li>
+        <li role="presentation" class="active">
+          <a href="#skins" data-toggle="tab">Cores</a>
+        </li>
       </ul>
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
@@ -251,7 +265,11 @@
       </div>
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
+          <li class="pull-right">
+            <a href="javascript:void(0);" class="js-right-sidebar" data-close="true">
+              <i class="material-icons">more_vert</i>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -266,40 +284,30 @@
   <script src="/vendor/adminbsb-materialdesign/plugins/jquery/jquery.min.js"></script>
 
   <!-- Bootstrap Core Js -->
-  <script src="/vendor/adminbsb-materialdesign/plugins/bootstrap/js/bootstrap.js"></script>
-
-  <!-- Select Plugin Js -->
-  <script src="/vendor/adminbsb-materialdesign/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+  <script src="/vendor/adminbsb-materialdesign/plugins/bootstrap/js/bootstrap.min.js"></script>
 
   <!-- Slimscroll Plugin Js -->
   <script src="/vendor/adminbsb-materialdesign/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
   <!-- Waves Effect Plugin Js -->
-  <script src="/vendor/adminbsb-materialdesign/plugins/node-waves/waves.js"></script>
-
-  <!-- Jquery CountTo Plugin Js -->
-  <script src="/vendor/adminbsb-materialdesign/plugins/jquery-countto/jquery.countTo.js"></script>
-
-  <!-- Sparkline Chart Plugin Js -->
-  <script src="/vendor/adminbsb-materialdesign/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+  <script src="/vendor/adminbsb-materialdesign/plugins/node-waves/waves.min.js"></script>
 
   <!-- Custom Js -->
   <script src="/vendor/adminbsb-materialdesign/js/admin.js"></script>
-  <script src="/vendor/adminbsb-materialdesign/js/pages/widgets/infobox/infobox-1.js"></script>
 
   <!-- Demo Js -->
   <script src="/vendor/adminbsb-materialdesign/js/demo.js"></script>
 
   <!-- Angular Libaries-->
-  <script src="/vendor/angular/angular.js"></script>
+  <script src="/vendor/angular/angular.min.js"></script>
   <script src="/vendor/angular-route/angular-route.min.js"></script>
-  <script src="/vendor/angular-resource/angular-resource.js"></script>
-  <script src="/vendor/angular-messages/angular-messages.js"></script>
+  <script src="/vendor/angular-resource/angular-resource.min.js"></script>
+  <script src="/vendor/angular-messages/angular-messages.min.js"></script>
   <script src="/vendor/angular-sanitize/angular-sanitize.js"></script>
-  <script src="/vendor/angular-animate/angular-animate.js"></script>
-  <script src="/vendor/angular-aria/angular-aria.js"></script>
+  <script src="/vendor/angular-animate/angular-animate.min.js"></script>
+  <script src="/vendor/angular-aria/angular-aria.min.js"></script>
   <script src="/vendor/ngstorage/ngStorage.min.js"></script>
-  <script src="/vendor/angular-material/angular-material.js"></script>
+  <script src="/vendor/angular-material/angular-material.min.js"></script>
   <script src="/vendor/underscore/underscore-min.js"></script>
   <script src="/vendor/md-data-table/dist/md-data-table-templates.js"></script>
   <script src="/vendor/md-data-table/dist/md-data-table.js"></script>
