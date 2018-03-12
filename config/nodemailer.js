@@ -3,12 +3,12 @@ var hbs = require('nodemailer-express-handlebars'),
     pass = process.env.MAILER_PASSWORD,
     nodemailer = require('nodemailer');
 
-var path = require("path");
-var appDir = path.dirname(require.main.filename);
-
+var appRoot = require('app-root-path');
 
 var smtpTransport = nodemailer.createTransport({
-    service: process.env.MAILER_SERVICE_PROVIDER || 'Gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
     auth: {
         user: email,
         pass: pass
@@ -17,7 +17,7 @@ var smtpTransport = nodemailer.createTransport({
 
 var handlebarsOptions = {
     viewEngine: 'handlebars',
-    viewPath: appDir + '/app/views/',
+    viewPath: appRoot + '/app/views/',
     extName: '.html'
 };
 

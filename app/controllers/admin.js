@@ -71,12 +71,14 @@ module.exports = function (app) {
             req.flash('message', 'Foi enviado para seu email o link para resetar a senha!')
             return res.redirect('/esqueciminhasenha');
           } else {
+            console.log(err)
             req.flash('message', 'Algo está errado. Tente mais tarde.')
             return res.redirect('/esqueciminhasenha');
           }
         });
       }
     ], function (err) {
+      console.log(err)
       res.status(500).json(err)
     });
   }

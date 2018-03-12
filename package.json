@@ -19,6 +19,7 @@
   "license": "ISC",
   "homepage": "https://github.com/claysllanxavier/apieja#readme",
   "dependencies": {
+    "app-root-path": "^2.0.1",
     "audit-log": "^0.9.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
