@@ -26,7 +26,7 @@ module.exports = function (app) {
   }
 
   controller.esqueciSenha = function (req, res) {
-    var fullUrl = req.protocol + '://' + req.hostname + (process.env.PORT == 80 || process.env.PORT == 443 ? '' : ':' + process.env.PORT);
+    var fullUrl = req.protocol + '://' + req.hostname;
     async.waterfall([
       function (done) {
         User.findOne({
@@ -71,20 +71,18 @@ module.exports = function (app) {
             req.flash('message', 'Foi enviado para seu email o link para resetar a senha!')
             return res.redirect('/esqueciminhasenha');
           } else {
-            console.log(err)
             req.flash('message', 'Algo está errado. Tente mais tarde.')
             return res.redirect('/esqueciminhasenha');
           }
         });
       }
     ], function (err) {
-      console.log(err)
       res.status(500).json(err)
     });
   }
 
   controller.resetasenha = function (req, res) {
-    var fullUrl = req.protocol + '://' + req.hostname + (process.env.PORT == 80 || process.env.PORT == 443 ? '' : ':' + process.env.PORT);
+    var fullUrl = req.protocol + '://' + req.hostname;
     User.findOne({
       reset_password_token: req.body.token,
       reset_password_expires: {
