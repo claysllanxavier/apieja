@@ -73,10 +73,12 @@ module.exports = function (app) {
           } else {
             req.flash('message', 'Algo está errado. Tente mais tarde.')
             return res.redirect('/esqueciminhasenha');
+            console.log(err)
           }
         });
       }
     ], function (err) {
+      console.log(err)
       res.status(500).json(err)
     });
   }
