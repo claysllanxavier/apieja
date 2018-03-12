@@ -8,7 +8,9 @@ var appDir = path.dirname(require.main.filename);
 
 
 var smtpTransport = nodemailer.createTransport({
-    service: process.env.MAILER_SERVICE_PROVIDER || 'Gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
     auth: {
         user: email,
         pass: pass
