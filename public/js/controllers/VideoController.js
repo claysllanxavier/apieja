@@ -1,5 +1,5 @@
 angular.module('apieja').controller('VideoController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video, $routeParams, Admin) {
+function ($scope, $resource, $mdToast, $mdDialog, $filter, Video, $routeParams, Admin) {
 
   $scope.idconteudo = $routeParams.id;
 
@@ -8,33 +8,34 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video, $r
   }
 
   $scope.delete = function (id) {
-    sweetAlert({
+    swal({
       title: 'Você deseja realmente deletar esse item?',
-      text: 'Você não poderá recupear esse vídeo posteriormente.',
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#DD6B55',
-      confirmButtonText: 'Sim, eu quero deletar!',
-      cancelButtonText: 'Não, cancelar por favor!',
-      closeOnConfirm: false,
-      closeOnCancel: false },
-      function (isConfirm) {
-        if (isConfirm) {
-          Video.delete({idconteudo: $scope.idconteudo, idvideo: id},
+      text: 'Você não poderá recupear esse video posteriormente.',
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+      buttons: ['Não, cancelar por favor!', 'Sim, eu quero deletar!']
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          Video.delete({ idconteudo: $scope.idconteudo, idvideo: id },
             getAll,
             function (erro) {
-              sweetAlert('Oops...', 'Não foi possível remover o vídeo.', 'error')
+              swal('Oops...', 'Não foi possível remover o video.', 'error')
             }
           )
-          SweetAlert.swal('Delteado!', 'Esse item foi deletado.', 'success')
+          swal('Delteado!', 'Esse item foi deletado.', 'success')
         } else {
-          SweetAlert.swal('Cancelado', 'Esse item esta salvo :)', 'error')
+          swal('Cancelado', 'Esse item esta salvo :)', 'error')
         }
+      })
+      .catch(erro => {
+        swal('Oops...', 'Não foi possível remover o video.', 'error')
       })
     }
 
     $scope.edit = function (id, ev) {
-      var video = $filter('filter')($scope.videos.videos, { _id: id }, true)[0]
+      var video = $filter('filter')($scope.videos, { _id: id }, true)[0]
       $mdDialog.show({
         controller: DialogController,
         templateUrl: 'views/modals/modalVideos.html',
@@ -76,17 +77,17 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video, $r
                     $scope.admins = data
                   },
                   function (erro) {
-                    sweetAlert('Oops...', 'Não foi possível obter essas informações!', 'error')
+                    swal('Oops...', 'Não foi possível obter essas informações!', 'error')
                   })
     }
 
     function getAll () {
-      Video.get({idconteudo: $scope.idconteudo},
+      Video.query({idconteudo: $scope.idconteudo},
         function (videos) {
           $scope.videos = videos
         },
         function (erro) {
-          sweetAlert('Oops...', 'Não foi possível obter esse item.', 'error')
+          swal('Oops...', 'Não foi possível obter esse item.', 'error')
         }
       )
     }
@@ -114,11 +115,11 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video, $r
       $scope.video.data = video
       $scope.video.$save({idconteudo: $scope.idconteudo})
       .then(function () {
-        sweetAlert('Sucesso!', 'O vídeo foi salvo com sucesso!', 'success')
+        swal('Sucesso!', 'O vídeo foi salvo com sucesso!', 'success')
         getAll()
       })
       .catch(function (erro) {
-        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+        swal('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
       })
     }
 
@@ -127,11 +128,11 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Video, $r
       $scope.video.data = video
       $scope.video.$update({idconteudo: $scope.idconteudo, idvideo: video._id})
       .then(function () {
-        sweetAlert('Sucesso!', 'O vídeo foi atualizado com sucesso!', 'success')
+        swal('Sucesso!', 'O vídeo foi atualizado com sucesso!', 'success')
         getAll()
       })
       .catch(function (erro) {
-        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+        swal('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
       })
     }
 

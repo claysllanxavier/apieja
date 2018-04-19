@@ -32,9 +32,9 @@
       </div>
     </div>
     <div ng-hide="true">
-      {{(filteredItems = (perguntas.perguntas | filter:{idadministrador:opcao ||undefined} | filter:filterName))}}
+      {{(filteredItems = (perguntas | filter:{idadministrador:opcao ||undefined} | filter:filterName))}}
     </div>
-    <div class="alert alert-info" ng-hide="perguntas.perguntas.length">
+    <div class="alert alert-info" ng-hide="perguntas.length">
       <strong>Informação!</strong> Não há perguntas cadastradas
     </div>
     <mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,100]}" table-card="{title: 'Perguntas', actionIcons: true}"

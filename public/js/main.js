@@ -1,4 +1,4 @@
-var app = angular.module('apieja', ['ngRoute', 'ngResource', 'ngStorage', 'ngMaterial', 'mdDataTable', 'oitozero.ngSweetAlert', 'countTo', 'ngMessages']), dados;
+var app = angular.module('apieja', ['ngRoute', 'ngResource', 'ngStorage', 'ngMaterial', 'mdDataTable', 'countTo', 'ngMessages']), dados;
 
 app.config(function ($mdThemingProvider) {
   $mdThemingProvider.theme('default')

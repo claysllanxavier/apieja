@@ -1,5 +1,5 @@
 angular.module('apieja').controller('QuizController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz, $routeParams, Admin) {
+function ($scope, $resource, $mdToast, $mdDialog, $filter, Quiz, $routeParams, Admin) {
 
   $scope.idconteudo = $routeParams.id;
 
@@ -8,34 +8,34 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz, $ro
   }
 
   $scope.delete = function (id) {
-    sweetAlert({
+    swal({
       title: 'Você deseja realmente deletar esse item?',
-      text: 'Você não poderá recupear essa pergunta posteriormente.',
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#DD6B55',
-      confirmButtonText: 'Sim, eu quero deletar!',
-      cancelButtonText: 'Não, cancelar por favor!',
-      closeOnConfirm: false,
-      closeOnCancel: false },
-      function (isConfirm) {
-        if (isConfirm) {
-          Quiz.delete({idconteudo: $scope.idconteudo, idpergunta: id},
+      text: 'Você não poderá recupear esse item posteriormente.',
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+      buttons: ['Não, cancelar por favor!', 'Sim, eu quero deletar!']
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          Quiz.delete({ idconteudo: $scope.idconteudo, idpergunta: id },
             getAll,
             function (erro) {
-              sweetAlert('Oops...', 'Não foi possível remover o vídeo.', 'error')
-              console.log(erro)
+              swal('Oops...', 'Não foi possível remover o item.', 'error')
             }
           )
-          SweetAlert.swal('Delteado!', 'Esse item foi deletado.', 'success')
+          swal('Delteado!', 'Esse item foi deletado.', 'success')
         } else {
-          SweetAlert.swal('Cancelado', 'Esse item esta salvo :)', 'error')
+          swal('Cancelado', 'Esse item esta salvo :)', 'error')
         }
+      })
+      .catch(erro => {
+        swal('Oops...', 'Não foi possível remover o video.', 'error')
       })
     }
 
     $scope.edit = function (id, ev) {
-      var pergunta = $filter('filter')($scope.perguntas.perguntas, { _id: id }, true)[0]
+      var pergunta = $filter('filter')($scope.perguntas, { _id: id }, true)[0]
       $mdDialog.show({
         controller: DialogController,
         templateUrl: 'views/modals/modalQuiz.html',
@@ -78,17 +78,17 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz, $ro
                     $scope.admins = data
                   },
                   function (erro) {
-                    sweetAlert('Oops...', 'Não foi possível obter essas informações!', 'error')
+                    swal('Oops...', 'Não foi possível obter essas informações!', 'error')
                   })
     }
 
     function getAll () {
-      Quiz.get({idconteudo: $scope.idconteudo},
+      Quiz.query({idconteudo: $scope.idconteudo},
         function (perguntas) {
           $scope.perguntas = perguntas
         },
         function (erro) {
-          sweetAlert('Oops...', 'Não foi possível obter a lista de Perguntas!', 'error')
+          swal('Oops...', 'Não foi possível obter a lista de Perguntas!', 'error')
         }
       )
     }
@@ -116,11 +116,11 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz, $ro
       $scope.pergunta.data = pergunta
       $scope.pergunta.$save({idconteudo: $scope.idconteudo})
       .then(function () {
-        sweetAlert('Sucesso!', 'A pergunta foi salva com sucesso!', 'success')
+        swal('Sucesso!', 'A pergunta foi salva com sucesso!', 'success')
         getAll()
       })
       .catch(function (erro) {
-        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+        swal('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
       })
     }
 
@@ -129,11 +129,11 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Quiz, $ro
       $scope.pergunta.data = pergunta
       $scope.pergunta.$update({idconteudo: $scope.idconteudo, idpergunta: pergunta._id})
       .then(function () {
-        sweetAlert('Sucesso!', 'A pergunta foi atualizada com sucesso!', 'success')
+        swal('Sucesso!', 'A pergunta foi atualizada com sucesso!', 'success')
         getAll()
       })
       .catch(function (erro) {
-        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+        swal('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
       })
     }
 
