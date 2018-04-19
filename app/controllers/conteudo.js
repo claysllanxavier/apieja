@@ -79,12 +79,17 @@ module.exports = function (app) {
     if (!token) return res.status(401).render('401')
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
       Model.remove({'_id': id})
-      .exec()
       .then(function () {
+        return app.models.video.remove({'conteudo' : id})
+      })
+      .then(function () {
+        return app.models.quiz.remove({'conteudo' : id})
+      })
+      .then(() =>{
         if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Deletou um Conteudo')
         res.end()
-      },
-      function (erro) {
+      })
+      .catch(function (erro) {
         res.status(500).json(erro)
       })
     })

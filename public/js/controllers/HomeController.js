@@ -10,7 +10,7 @@ angular.module('apieja').controller('HomeController',
           $scope.quantidade = quantidade
         },
         function (erro) {
-          sweetAlert('Oops...', 'Não foi possível obter a lista de Quantidade!', 'error')
+          swal('Oops...', 'Não foi possível obter a lista de Quantidade!', 'error')
         })
     }
 

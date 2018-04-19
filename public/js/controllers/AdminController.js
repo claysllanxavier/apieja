@@ -1,5 +1,5 @@
 angular.module('apieja').controller('AdminController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
+function ($scope, $resource, $mdToast, $mdDialog, $filter, Admin) {
   $scope.init = function () {
     getAll()
   }
@@ -29,14 +29,14 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
       $scope.send.data = data
       $scope.send.$save()
       .then(function () {
-        sweetAlert('Sucesso!', 'O administrador foi salvo com sucesso!', 'success')
+        swal('Sucesso!', 'O administrador foi salvo com sucesso!', 'success')
         getAll()
       })
       .catch(function (erro) {
-        sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+        swal('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
       })
     } else {
-      sweetAlert('Oops...', 'Senhas não conferem. Refaça a operação!', 'error')
+      swal('Oops...', 'Senhas não conferem. Refaça a operação!', 'error')
     }
   }
 
@@ -65,7 +65,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Admin) {
         $scope.data = data
       },
       function (erro) {
-        sweetAlert('Oops...', 'Não foi possível obter a lista de Administradores!', 'error')
+        swal('Oops...', 'Não foi possível obter a lista de Administradores!', 'error')
       }
     )
   }

@@ -13,9 +13,9 @@
     "angular-messages": "^1.6.9",
     "angular-resource": "^1.6.9",
     "angular-route": "^1.6.9",
-    "angular-sweetalert": "^1.1.2",
     "md-data-table": "^2.2.0",
     "ngstorage": "^0.3.11",
+    "sweetalert": "^2.1.0",
     "underscore": "^1.8.3"
   }
 }

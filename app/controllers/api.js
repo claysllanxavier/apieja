@@ -1,69 +1,37 @@
 module.exports = function (app) {
   var controller = {}
   var jwt = require('jsonwebtoken')
-  var Conteudo = app.models.conteudo
-  var Usuario = app.models.user
-  var Admin = app.models.admin
-
+  var models = app.models
 
   // Informação
   controller.listaQuantidade = function (req, res) {
     var token = req.headers['x-access-token']
     if (!token) return res.status(401).render('401')
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
-      Usuario.count({}, function (err, qtdUsuarios) {
-        Conteudo.count({}, function (err, qtdConteudos) {
-          Conteudo.aggregate({ $unwind: '$videos' },
-          { $group: {
-            _id: '',
-            count: { $sum: 1 }
-          }
-        }, function (err, qtdVideos) {
-          Conteudo.aggregate({ $unwind: '$perguntas' },
-          { $group: {
-            _id: '',
-            count: { $sum: 1 }
-          }
-        }, function (err, qtdPerguntas) {
-          if (typeof qtdPerguntas[0] === 'undefined' && typeof qtdVideos[0] === 'undefined') {
-            res.json(
-              {
-                qtdConteudos: qtdConteudos,
-                qtdUsuarios: qtdUsuarios,
-                qtdVideos: 0,
-                qtdPerguntas: 0
-              })
-            } else if (typeof qtdPerguntas[0] === 'undefined') {
-              res.json(
-                {
-                  qtdConteudos: qtdConteudos,
-                  qtdUsuarios: qtdUsuarios,
-                  qtdVideos: qtdVideos[0].count,
-                  qtdPerguntas: 0
-                })
-              } else if (typeof qtdVideos[0] === 'undefined') {
-                res.json(
-                  {
-                    qtdConteudos: qtdConteudos,
-                    qtdUsuarios: qtdUsuarios,
-                    qtdVideos: 0,
-                    qtdPerguntas: qtdPerguntas[0].count
-                  })
-                } else {
-                  res.json(
-                    {
-                      qtdConteudos: qtdConteudos,
-                      qtdUsuarios: qtdUsuarios,
-                      qtdVideos: qtdVideos[0].count,
-                      qtdPerguntas: qtdPerguntas[0].count
-                    })
-                  }
-                })
-              })
-            })
-          })
+      let quantidade = {}
+      models.user.count({})
+        .then(usuarios => {
+          quantidade.qtdUsuarios = usuarios
+          return models.conteudo.count({})
         })
-      }
+        .then(conteudos => {
+          quantidade.qtdConteudos = conteudos
+          return models.video.count({})
+        })
+        .then(videos => {
+          quantidade.qtdVideos = videos
+          return models.quiz.count({})
+        })
+        .then(quiz =>{
+          quantidade.qtdPerguntas = quiz
+          res.status(200).json(quantidade)
+        })
+        .catch(erro =>{
+          console.log(erro)
+          res.status(500).json(erro)
+        })
+    })
+  }
 
-      return controller
-    }
+  return controller
+}

@@ -6,6 +6,7 @@ let server = require('../server')
 let should = chai.should()
 let mongoose = require('mongoose')
 var Model = server.models.conteudo
+var models = server.models
 
 chai.use(chaiHttp)
 // Our parent block
@@ -17,7 +18,7 @@ let token = jwt.sign({ id: 1 }, process.env.SECRET, {
 // Our parent block
 describe('Video', () => {
   beforeEach((done) => { // Before each test we empty the database
-    Model.remove({}, (err) => {
+    server.models.video.remove({}, (err) => {
       done()
     })
   })
@@ -99,20 +100,22 @@ describe('Video', () => {
   */
   describe('/GET/:id', () => {
     it('it should GET one by the given id', (done) => {
-      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien', videos: [{nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys'}]})
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien'})
       aux.save((err, data) => {
+        let video = new models.video({nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys', conteudo: data._id})
+        video.save((err, instance) =>{
         chai.request(server)
-        .get('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .get('/api/conteudo/' + data._id + '/video/' + instance._id)
         .set('x-access-token', token)
         .send(data)
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.a('object')
-          res.body.should.have.property('video')
           res.body.should.have.property('_id')
-          res.body.video.should.have.property('nome')
-          res.body.video.should.have.property('url')
+          res.body.should.have.property('nome')
+          res.body.should.have.property('url')
           done()
+        })
         })
       })
     })
@@ -122,28 +125,34 @@ describe('Video', () => {
   */
   describe('/PUT/:id', () => {
     it('it should not UPDATE', (done) => {
-      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien', videos: [{nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys'}]})
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien'})
       aux.save((err, data) => {
+        let video = new models.video({nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys', conteudo: data._id})
+        video.save((err, instance) =>{
         chai.request(server)
-        .put('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .put('/api/conteudo/' + data._id + '/video/' + instance._id)
         .set('x-access-token', token)
         .send({data: {nome: 'The Chronicles of Narnia', url: 'C.S. Lewis'}})
         .end((err, res) => {
           res.should.have.status(500)
           done()
         })
+        })
       })
     })
     it('it should UPDATE', (done) => {
-      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien', videos: [{nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys'}]})
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien'})
       aux.save((err, data) => {
+        let video = new models.video({nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys', conteudo: data._id})
+        video.save((err, instance) =>{
         chai.request(server)
-        .put('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .put('/api/conteudo/' + data._id + '/video/' + instance._id)
         .set('x-access-token', token)
         .send({data: {nome: 'The Chronicles of Narnia', url: 'https://www.youtube.com/embed/EQp1NapFqts'}})
         .end((err, res) => {
           res.should.have.status(200)
           done()
+        })
         })
       })
     })
@@ -153,14 +162,17 @@ describe('Video', () => {
   */
   describe('/DELETE/:id', () => {
     it('it should DELETE', (done) => {
-      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien', videos: [{nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys'}]})
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien'})
       aux.save((err, data) => {
+        let video = new models.video({nome: 'The Lord of the Rings', url: 'https://www.youtube.com/watch?v=z2E-nVi-Pys', conteudo: data._id})
+        video.save((err, instance) =>{
         chai.request(server)
-        .delete('/api/conteudo/' + data._id + '/video/' + data.videos[0]._id)
+        .delete('/api/conteudo/' + data._id + '/video/' + instance._id)
         .set('x-access-token', token)
         .end((err, res) => {
           res.should.have.status(200)
           done()
+        })
         })
       })
     })

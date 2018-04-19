@@ -1,5 +1,5 @@
 angular.module('apieja').controller('UsuariosController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Usuario) {
+function ($scope, $resource, $mdToast, $mdDialog, $filter, Usuario) {
   $scope.init = function () {
     getAll()
   }
@@ -10,7 +10,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Usuario) 
         $scope.usuarios = usuarios
       },
       function (erro) {
-        sweetAlert('Oops...', 'Não foi possível obter a lista de Usuários!', 'error')
+        swal('Oops...', 'Não foi possível obter a lista de Usuários!', 'error')
       }
     )
   }

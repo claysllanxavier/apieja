@@ -6,6 +6,7 @@ let server = require('../server')
 let should = chai.should()
 let mongoose = require('mongoose')
 var Model = server.models.conteudo
+var models = server.models
 
 chai.use(chaiHttp)
 // Our parent block
@@ -15,7 +16,7 @@ let token = jwt.sign({ id: 1 }, process.env.SECRET, {
 // Our parent block
 describe('Quiz', () => {
   beforeEach((done) => { // Before each test we empty the database
-    Model.remove({}, (err) => {
+    server.models.quiz.remove({}, (err) => {
       done()
     })
   })
@@ -25,11 +26,11 @@ describe('Quiz', () => {
   describe('TOKEN', () => {
     it('it should not access', (done) => {
       chai.request(server)
-      .get('/api/conteudo/1/pergunta')
-      .end((err, res) => {
-        res.should.have.status(401)
-        done()
-      })
+        .get('/api/conteudo/1/pergunta')
+        .end((err, res) => {
+          res.should.have.status(401)
+          done()
+        })
     })
   })
   /*
@@ -37,7 +38,7 @@ describe('Quiz', () => {
   */
   describe('/POST', () => {
     it('it should POST', (done) => {
-      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien'})
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien' })
       aux.save((err, data) => {
         let item = {}
         item['data'] = {
@@ -46,13 +47,13 @@ describe('Quiz', () => {
           respostas: ["1", "2", "3", "4"]
         }
         chai.request(server)
-        .post('/api/conteudo/'+data._id+'/pergunta')
-        .send(item)
-        .set('x-access-token', token)
-        .end((err, res) => {
-          res.should.have.status(200)
-          done()
-        })
+          .post('/api/conteudo/' + data._id + '/pergunta')
+          .send(item)
+          .set('x-access-token', token)
+          .end((err, res) => {
+            res.should.have.status(200)
+            done()
+          })
       })
     })
   })
@@ -62,21 +63,23 @@ describe('Quiz', () => {
   */
   describe('/GET/:id', () => {
     it('it should GET one by the given id', (done) => {
-      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien', perguntas: [{pergunta: 'The Lord of the Rings',respostaCerta: '123',respostas: ["1", "2", "3", "4"]}]})
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien' })
       aux.save((err, data) => {
-        chai.request(server)
-        .get('/api/conteudo/' + data._id + '/pergunta/' + data.perguntas[0]._id)
-        .send(data)
-        .set('x-access-token', token)
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.body.should.be.a('object')
-          res.body.should.have.property('pergunta')
-          res.body.should.have.property('_id')
-          res.body.pergunta.should.have.property('pergunta')
-          res.body.pergunta.should.have.property('respostas')
-          res.body.pergunta.should.have.property('respostaCerta')
-          done()
+        let quiz = new models.quiz({ pergunta: 'The Lord of the Rings', respostaCerta: '123', respostas: ["1", "2", "3", "4"], conteudo: data._id })
+        quiz.save((err, instance) => {
+          chai.request(server)
+            .get('/api/conteudo/' + data._id + '/pergunta/' + instance._id)
+            .send(data)
+            .set('x-access-token', token)
+            .end((err, res) => {
+              res.should.have.status(200)
+              res.body.should.be.a('object')
+              res.body.should.have.property('_id')
+              res.body.should.have.property('pergunta')
+              res.body.should.have.property('respostas')
+              res.body.should.have.property('respostaCerta')
+              done()
+            })
         })
       })
     })
@@ -86,15 +89,18 @@ describe('Quiz', () => {
   */
   describe('/PUT/:id', () => {
     it('it should UPDATE', (done) => {
-      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien', perguntas: [{pergunta: 'The Lord of the Rings',respostaCerta: '123',respostas: ["1", "2", "3", "4"]}]})
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien' })
       aux.save((err, data) => {
-        chai.request(server)
-        .put('/api/conteudo/' + data._id + '/pergunta/' + data.perguntas[0]._id)
-        .set('x-access-token', token)
-        .send({data: {pergunta: 'The Chronicles of Narnia', respostaCerta: 'C.S. Lewis'}})
-        .end((err, res) => {
-          res.should.have.status(200)
-          done()
+        let quiz = new models.quiz({ pergunta: 'The Lord of the Rings', respostaCerta: '123', respostas: ["1", "2", "3", "4"], conteudo: data._id })
+        quiz.save((err, instance) => {
+          chai.request(server)
+            .put('/api/conteudo/' + data._id + '/pergunta/' + instance._id)
+            .set('x-access-token', token)
+            .send({ data: { pergunta: 'The Chronicles of Narnia', respostaCerta: 'C.S. Lewis' } })
+            .end((err, res) => {
+              res.should.have.status(200)
+              done()
+            })
         })
       })
     })
@@ -104,14 +110,17 @@ describe('Quiz', () => {
   */
   describe('/DELETE/:id', () => {
     it('it should DELETE', (done) => {
-      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien', perguntas: [{pergunta: 'The Lord of the Rings',respostaCerta: '123',respostas: ["1", "2", "3", "4"]}]})
+      let aux = new Model({ conteudo: 'The Lord of the Rings', informacao: 'J.R.R. Tolkien' })
       aux.save((err, data) => {
-        chai.request(server)
-        .delete('/api/conteudo/' + data._id + '/pergunta/' + data.perguntas[0]._id)
-        .set('x-access-token', token)
-        .end((err, res) => {
-          res.should.have.status(200)
-          done()
+        let quiz = new models.quiz({ pergunta: 'The Lord of the Rings', respostaCerta: '123', respostas: ["1", "2", "3", "4"], conteudo: data._id })
+        quiz.save((err, instance) => {
+          chai.request(server)
+            .delete('/api/conteudo/' + data._id + '/pergunta/' + instance._id)
+            .set('x-access-token', token)
+            .end((err, res) => {
+              res.should.have.status(200)
+              done()
+            })
         })
       })
     })

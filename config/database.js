@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 var auditLog = require('audit-log');
 module.exports = function () {
-  mongoose.connect(process.env.DB, {useMongoClient: true})
+  mongoose.connect(process.env.DB)
   // mongoose.set('debug',true);
   mongoose.connection.on('connected', function () {
     console.log('Mongoose! Conectado em ' + process.env.DB)

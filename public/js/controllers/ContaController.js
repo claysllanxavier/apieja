@@ -1,5 +1,5 @@
 angular.module('apieja').controller('ContaController',
-function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Admin, $window) {
+function ($scope, $resource, $mdToast, $mdDialog, $filter, Conta, Admin, $window) {
   $scope.init = function () {
     buscar()
   }
@@ -14,7 +14,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Ad
     $scope.send.data = $scope.admin
     $scope.send.$update()
     .then(function () {
-      sweetAlert('Sucesso!', 'Senha alterada!', 'success')
+      swal('Sucesso!', 'Senha alterada!', 'success')
       buscar()
     })
     .catch(function (erro) {
@@ -27,11 +27,11 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Ad
     $scope.send.data = data
     $scope.send.$update({id: data._id})
     .then(function () {
-      sweetAlert('Sucesso!', 'Informações editadas com sucesso!', 'success')
+      swal('Sucesso!', 'Informações editadas com sucesso!', 'success')
       $window.location.reload();
     })
     .catch(function (erro) {
-      sweetAlert('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
+      swal('Oops...', 'Alguma coisa está errada. Refaça a operação!', 'error')
     })
   }
 
@@ -41,7 +41,7 @@ function ($scope, $resource, $mdToast, $mdDialog, SweetAlert, $filter, Conta, Ad
         $scope.admin = data
       },
       function (erro) {
-        sweetAlert('Oops...', 'Não foi possível obter sua informação!', 'error')
+        swal('Oops...', 'Não foi possível obter sua informação!', 'error')
       }
     )
   }
