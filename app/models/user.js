@@ -1,14 +1,6 @@
 var mongoose = require('mongoose')
 var bcrypt = require('bcrypt-nodejs')
 module.exports = function () {
-  var Respostas = mongoose.Schema({
-    id: mongoose.Schema.Types.ObjectId,
-    idconteudo: mongoose.Schema.Types.ObjectId,
-    idpergunta: mongoose.Schema.Types.ObjectId,
-    acertou: { type: Boolean },
-    atualizado: { type: Date, default: Date.now }
-  })
-
   var schema = mongoose.Schema({
     nome: {
       type: String,
@@ -33,7 +25,6 @@ module.exports = function () {
       type: String,
       required: true
     },
-    respostas: [Respostas],
     pontos: Number,
     qtdperguntas: Number,
     qtdacertos: Number,
