@@ -44,10 +44,10 @@
     "yarn": "^1.6.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-http": "^4.0.0",
-    "mocha": "^5.1.0",
-    "standard": "^11.0.1",
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1",
+    "mocha": "^2.4.5",
+    "standard": "^10.0.3",
     "supertest": "^3.0.0"
   }
 }

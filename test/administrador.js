@@ -56,7 +56,8 @@ describe('Administrador', () => {
     it('it should not POST a administrador without senha field', (done) => {
       let item = {}
       item['data'] = {
-        nome: 'The Lord of the Rings'
+        nome: 'Claysllan Xavier',
+        email: 'claysllan@gmail.com',
       }
       chai.request(server)
       .post('/api/admin')
