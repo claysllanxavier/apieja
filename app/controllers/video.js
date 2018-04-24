@@ -33,7 +33,7 @@ module.exports = function (app) {
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
       // conveter url em um iframe para o app
       var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
-      var match = url.match(regExp)
+      var match = (url) ? url.match(regExp) : null
       if (match && match[2].length == 11) {
         url = 'https://www.youtube.com/embed/' + match[2]
       } else {

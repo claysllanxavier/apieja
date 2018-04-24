@@ -97,41 +97,34 @@ module.exports = function (app) {
           return models.resposta.find({ 'usuario': idusuario, 'conteudo': idconteudo })
         })
         .then(function (respostas) {
-          if (respostas.length == 0) {
-            var pergunta = {}
-            pergunta['_id'] = data[0].conteudo._id
-            pergunta['idpergunta'] = data[0]._id
-            pergunta['pergunta'] = data[0].pergunta
-            pergunta['respostas'] = data[0].respostas
-            pergunta['respostaCerta'] = data[0].respostaCerta
-            res.json(pergunta)
-          } else {
+          if (data.length === respostas.length) {
             var acertou = 0
-            if (data.length === respostas.length) {
-              for (var i = 0; i < respostas.length; i++) {
-                if (respostas[i].acertou) {
-                  acertou++
-                }
+            for (var i = 0; i < respostas.length; i++) {
+              if (respostas[i].acertou) {
+                acertou++
               }
-              res.json({ qtdacertos: acertou, qtdperguntas: respostas.length })
-            } else {
-              var pergunta = {}
-              for (var i = 0; i < data.length; i++) {
-                for (var j = 0; j < respostas.length; j++) {
-                  if (data[i]._id !== respostas[j].pergunta) {
-                    pergunta['_id'] = data[i].conteudo._id
-                    pergunta['idpergunta'] = data[i]._id
-                    pergunta['pergunta'] = data[i].pergunta
-                    pergunta['respostas'] = data[i].respostas
-                    pergunta['respostaCerta'] = data[i].respostaCerta
-                  }
-                }
-              }
-              res.json(pergunta)
             }
+            res.json({ qtdacertos: acertou, qtdperguntas: data.length })
+          } else {
+            var pergunta = {}
+            if (respostas.length == 0) {
+              pergunta = data[0]
+            } else {
+              for (var i = 0; i < data.length; i++) {
+                var found = respostas.some(function (el) {
+                  return el.pergunta.toString() === data[i]._id.toString();
+                });
+                if (!found) { 
+                  pergunta = data[i]
+                  break
+                }
+              }
+            }
+            res.json(pergunta)
           }
         })
         .catch(erro => {
+          console.log(erro)
           res.status(500).json(erro)
         })
     })
