@@ -23,18 +23,16 @@ module.exports = function (app) {
 
   controller.insert = function (req, res) {
     var data = req.body.data
-    data.senha = bcrypt.hashSync(data.senha, bcrypt.genSaltSync(8), null)
     var token = req.headers['x-access-token']
     if (!token) return res.status(401).render('401')
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
+      data.senha = (data.senha) ? bcrypt.hashSync(data.senha, bcrypt.genSaltSync(8), null) : null
       Model.create(data)
-      .then(
-        function () {
+      .then(function () {
           if(req.user) auditLog.logEvent(req.user.nome, 'System', 'Inseriu um novo Administrador')
           res.end()
-        },
-        function (erro) {
-          console.log(erro)
+        })
+        .catch(function (erro) {
           res.status(500).json(erro)
         })
       })
